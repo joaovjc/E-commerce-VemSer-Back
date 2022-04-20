@@ -12,19 +12,19 @@ import java.util.Set;
 
 @Getter
 @Setter
-@Entity(name = "RULE")
-public class RuleEntity implements Serializable, GrantedAuthority {
+@Entity(name = "ROLE_COMMERCE")
+public class RoleEntity implements Serializable, GrantedAuthority {
 
     @Id
-    @Column(name = "ruleId", columnDefinition = "serial")
+    @Column(name = "role_id", columnDefinition = "serial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ruleId;
+    private Integer role_id;
 
     @Column(name = "name")
     private String name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "rules")
+    @ManyToMany(mappedBy = "roles")
     private Set<GroupEntity> groups;
 
     @Override

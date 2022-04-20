@@ -11,11 +11,11 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity(name = "GROUP")
+@Entity(name = "GROUP_COMMERCE")
 public class GroupEntity implements Serializable {
 
     @Id
-    @Column(name = "groupId", columnDefinition = "serial")
+    @Column(name = "group_id", columnDefinition = "serial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer groupId;
 
@@ -23,17 +23,17 @@ public class GroupEntity implements Serializable {
     private String name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "groups")
+    @OneToMany(mappedBy = "groupEntity")
     private List<UserEntity> users;
 
     @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "group_rule",
-            joinColumns = @JoinColumn(name = "groupId"),
-            inverseJoinColumns = @JoinColumn(name = "ruleId")
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<RuleEntity> rules;
+    private List<RoleEntity> roles;
 
 
 }

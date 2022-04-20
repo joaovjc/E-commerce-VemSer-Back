@@ -15,15 +15,15 @@ import java.util.Set;
 
 @Getter
 @Setter
-@Entity(name = "USER")
+@Entity(name = "USER_COMMERCE")
 public class UserEntity implements UserDetails {
 
     @Id
-    @Column(name = "userId", columnDefinition = "serial")
+    @Column(name = "user_id", columnDefinition = "serial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
 
-    @Column(name = "fullName")
+    @Column(name = "full_name")
     private String fullName;
 
     @Column(name = "email")
@@ -32,22 +32,15 @@ public class UserEntity implements UserDetails {
     @Column(name = "password")
     private String password;
 
+
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "user_group",
-            joinColumns = @JoinColumn(name = "userId"),
-            inverseJoinColumns = @JoinColumn(name = "groupId")
-    )
-    private Set<GroupEntity> groups;
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "group_id", name = "group_id")
+    private GroupEntity groupEntity;
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> rules = new ArrayList<>();
-        for(GroupEntity groupEntity: groups){
-            rules.addAll(groupEntity.getRules());
-        }
-        return rules;
+        return new ArrayList<>(groupEntity.getRoles());
     }
 
     @Override
