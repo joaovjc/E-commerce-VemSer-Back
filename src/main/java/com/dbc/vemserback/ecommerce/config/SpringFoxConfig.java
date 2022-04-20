@@ -25,7 +25,7 @@ public class SpringFoxConfig {
                 .securityContexts(Collections.singletonList(securityContext()))
                 .securitySchemes(Collections.singletonList(apiKey()))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.dbc.pokesuits"))
+                .apis(RequestHandlerSelectors.basePackage("com.dbc.vemserback.ecommerce"))
                 .paths(PathSelectors.any())
                 .build()
                 .useDefaultResponseMessages(false)
@@ -34,12 +34,12 @@ public class SpringFoxConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("")
-                .description("")
+                .title("VemSer Back - E-Commerce")
+                .description("API para gestão de compras")
                 .version("1.0.0")
                 .license("Apache License Version 2.0")
                 .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
-                .contact(new Contact("", "https://www.dbccompany.com.br/", ""))
+                .contact(new Contact("João, Luiz e Ana", "https://www.dbccompany.com.br/", "null@null.com"))
                 .build();
     }
 

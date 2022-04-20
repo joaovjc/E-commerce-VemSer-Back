@@ -10,9 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
+import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
+import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 
 import io.jsonwebtoken.Claims;
@@ -25,35 +28,38 @@ import lombok.RequiredArgsConstructor;
 public class TokenService {
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String PREFIX = "Bearer ";
-    private static final String KEY_GROUPS = "GROUPS";
+    private static final String KEY_RULES = "RULES";
 
     @Value("${jwt.expiration}")
     private String expiration;
     @Value("${jwt.secret}")
     private String secret;
 
-    public String getToken(Authentication authentication) throws BusinessRuleException{
-//        UserEntity usuario = (UserEntity) authentication.getPrincipal();
+    public UserLoginDto getToken(Authentication authentication) throws BusinessRuleException{
+        UserEntity user = (UserEntity) authentication.getPrincipal();
         
 
-        Date now = new Date();//data atual
+        Date now = new Date();
         Date exp = new Date(now.getTime()+Long.parseLong(expiration));
 
-//        List<String> regras = usuario.getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .collect(Collectors.toList());
+        List<String> rules = user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
 
         String token = Jwts.builder()
                 .setIssuer("ecommerce")
-//                .setSubject(usuario.getId().toString())
-//                .claim(KEY_GROUPS, regras)
+                .setSubject(user.getUserId().toString())
+                .claim(KEY_RULES, rules)
                 .setIssuedAt(now)
                 .setExpiration(exp)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
 
-        return PREFIX + token;
+        return UserLoginDto.builder().rules(rules).username(user.getFullName()).token(PREFIX + token).build();
+        
     }
+    
+    
     
 
     public Authentication getAuthentication(HttpServletRequest request){
@@ -69,7 +75,7 @@ public class TokenService {
             
             if(user!=null){
                 List<String> regras = new ArrayList<>();
-                for(Object o: body.get(KEY_GROUPS, List.class))regras.add(o.toString());
+                for(Object o: body.get(KEY_RULES, List.class))regras.add(o.toString());
                 List<SimpleGrantedAuthority> roles = regras.stream()
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
