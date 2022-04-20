@@ -44,7 +44,7 @@ public class TokenService {
 //                .collect(Collectors.toList());
 
         String token = Jwts.builder()
-                .setIssuer("pessoa-api")
+                .setIssuer("ecommerce")
 //                .setSubject(usuario.getId().toString())
 //                .claim(KEY_GROUPS, regras)
                 .setIssuedAt(now)
@@ -54,6 +54,7 @@ public class TokenService {
 
         return PREFIX + token;
     }
+    
 
     public Authentication getAuthentication(HttpServletRequest request){
         String tokenBearer = request.getHeader(HEADER_AUTHORIZATION);
