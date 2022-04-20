@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbc.vemserback.ecommerce.dto.LoginDTO;
 import com.dbc.vemserback.ecommerce.dto.UserCreateDTO;
-import com.dbc.vemserback.ecommerce.dto.UserEntityLoginDto;
+import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.security.TokenService;
 
@@ -26,7 +26,7 @@ public class AuthController {
     private final TokenService tokenService;
 	
     @PostMapping()
-    public String auth(@RequestBody LoginDTO loginDTO) throws BusinessRuleException {
+    public UserLoginDto auth(@RequestBody LoginDTO loginDTO) throws BusinessRuleException {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         loginDTO.getUsername(),
@@ -34,26 +34,24 @@ public class AuthController {
                 );
 
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        String token = tokenService.getToken(authenticate);
+        UserLoginDto token = tokenService.getToken(authenticate);
         return token;
     }
     
     @PostMapping("/sign-up")
-    public UserEntityLoginDto signUp(@RequestBody UserCreateDTO userCreateDTO) throws BusinessRuleException{
-        //TODO
-    	//*service
-    	//*
-    	//*
-//        
-//    	UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-//                new UsernamePasswordAuthenticationToken(
-//                		null,
-//                		null
-//                );
-//
-//        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-//        String token = tokenService.getToken(authenticate);
-        return null;
+    public UserLoginDto signUp(@RequestBody UserCreateDTO userCreateDTO) throws BusinessRuleException{
+    	
+    	
+    	
+    	UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(
+                        null,
+                        null
+                );
+
+        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        UserLoginDto token = tokenService.getToken(authenticate);
+        return token;
     	
     }
 

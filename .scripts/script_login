@@ -1,0 +1,60 @@
+CREATE TABLE GROUP_COMMERCE (
+    GROUP_ID SERIAL primary key,
+    NAME text UNIQUE NOT NULL
+);
+
+create table USER_COMMERCE (
+	USER_ID SERIAL primary key,
+	GROUP_ID integer not null ,
+	FULL_NAME text unique not NULL,
+	EMAIL text unique not null,
+	PASSWORD text not null,
+	CONSTRAINT FK_USER_COMMERCE_GROUP FOREIGN KEY (GROUP_ID) REFERENCES GROUP_COMMERCE  (GROUP_ID)
+);
+
+CREATE TABLE ROLE_COMMERCE (
+    ROLE_ID SERIAL primary key,
+    NAME text UNIQUE NOT NULL
+);
+
+CREATE TABLE ROLE_GROUP (
+    GROUP_ID integer  NOT NULL,
+    ROLE_ID integer  NOT NULL,
+    PRIMARY KEY(GROUP_ID, ROLE_ID),
+    CONSTRAINT FK_GROUP_GROUP_ROLE FOREIGN KEY (GROUP_ID) REFERENCES GROUP_COMMERCE  (GROUP_ID),
+  	CONSTRAINT FK_ROLE_GROUP_ROLE FOREIGN KEY (ROLE_ID) REFERENCES ROLE_COMMERCE (ROLE_ID)
+);
+
+insert into ROLE_COMMERCE(name)
+	values ('ROLE_COLLABORATOR'),
+	('ROLE_BUYER'),
+	('ROLE_MANEGER'),
+	('ROLE_FINANCIER'),
+	('ROLE_ADMINISTRATOR'),
+	('ROLE_USER');
+
+insert into group_commerce (name)
+values ('COLLABORATOR'),
+	('BUYER'),
+	('MANEGER'),
+	('FINANCIER'),
+	('ADMINISTRATOR'),
+	('USER');
+
+insert into role_group (group_id, role_id)
+	values (1,1),
+	(1,6),
+	(2,2),
+	(2,6),
+	(3,3),
+	(3,6),
+	(4,4),
+	(4,6),
+	(5,5),
+	(5,1),
+	(5,2),
+	(5,3),
+	(5,4),
+	(5,6),
+	(6,6);
+
