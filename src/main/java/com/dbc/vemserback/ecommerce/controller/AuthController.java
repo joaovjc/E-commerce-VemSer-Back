@@ -50,7 +50,7 @@ public class AuthController {
     public UserLoginDto signUp(@RequestBody @Valid UserCreateDTO userCreateDTO, @RequestParam(name = "file", required = false) MultipartFile multipartFile) throws Exception{
     	String upload = fileService.upload(multipartFile);
     	
-    	UserCreateDTO createUser = userService.createUser(userCreateDTO,upload);
+    	UserCreateDTO createUser = userService.createUser(userCreateDTO, upload);
     	
     	UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
