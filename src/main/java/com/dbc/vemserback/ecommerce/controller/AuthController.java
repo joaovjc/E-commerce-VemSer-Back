@@ -18,6 +18,7 @@ import com.dbc.vemserback.ecommerce.dto.UserCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.security.TokenService;
+import com.dbc.vemserback.ecommerce.service.FileService;
 import com.dbc.vemserback.ecommerce.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,9 +31,10 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     private final UserService userService;
+    private final FileService fileService;
 	
     @PostMapping("/login")
-    public UserLoginDto auth(@RequestBody @Valid LoginDTO loginDTO, @RequestParam(name = "file", required = false) MultipartFile multipartFile) throws BusinessRuleException {
+    public UserLoginDto auth(@RequestBody @Valid LoginDTO loginDTO) throws BusinessRuleException {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
                 		loginDTO.getEmail(),
@@ -45,9 +47,10 @@ public class AuthController {
     }
     
     @PostMapping("/sign-up")
-    public UserLoginDto signUp(@RequestBody @Valid UserCreateDTO userCreateDTO) throws Exception{
+    public UserLoginDto signUp(@RequestBody @Valid UserCreateDTO userCreateDTO, @RequestParam(name = "file", required = false) MultipartFile multipartFile) throws Exception{
+    	String upload = fileService.upload(multipartFile);
     	
-    	UserCreateDTO createUser = userService.createUser(userCreateDTO);
+    	UserCreateDTO createUser = userService.createUser(userCreateDTO,upload);
     	
     	UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
