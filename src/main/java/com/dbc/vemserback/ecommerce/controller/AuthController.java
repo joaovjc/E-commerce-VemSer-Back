@@ -1,5 +1,7 @@
 package com.dbc.vemserback.ecommerce.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,7 +30,7 @@ public class AuthController {
     private final UserService userService;
 	
     @PostMapping("/login")
-    public UserLoginDto auth(@RequestBody LoginDTO loginDTO) throws BusinessRuleException {
+    public UserLoginDto auth(@RequestBody @Valid LoginDTO loginDTO) throws BusinessRuleException {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
                 		loginDTO.getEmail(),
@@ -41,7 +43,7 @@ public class AuthController {
     }
     
     @PostMapping("/sign-up")
-    public UserLoginDto signUp(@RequestBody UserCreateDTO userCreateDTO) throws BusinessRuleException{
+    public UserLoginDto signUp(@RequestBody @Valid UserCreateDTO userCreateDTO) throws BusinessRuleException{
     	
     	UserCreateDTO createUser = userService.createUser(userCreateDTO);
     	
