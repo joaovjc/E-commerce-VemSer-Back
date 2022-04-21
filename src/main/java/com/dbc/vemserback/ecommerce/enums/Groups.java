@@ -1,7 +1,5 @@
 package com.dbc.vemserback.ecommerce.enums;
 
-import lombok.Getter;
-
 public enum Groups {
     COLLABORATOR(1, "Collaborator"),
     BUYER(2, "Buyer"),

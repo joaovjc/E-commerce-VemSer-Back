@@ -1,24 +1,36 @@
 package com.dbc.vemserback.ecommerce.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
 @Entity(name = "USER_COMMERCE")
 public class UserEntity implements UserDetails {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8954048764906045648L;
+
+	@Id
     @Column(name = "user_id", columnDefinition = "serial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
