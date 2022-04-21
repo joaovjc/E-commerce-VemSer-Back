@@ -1,12 +1,10 @@
 package com.dbc.vemserback.ecommerce.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
-import java.lang.annotation.Documented;
 
 @Getter
 @Setter
