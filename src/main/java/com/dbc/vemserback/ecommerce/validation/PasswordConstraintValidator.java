@@ -41,7 +41,6 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
 
             // sem espaços brancos
             new WhitespaceRule()
-
         ));
         RuleResult result = validator.validate(new PasswordData(password));
         if (result.isValid()) {
