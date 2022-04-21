@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
-import com.dbc.vemserback.ecommerce.service.FileService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -27,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class TokenService {
-	private final FileService fileService; 
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String PREFIX = "Bearer ";
     private static final String KEY_RULES = "RULES";
@@ -56,15 +54,10 @@ public class TokenService {
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
         
-        String download = null;
-        String profilePic = user.getProfilePic();
-        if(profilePic!=null) {
-        	download = fileService.findImageByName(profilePic);
-        }
         return UserLoginDto.builder()
         		.profile(user.getGroupEntity().getName()).username(user.getUsername())
         		.fullName(user.getFullName()).token(PREFIX + token)
-        		.profileImage(download)
+        		.profileImage(user.getProfilePic())
         		.build();
     }
     

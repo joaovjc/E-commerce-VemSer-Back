@@ -28,14 +28,14 @@ public class UserService {
     public List<LoginDTO> getAllUsers() {
         return userRepository.findAll().stream().map(user -> objectMapper.convertValue(user, LoginDTO.class)).collect(Collectors.toList());
     }
-    public UserCreateDTO createUser(UserCreateDTO userCreateDTO, String upload) throws BusinessRuleException {
+    public UserCreateDTO createUser(UserCreateDTO userCreateDTO) throws BusinessRuleException {
     	
     	if(this.findByEmail(userCreateDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
     	
         UserEntity user = objectMapper.convertValue(userCreateDTO, UserEntity.class);
         user.setGroupEntity(groupService.getById(Groups.USER.getGroupId()));
         user.setPassword(new BCryptPasswordEncoder().encode(userCreateDTO.getPassword()));
-        user.setProfilePic(upload);
+        user.setProfilePic(userCreateDTO.getProfilePic());
         UserEntity savedUser = userRepository.save(user);
         
         return objectMapper.convertValue(savedUser, UserCreateDTO.class);

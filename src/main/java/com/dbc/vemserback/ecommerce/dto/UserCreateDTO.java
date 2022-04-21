@@ -17,4 +17,5 @@ public class UserCreateDTO {
     private String email;
 	@ValidPassword
     private String password;
+	private String profilePic;
 }
