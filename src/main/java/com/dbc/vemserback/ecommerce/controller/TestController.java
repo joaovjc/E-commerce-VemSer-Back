@@ -9,25 +9,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
+import com.dbc.vemserback.ecommerce.service.FileService;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
 @RestController
 @RequestMapping("/test")
 @Log4j2
+@RequiredArgsConstructor
 public class TestController {
+	private final FileService fileService;
 	
 	 @PostMapping("/profile/pic")
-	    public Object upload(@RequestParam("file") MultipartFile multipartFile) {
+	    public Object upload(@RequestParam("file") MultipartFile multipartFile) throws BusinessRuleException {
 	        log.info("HIT -/upload | File Name : {}", multipartFile.getOriginalFilename());
-//	        return fileService.upload(multipartFile);
-			return null;
+	        return fileService.upload(multipartFile);
 	    }
 
 	    @PostMapping("/profile/pic/{fileName}")
 	    public Object download(@PathVariable String fileName) throws IOException {
 	        log.info("HIT -/download | File Name : {}", fileName);
-//	        return fileService.download(fileName);
-			return null;
+	        return fileService.download(fileName);
+	        
 	    }
-	
 }
