@@ -61,7 +61,11 @@ public class TokenService {
         if(profilePic!=null) {
         	download = fileService.findImageByName(profilePic);
         }
-        return UserLoginDto.builder().profile(user.getGroupEntity().getName()).username(user.getUsername()).fullName(user.getFullName()).token(PREFIX + token).profileImage(download).build();
+        return UserLoginDto.builder()
+        		.profile(user.getGroupEntity().getName()).username(user.getUsername())
+        		.fullName(user.getFullName()).token(PREFIX + token)
+        		.profileImage(download)
+        		.build();
     }
     
 
