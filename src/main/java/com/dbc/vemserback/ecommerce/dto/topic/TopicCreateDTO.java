@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class TopicCreateDTO {
 
-    private String userId;
+    private Integer userId;
 
     private String title;
 

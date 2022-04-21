@@ -17,7 +17,7 @@ public class TopicEntity {
     @Id
     private String topicId;
 
-    private String userId;
+    private Integer userId;
 
     private String title;
 

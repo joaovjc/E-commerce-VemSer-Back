@@ -28,8 +28,5 @@ public class PucharseListEntity {
     private Double totalValue;
 
     @DBRef
-    private TopicEntity topicEntity;
-
-    @DBRef
     private List<AnnexEntity> annexEntities;
 }
