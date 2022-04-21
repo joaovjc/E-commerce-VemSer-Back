@@ -23,13 +23,13 @@ public class TestController {
 	 @PostMapping("/profile/pic")
 	    public Object upload(@RequestParam("file") MultipartFile multipartFile) throws BusinessRuleException {
 	        log.info("HIT -/upload | File Name : {}", multipartFile.getOriginalFilename());
-	        return fileService.upload(multipartFile);
+	        return fileService.uploadImage(multipartFile);
 	    }
 
 	    @PostMapping("/profile/pic/{fileName}")
 	    public Object download(@PathVariable String fileName) throws BusinessRuleException {
 	        log.info("HIT -/download | File Name : {}", fileName);
-	        return fileService.download(fileName);
+	        return fileService.findImageByName(fileName);
 	        
 	    }
 }

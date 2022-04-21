@@ -59,7 +59,7 @@ public class TokenService {
         String download = null;
         String profilePic = user.getProfilePic();
         if(profilePic!=null) {
-        	download = fileService.download(profilePic);
+        	download = fileService.findImageByName(profilePic);
         }
         return UserLoginDto.builder().profile(user.getGroupEntity().getName()).username(user.getUsername()).token(PREFIX + token).profileImage(download).build();
     }
