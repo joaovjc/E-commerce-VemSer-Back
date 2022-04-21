@@ -5,15 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.lang.annotation.Documented;
 
 @Getter
 @Setter
-@Entity(name = "ANNEX")
+
 public class AnnexEntity {
 
     @Id
-    @Column(name = "annex_id", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer annexId;
 
     @Column(name = "list_id", insertable = false, updatable = false)

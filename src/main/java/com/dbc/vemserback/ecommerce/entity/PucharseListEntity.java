@@ -30,7 +30,6 @@ public class PucharseListEntity {
     @Column(name = "total_value")
     private Double totalValue;
 
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(referencedColumnName = "topic_id", name = "topic_id")
