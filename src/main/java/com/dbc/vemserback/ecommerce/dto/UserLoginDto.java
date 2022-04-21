@@ -1,7 +1,5 @@
 package com.dbc.vemserback.ecommerce.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +13,7 @@ public class UserLoginDto {
 	
 	private String username;
 //	private String profileImage;
-	private List<String> rules;
+	private String profile;
 	private String token;
 	
 }

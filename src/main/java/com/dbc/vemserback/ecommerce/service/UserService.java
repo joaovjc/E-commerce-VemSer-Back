@@ -29,7 +29,9 @@ public class UserService {
         return userRepository.findAll().stream().map(user -> objectMapper.convertValue(user, LoginDTO.class)).collect(Collectors.toList());
     }
     public UserCreateDTO createUser(UserCreateDTO userCreateDTO) throws BusinessRuleException {
-
+    	
+    	if(this.findByEmail(userCreateDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
+    	
         UserEntity user = objectMapper.convertValue(userCreateDTO, UserEntity.class);
         user.setGroupEntity(groupService.getById(Groups.USER.getGroupId()));
         user.setPassword(new BCryptPasswordEncoder().encode(userCreateDTO.getPassword()));
