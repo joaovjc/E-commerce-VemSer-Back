@@ -56,7 +56,11 @@ public class TokenService {
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
         
-        String download = fileService.download(user.getProfilePic());
+        String download = null;
+        String profilePic = user.getProfilePic();
+        if(profilePic!=null) {
+        	download = fileService.download(profilePic);
+        }
         return UserLoginDto.builder().profile(user.getGroupEntity().getName()).username(user.getUsername()).token(PREFIX + token).profileImage(download).build();
     }
     
