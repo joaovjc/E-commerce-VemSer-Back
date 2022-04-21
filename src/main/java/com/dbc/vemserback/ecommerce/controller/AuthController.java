@@ -43,7 +43,7 @@ public class AuthController {
     }
     
     @PostMapping("/sign-up")
-    public UserLoginDto signUp(@RequestBody @Valid UserCreateDTO userCreateDTO) throws BusinessRuleException{
+    public UserLoginDto signUp(@RequestBody @Valid UserCreateDTO userCreateDTO) throws Exception{
     	
     	UserCreateDTO createUser = userService.createUser(userCreateDTO);
     	

@@ -1,13 +1,11 @@
 package com.dbc.vemserback.ecommerce.controller;
 
-import com.dbc.vemserback.ecommerce.dto.LoginDTO;
-import com.dbc.vemserback.ecommerce.dto.UserCreateDTO;
-import com.dbc.vemserback.ecommerce.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/user")
@@ -15,17 +13,11 @@ import java.util.List;
 @Validated
 public class UserController {
 
-    private final UserService userService;
+//    private final UserService userService;
 
-    @GetMapping("/get-users")
-    public List<LoginDTO> getUsers() {
-        return userService.getAllUsers();
+    @GetMapping("/get-hello")
+    public String getUsers() {
+        return "hello";
     }
-
-    @PostMapping("/save-user")
-    public UserCreateDTO saveUser(@RequestBody UserCreateDTO userCreateDTO) throws Exception {
-       return userService.createUser(userCreateDTO);
-    }
-
 
 }
