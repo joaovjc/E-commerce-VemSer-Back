@@ -1,43 +1,32 @@
 package com.dbc.vemserback.ecommerce.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
-@Entity(name = "TOPIC")
+@Document(collection = "TOPIC")
 public class TopicEntity {
+
     @Id
-    @Column(name= "topic_id", columnDefinition = "serial")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer topicId;
+    private String topicId;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private Integer userId;
+    private String userId;
 
-    @Column(name = "title")
     private String title;
 
-    @Column(name = "date_topic")
     private LocalDate date;
 
-    @Column(name = "total_value")
     private Double totalValue;
 
-    @Column(name = "status")
     private String status;
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(referencedColumnName = "user_id", name = "user_id")
-    private UserEntity userEntity;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "topicEntity")
-    private Set<PucharseListEntity> pucharses;
+    @DBRef
+    private List<PucharseListEntity> pucharses;
 }
