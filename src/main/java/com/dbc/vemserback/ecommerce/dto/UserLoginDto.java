@@ -13,6 +13,7 @@ public class UserLoginDto {
 	
 	private String username;
 	private String profileImage;
+	private String realName;
 	private String profile;
 	private String token;
 	
