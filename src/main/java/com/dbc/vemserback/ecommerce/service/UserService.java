@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.LoginDTO;
 import com.dbc.vemserback.ecommerce.dto.UserCreateDTO;
@@ -28,7 +29,7 @@ public class UserService {
     public List<LoginDTO> getAllUsers() {
         return userRepository.findAll().stream().map(user -> objectMapper.convertValue(user, LoginDTO.class)).collect(Collectors.toList());
     }
-    public UserCreateDTO createUser(UserCreateDTO userCreateDTO) throws BusinessRuleException {
+    public UserCreateDTO createUser(UserCreateDTO userCreateDTO, MultipartFile file) throws BusinessRuleException {
     	
     	if(this.findByEmail(userCreateDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
     	
@@ -38,7 +39,10 @@ public class UserService {
         user.setProfilePic(userCreateDTO.getProfilePic());
         UserEntity savedUser = userRepository.save(user);
         
-        return objectMapper.convertValue(savedUser, UserCreateDTO.class);
+        objectMapper.convertValue(savedUser, UserCreateDTO.class);
+        
+        
+        return null;
 
     }
 	public Optional<UserEntity> findByEmail(String email) {
