@@ -14,6 +14,7 @@ import com.dbc.vemserback.ecommerce.dto.UserCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.security.TokenService;
+import com.dbc.vemserback.ecommerce.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,13 +25,14 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
+    private final UserService userService;
 	
-    @PostMapping()
+    @PostMapping("/login")
     public UserLoginDto auth(@RequestBody LoginDTO loginDTO) throws BusinessRuleException {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
-                        loginDTO.getUsername(),
-                        loginDTO.getPassword()
+                		loginDTO.getEmail(),
+                		loginDTO.getPassword()
                 );
 
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
@@ -41,18 +43,17 @@ public class AuthController {
     @PostMapping("/sign-up")
     public UserLoginDto signUp(@RequestBody UserCreateDTO userCreateDTO) throws BusinessRuleException{
     	
-    	
+    	UserCreateDTO createUser = userService.createUser(userCreateDTO);
     	
     	UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
-                        null,
-                        null
+                		createUser.getEmail(),
+                		userCreateDTO.getPassword()
                 );
 
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         UserLoginDto token = tokenService.getToken(authenticate);
         return token;
-    	
     }
 
 }

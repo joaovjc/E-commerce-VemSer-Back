@@ -38,7 +38,6 @@ public class TokenService {
     public UserLoginDto getToken(Authentication authentication) throws BusinessRuleException{
         UserEntity user = (UserEntity) authentication.getPrincipal();
         
-
         Date now = new Date();
         Date exp = new Date(now.getTime()+Long.parseLong(expiration));
 
@@ -55,11 +54,9 @@ public class TokenService {
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
 
-        return UserLoginDto.builder().rules(rules).username(user.getFullName()).token(PREFIX + token).build();
+        return UserLoginDto.builder().rules(rules).username(user.getUsername()).token(PREFIX + token).build();
         
     }
-    
-    
     
 
     public Authentication getAuthentication(HttpServletRequest request){

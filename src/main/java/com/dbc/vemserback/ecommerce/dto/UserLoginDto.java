@@ -2,8 +2,6 @@ package com.dbc.vemserback.ecommerce.dto;
 
 import java.util.List;
 
-import com.dbc.vemserback.ecommerce.entity.RuleEntity;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -14,7 +14,12 @@ import java.util.List;
 @Entity(name = "GROUP_COMMERCE")
 public class GroupEntity implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3472639934749272065L;
+
+	@Id
     @Column(name = "group_id", columnDefinition = "serial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer groupId;
@@ -29,7 +34,7 @@ public class GroupEntity implements Serializable {
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "group_rule",
+            name = "role_group",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
