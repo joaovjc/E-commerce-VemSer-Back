@@ -1,6 +1,6 @@
 package com.dbc.vemserback.ecommerce.dto.topic;
 
-import com.dbc.vemserback.ecommerce.entity.PucharseListEntity;
+import com.dbc.vemserback.ecommerce.entity.PurchaseListEntity;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -19,5 +19,5 @@ public class TopicCreateDTO {
 
     private String status;
 
-    private List<PucharseListEntity> pucharses;
+    private List<PurchaseListEntity> pucharses;
 }

@@ -28,5 +28,5 @@ public class TopicEntity {
     private String status;
 
     @DBRef
-    private List<PucharseListEntity> pucharses;
+    private List<PurchaseListEntity> pucharses;
 }
