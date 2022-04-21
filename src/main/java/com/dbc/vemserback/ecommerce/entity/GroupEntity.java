@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -40,5 +41,7 @@ public class GroupEntity implements Serializable {
     )
     private List<RoleEntity> roles;
 
-
+    @JsonIgnore
+    @OneToMany(mappedBy = "userEntity")
+    private Set<TopicEntity> topics;
 }
