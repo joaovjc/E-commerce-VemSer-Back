@@ -47,7 +47,7 @@ public class AuthController {
     }
     
     @PostMapping("/sign-up")
-    public UserLoginDto signUp(@RequestBody @Valid UserCreateDTO userCreateDTO, @RequestParam(name = "file", required = false) MultipartFile multipartFile) throws Exception{
+    public UserLoginDto signUp(@RequestBody @Valid UserCreateDTO userCreateDTO, @RequestParam(name = "file", required = false) MultipartFile multipartFile) throws BusinessRuleException {
     	String upload = fileService.upload(multipartFile);
     	
     	UserCreateDTO createUser = userService.createUser(userCreateDTO, upload);

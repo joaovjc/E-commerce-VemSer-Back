@@ -1,7 +1,5 @@
 package com.dbc.vemserback.ecommerce.controller;
 
-import java.io.IOException;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +27,7 @@ public class TestController {
 	    }
 
 	    @PostMapping("/profile/pic/{fileName}")
-	    public Object download(@PathVariable String fileName) throws IOException {
+	    public Object download(@PathVariable String fileName) throws BusinessRuleException {
 	        log.info("HIT -/download | File Name : {}", fileName);
 	        return fileService.download(fileName);
 	        

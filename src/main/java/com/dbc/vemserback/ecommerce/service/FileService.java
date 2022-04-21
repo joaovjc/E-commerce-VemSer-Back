@@ -72,10 +72,15 @@ public class FileService {
 
 	}
 
-	public String download(String fileName) throws IOException {
-		Credentials credentials = GoogleCredentials.fromStream(new FileInputStream(keyPath));
+	public String download(String fileName) throws BusinessRuleException {
+		Credentials credentials = null;
+		try {
+			credentials = GoogleCredentials.fromStream(new FileInputStream(keyPath));
+		}catch (Exception e) {throw new BusinessRuleException("Promelas no servidor, por favor fale com a infra");}
+		
 		Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
 		Blob blob = storage.get(BlobId.of(bucketString, fileName));
+		if(!blob.exists())throw new BusinessRuleException("Imagem não existe");
 		byte[] fileContent = blob.getContent();
 		return Base64.getEncoder().encodeToString(fileContent);
 	}
