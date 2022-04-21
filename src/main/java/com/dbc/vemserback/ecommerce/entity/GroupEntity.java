@@ -41,7 +41,4 @@ public class GroupEntity implements Serializable {
     )
     private List<RoleEntity> roles;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "userEntity")
-    private Set<TopicEntity> topics;
 }
