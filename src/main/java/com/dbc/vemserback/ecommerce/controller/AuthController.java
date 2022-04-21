@@ -9,7 +9,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.LoginDTO;
 import com.dbc.vemserback.ecommerce.dto.UserCreateDTO;
@@ -30,7 +32,7 @@ public class AuthController {
     private final UserService userService;
 	
     @PostMapping("/login")
-    public UserLoginDto auth(@RequestBody @Valid LoginDTO loginDTO) throws BusinessRuleException {
+    public UserLoginDto auth(@RequestBody @Valid LoginDTO loginDTO, @RequestParam(name = "file", required = false) MultipartFile multipartFile) throws BusinessRuleException {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
                 		loginDTO.getEmail(),

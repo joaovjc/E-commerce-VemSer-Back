@@ -54,8 +54,7 @@ public class TokenService {
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
 
-        return UserLoginDto.builder().profile(user.getGroupEntity().getName()).username(user.getUsername()).token(PREFIX + token).build();
-        
+        return UserLoginDto.builder().profile(user.getGroupEntity().getName()).username(user.getUsername()).token(PREFIX + token).profile(token).build();
         
     }
     
