@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class UserLoginDto {
 	
 	private String username;
-//	private String profileImage;
+	private String profileImage;
 	private String profile;
 	private String token;
 	

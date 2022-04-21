@@ -26,9 +26,6 @@ public class FileService {
 //	@Value("${bucket.name}")
 	private String bucketString = "e-commerce-vemser.appspot.com";
 
-	private final String DOWNLOAD_URL = "https://firebasestorage.googleapis.com/v0/b/" + bucketString
-			+ "/o/%s?alt=media";
-
 //	@Value("${key.json.path}")
 	private String keyPath = "src/main/resources/token/e-commerce-vemser-firebase-adminsdk-9xb5z-1660093775.json";
 
@@ -40,8 +37,7 @@ public class FileService {
 
 		Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
 		storage.create(blobInfo, Files.readAllBytes(file.toPath()));
-//		return String.format(DOWNLOAD_URL, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
-		return null;
+		return String.format(fileName);
 	}
 
 	private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
@@ -71,7 +67,7 @@ public class FileService {
 			return nome;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new BusinessRuleException("faild to send File");
+			throw new BusinessRuleException("Faild to send File");
 		}
 
 	}
