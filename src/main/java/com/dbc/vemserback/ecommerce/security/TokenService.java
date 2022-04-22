@@ -1,9 +1,5 @@
 package com.dbc.vemserback.ecommerce.security;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -18,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
 
 import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
 import com.dbc.vemserback.ecommerce.entity.PictureEntity;
@@ -64,12 +59,37 @@ public class TokenService {
                 .compact();
         
         PictureEntity findByUserId = pictureService.findByUserId(user.getUserId());
+        byte[] picture = findByUserId.getPicture();
         
         return UserLoginDto.builder()
         		.profile(user.getGroupEntity().getName()).username(user.getUsername())
         		.fullName(user.getFullName()).token(PREFIX + token)
-        		.profileImage(Base64.getEncoder().encodeToString(findByUserId.getPicture()))
+        		.profileImage(picture==null?null:Base64.getEncoder().encodeToString(picture))
         		.build();
+    }
+    
+    public UserLoginDto getToken(Authentication authentication, UserLoginDto dto) throws BusinessRuleException{
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        
+        Date now = new Date();
+        Date exp = new Date(now.getTime()+Long.parseLong(expiration));
+
+        List<String> rules = user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        String token = Jwts.builder()
+                .setIssuer("ecommerce")
+                .setSubject(user.getUserId().toString())
+                .claim(KEY_RULES, rules)
+                .setIssuedAt(now)
+                .setExpiration(exp)
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+       
+        dto.setProfile(user.getGroupEntity().getName());
+        dto.setToken(PREFIX + token);
+        return dto;
     }
     
 

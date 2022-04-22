@@ -1,13 +1,12 @@
 package com.dbc.vemserback.ecommerce.entity;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import javax.persistence.Id;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.File;
-
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter

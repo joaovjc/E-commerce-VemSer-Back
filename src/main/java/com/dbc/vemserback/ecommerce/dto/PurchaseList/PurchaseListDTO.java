@@ -1,13 +1,12 @@
 package com.dbc.vemserback.ecommerce.dto.PurchaseList;
 
-import com.dbc.vemserback.ecommerce.entity.AnnexEntity;
-import com.dbc.vemserback.ecommerce.entity.TopicEntity;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-
 import java.time.LocalDate;
 import java.util.List;
+
+import com.dbc.vemserback.ecommerce.entity.AnnexEntity;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter

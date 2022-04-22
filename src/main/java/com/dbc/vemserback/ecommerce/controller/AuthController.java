@@ -5,18 +5,16 @@ import javax.validation.Valid;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.dbc.vemserback.ecommerce.dto.CreateDto;
+import com.dbc.vemserback.ecommerce.dto.CreateUserDTO;
 import com.dbc.vemserback.ecommerce.dto.LoginDTO;
-import com.dbc.vemserback.ecommerce.dto.UserCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.security.TokenService;
@@ -47,21 +45,23 @@ public class AuthController {
     }
     
     @PostMapping("/sign-up")
-//    public UserLoginDto signUp(@RequestPart("data") UserCreateDTO userCreateDTO, @ModelAttribute("file") MultipartFile file) throws BusinessRuleException {
-    public UserLoginDto signUp(@ModelAttribute("data") CreateDto CreateDTO) throws BusinessRuleException {
+    public UserLoginDto signUp(@Valid @ModelAttribute("data") CreateUserDTO CreateDTO, BindingResult bindingResult) throws BusinessRuleException {
+    	if(bindingResult.hasErrors()) {
+    		StringBuilder builder = new StringBuilder();
+        	bindingResult.getAllErrors().forEach(err -> builder.append(err.getDefaultMessage()));
+    		throw new BusinessRuleException(builder.toString());
+    	}
     	
-    	UserCreateDTO userCreateDTO = UserCreateDTO.builder().email(CreateDTO.getEmail()).fullName(CreateDTO.getFullName()).password(CreateDTO.getPassword()).build();
-    	
-    	UserCreateDTO createUser = userService.createUser(userCreateDTO, CreateDTO.getFile());
+    	UserLoginDto createUser = userService.createUser(CreateDTO);
     	
     	UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
-                		createUser.getEmail(),
-                		userCreateDTO.getPassword()
+                		createUser.getUsername(),
+                		CreateDTO.getPassword()
                 );
 
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        UserLoginDto token = tokenService.getToken(authenticate);
+        UserLoginDto token = tokenService.getToken(authenticate,createUser);
         return token;
     }
 

@@ -8,7 +8,9 @@ import java.nio.file.Files;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dbc.vemserback.ecommerce.dto.PictureDTO;
 import com.dbc.vemserback.ecommerce.entity.PictureEntity;
+import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.PictureRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -18,22 +20,22 @@ import lombok.RequiredArgsConstructor;
 public class PictureService {
 	private final PictureRepository pictureRepository;
 	
-	//TODO tratamento de erros
-	public String create(MultipartFile multipartFile, int userId) {
-
-		PictureEntity entity = new PictureEntity();
-		entity.setUserId(userId);
+	public PictureDTO create(MultipartFile multipartFile, int userId) throws BusinessRuleException {
 		File convertToFile = null;
+		byte[] readAllBytes = null;
 
 		try {
 			convertToFile = this.convertToFile(multipartFile, multipartFile.getOriginalFilename());
-			entity.setPicture(Files.readAllBytes(convertToFile.toPath()));
+			readAllBytes = Files.readAllBytes(convertToFile.toPath());
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new BusinessRuleException("Problems to parse the file: "+ e.getCause());
 		}
+		PictureEntity entity = new PictureEntity();
+		entity.setPicture(readAllBytes);
+		entity.setUserId(userId);
 		PictureEntity save = pictureRepository.save(entity);
 		convertToFile.delete();
-		return save.getPictureId();
+		return new PictureDTO(save.getPicture(),save.getUserId());
 	}
 
 	private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
@@ -46,7 +48,8 @@ public class PictureService {
 	}
 	
 	public PictureEntity findByUserId(int userId) {
-		return this.pictureRepository.findByUserId(userId).orElseThrow();
+		return this.pictureRepository.findByUserId(userId).orElse(null);
 	}
-
+	
+	
 }
