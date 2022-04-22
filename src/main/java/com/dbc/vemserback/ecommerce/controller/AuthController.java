@@ -47,14 +47,14 @@ public class AuthController {
     }
     
     @PostMapping("/sign-up")
-    public UserLoginDto signUp(@Valid @RequestPart(name = "data") CreateUserDTO CreateDTO, @RequestPart(name = "file",required = false) MultipartFile file,  BindingResult bindingResult) throws BusinessRuleException {
+    public UserLoginDto signUp(@Valid @ModelAttribute(name = "data") CreateUserDTO CreateDTO, @RequestPart(name = "file",required = false) MultipartFile file,  BindingResult bindingResult) throws BusinessRuleException {
     	if(bindingResult.hasErrors()) {
     		StringBuilder builder = new StringBuilder();
         	bindingResult.getAllErrors().forEach(err -> builder.append(err.getDefaultMessage()));
     		throw new BusinessRuleException(builder.toString());
     	}
     	
-    	UserLoginDto createUser = userService.createUser(CreateDTO);
+    	UserLoginDto createUser = userService.createUser(CreateDTO, file);
     	
     	UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(

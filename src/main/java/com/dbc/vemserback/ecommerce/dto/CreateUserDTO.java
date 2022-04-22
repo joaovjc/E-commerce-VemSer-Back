@@ -26,5 +26,4 @@ public class CreateUserDTO{
 	@NotNull
 	@ValidPassword
     private String password;
-	private MultipartFile file;
 }

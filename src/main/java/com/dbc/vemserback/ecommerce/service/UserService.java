@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.CreateUserDTO;
 import com.dbc.vemserback.ecommerce.dto.LoginDTO;
@@ -33,7 +34,7 @@ public class UserService {
     }
     
     //TODO revisar a logica
-    public UserLoginDto createUser(CreateUserDTO CreateDTO) throws BusinessRuleException {
+    public UserLoginDto createUser(CreateUserDTO CreateDTO, MultipartFile file) throws BusinessRuleException {
     	
     	if(this.findByEmail(CreateDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
     	
@@ -46,8 +47,8 @@ public class UserService {
         
         UserEntity savedUser = userRepository.save(user);
         String picture = null;     
-        if(CreateDTO.getFile()!=null) {
-        	PictureDTO create = pictureService.create(CreateDTO.getFile(),savedUser.getUserId());
+        if(file!=null) {
+        	PictureDTO create = pictureService.create(file,savedUser.getUserId());
         	picture = Base64.getEncoder().encodeToString(create.getPicture());
         }
         
