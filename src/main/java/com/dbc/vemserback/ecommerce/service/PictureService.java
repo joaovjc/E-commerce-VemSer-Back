@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dbc.vemserback.ecommerce.dto.PictureDTO;
 import com.dbc.vemserback.ecommerce.entity.PictureEntity;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
-import com.dbc.vemserback.ecommerce.repository.PictureRepository;
+import com.dbc.vemserback.ecommerce.repository.mongo.PictureRepository;
 
 import lombok.RequiredArgsConstructor;
 

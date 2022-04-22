@@ -1,4 +1,4 @@
-package com.dbc.vemserback.ecommerce.repository;
+package com.dbc.vemserback.ecommerce.repository.post;
 
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 

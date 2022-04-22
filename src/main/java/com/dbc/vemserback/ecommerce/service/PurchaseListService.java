@@ -3,7 +3,7 @@ package com.dbc.vemserback.ecommerce.service;
 import com.dbc.vemserback.ecommerce.dto.PurchaseList.PurchaseListCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.PurchaseList.PurchaseListDTO;
 import com.dbc.vemserback.ecommerce.entity.PurchaseListEntity;
-import com.dbc.vemserback.ecommerce.repository.PurchaseListRepository;
+import com.dbc.vemserback.ecommerce.repository.mongo.PurchaseListRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

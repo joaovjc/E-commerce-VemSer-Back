@@ -2,7 +2,7 @@ package com.dbc.vemserback.ecommerce.service;
 
 import com.dbc.vemserback.ecommerce.dto.topic.TopicCreateDTO;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
-import com.dbc.vemserback.ecommerce.repository.TopicRepository;
+import com.dbc.vemserback.ecommerce.repository.mongo.TopicRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

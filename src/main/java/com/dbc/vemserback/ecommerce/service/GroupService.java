@@ -2,7 +2,8 @@ package com.dbc.vemserback.ecommerce.service;
 
 import com.dbc.vemserback.ecommerce.entity.GroupEntity;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
-import com.dbc.vemserback.ecommerce.repository.GroupRepository;
+import com.dbc.vemserback.ecommerce.repository.post.GroupRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
