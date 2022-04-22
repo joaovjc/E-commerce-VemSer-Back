@@ -10,5 +10,4 @@ public class QuotationCreateDTO {
 
     private double quotationPrice;
 
-    private StatusEnum quotationStatus;
 }
