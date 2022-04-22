@@ -16,6 +16,7 @@ public class QuotationService {
 
     private final QuotationRepository quotationRepository;
     private final ObjectMapper objectMapper;
+    private final UserService userService;
 
 
     public List<QuotationDTO> quotationList() {
@@ -24,6 +25,7 @@ public class QuotationService {
 
     public QuotationDTO createQuotation(QuotationCreateDTO quotationCreateDTO) {
         QuotationEntity quotationEntity = objectMapper.convertValue(quotationCreateDTO, QuotationEntity.class);
+        quotationEntity.setUserId(userService.getLogedUserId());
         QuotationEntity savedQuotationEntity = quotationRepository.save(quotationEntity);
         return objectMapper.convertValue(savedQuotationEntity, QuotationDTO.class);
     }

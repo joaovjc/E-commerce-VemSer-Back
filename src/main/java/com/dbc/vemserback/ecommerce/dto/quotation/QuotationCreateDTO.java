@@ -8,8 +8,6 @@ public class QuotationCreateDTO {
 
     private String topicId;
 
-    private Integer userId;
-
     private double quotationPrice;
 
     private StatusEnum quotationStatus;

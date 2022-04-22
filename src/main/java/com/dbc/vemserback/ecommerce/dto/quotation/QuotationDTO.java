@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class QuotationDTO extends QuotationCreateDTO{
 
-    private String quotationId;
+    private Integer userId;
 }
