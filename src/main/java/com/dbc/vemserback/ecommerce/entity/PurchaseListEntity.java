@@ -1,13 +1,13 @@
 package com.dbc.vemserback.ecommerce.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import java.time.LocalDate;
+
+import javax.persistence.Id;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -24,7 +24,8 @@ public class PurchaseListEntity {
     private LocalDate date;
 
     private Double totalValue;
-
-    @DBRef
-    private List<AnnexEntity> annexEntities;
+    
+    private String fileName;
+    
+    private Byte[] file;
 }

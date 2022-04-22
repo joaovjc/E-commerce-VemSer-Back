@@ -1,9 +1,12 @@
 package com.dbc.vemserback.ecommerce.controller;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.dbc.vemserback.ecommerce.dto.TopicDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -11,19 +14,16 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/topic")
 @RequiredArgsConstructor
 public class TopicController {
-//    private final TopicService topicService;
-//    @PostMapping("/create")
-//    public TopicCreateDTO createTopic(@RequestBody TopicCreateDTO topicCreateDTO) {
-//      return  topicService.createTopic(topicCreateDTO);
-//    }
-//
-//    @GetMapping("/get-all")
-//    public List<TopicCreateDTO> getAllTopics() {
-//        return topicService.listTopics();
-//    }
+//	@GetMapping()
+//	public String test() {
+//		return "teste topico create";
+//	}
 	
-	@GetMapping()
-	public String test() {
-		return "teste topico create";
+	@PostMapping("/create")
+	public void cadastrar(@ModelAttribute(name = "data") TopicDTO topics) {
+		
+		System.out.println(topics.getPurchases().get(0).getFile().getOriginalFilename());
+		
 	}
+	
 }

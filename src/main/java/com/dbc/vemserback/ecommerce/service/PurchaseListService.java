@@ -1,16 +1,14 @@
 package com.dbc.vemserback.ecommerce.service;
 
-import com.dbc.vemserback.ecommerce.dto.PurchaseList.PurchaseListCreateDTO;
-import com.dbc.vemserback.ecommerce.dto.PurchaseList.PurchaseListDTO;
-import com.dbc.vemserback.ecommerce.entity.PurchaseListEntity;
-import com.dbc.vemserback.ecommerce.repository.mongo.PurchaseListRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.dbc.vemserback.ecommerce.dto.PurchaseList.PurchaseDTO;
+import com.dbc.vemserback.ecommerce.entity.PurchaseListEntity;
+import com.dbc.vemserback.ecommerce.repository.mongo.PurchaseListRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -20,16 +18,17 @@ public class PurchaseListService {
     @Autowired
     private final ObjectMapper objectMapper;
 
-    public PurchaseListDTO createPurchaseList(PurchaseListCreateDTO purchaseListCreateDTO) {
+    public PurchaseDTO createPurchaseList(PurchaseDTO purchaseListCreateDTO) {
 
         PurchaseListEntity purchaseListEntity = purchaseListRepository.save(objectMapper.convertValue(purchaseListCreateDTO, PurchaseListEntity.class));
 
-        return objectMapper.convertValue(purchaseListEntity, PurchaseListDTO.class);
+//        return objectMapper.convertValue(purchaseListEntity, PurchaseListDTO.class);
+        return null;
     }
 
-    public List<PurchaseListCreateDTO> listTopics() {
-        return purchaseListRepository.findAll().stream().map(purchaseList -> objectMapper.convertValue(purchaseList, PurchaseListCreateDTO.class)).collect(Collectors.toList());
-    }
+//    public List<PurchaseListCreateDTO> listTopics() {
+//        return purchaseListRepository.findAll().stream().map(purchaseList -> objectMapper.convertValue(purchaseList, PurchaseListCreateDTO.class)).collect(Collectors.toList());
+//    }
 
 
 

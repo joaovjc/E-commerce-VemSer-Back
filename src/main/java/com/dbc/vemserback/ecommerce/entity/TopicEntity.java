@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class TopicEntity {
 
     private LocalDate date;
 
-    private Double totalValue;
+    private BigDecimal totalValue;
 
     private String status;
 
