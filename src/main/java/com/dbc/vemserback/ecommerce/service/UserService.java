@@ -36,8 +36,10 @@ public class UserService {
     	
     	if(this.findByEmail(CreateDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
     	
-        UserEntity user = objectMapper.convertValue(CreateDTO, UserEntity.class);
+        UserEntity user = new UserEntity();
         
+        user.setEmail(CreateDTO.getEmail());
+        user.setFullName(CreateDTO.getFullName());
         user.setGroupEntity(groupService.getById(Groups.USER.getGroupId()));
         user.setPassword(new BCryptPasswordEncoder().encode(CreateDTO.getPassword()));
         
