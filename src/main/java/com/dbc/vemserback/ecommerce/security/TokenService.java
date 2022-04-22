@@ -59,8 +59,11 @@ public class TokenService {
                 .compact();
         
         PictureEntity findByUserId = pictureService.findByUserId(user.getUserId());
-        byte[] picture = findByUserId.getPicture();
-        
+        byte[] picture = null;
+        if(findByUserId!=null) {
+        	 picture = findByUserId.getPicture();
+        }
+       
         return UserLoginDto.builder()
         		.profile(user.getGroupEntity().getName()).username(user.getUsername())
         		.fullName(user.getFullName()).token(PREFIX + token)
