@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/main-page")
 @RequiredArgsConstructor
 @Validated
-public class UserController {
+public class MainPageController {
 
 //    private final UserService userService;
 
     @GetMapping("/get-hello")
     public String getUsers() {
-        return "hello";
+        return "hello main page";
     }
 
 }
