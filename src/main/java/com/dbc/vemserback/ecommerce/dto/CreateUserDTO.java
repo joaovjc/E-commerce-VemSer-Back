@@ -28,5 +28,6 @@ public class CreateUserDTO{
 	@NotNull
 	@ValidPassword
     private String password;
-	private Optional<MultipartFile> file;
+	@Builder.Default
+	private Optional<MultipartFile> file = Optional.empty();
 }
