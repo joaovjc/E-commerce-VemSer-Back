@@ -1,6 +1,7 @@
 package com.dbc.vemserback.ecommerce.security;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,8 +16,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
+import com.dbc.vemserback.ecommerce.entity.PictureEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
+import com.dbc.vemserback.ecommerce.service.PictureService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -26,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class TokenService {
+	private final PictureService pictureService; 
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String PREFIX = "Bearer ";
     private static final String KEY_RULES = "RULES";
@@ -54,10 +58,12 @@ public class TokenService {
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
         
+        PictureEntity findByUserId = pictureService.findByUserId(user.getUserId());
+        
         return UserLoginDto.builder()
         		.profile(user.getGroupEntity().getName()).username(user.getUsername())
         		.fullName(user.getFullName()).token(PREFIX + token)
-        		.profileImage(user.getProfilePic())
+        		.profileImage(Base64.getEncoder().encode(findByUserId.getPicture()).toString())
         		.build();
     }
     

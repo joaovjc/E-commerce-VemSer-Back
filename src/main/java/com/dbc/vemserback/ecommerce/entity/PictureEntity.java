@@ -15,7 +15,7 @@ public class PictureEntity {
     @Id
     private String pictureId;
 
-    private Byte[] picture;
+    private byte[] picture;
 
     private Integer userId;
 

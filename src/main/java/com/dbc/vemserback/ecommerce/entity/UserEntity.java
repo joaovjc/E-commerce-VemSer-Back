@@ -44,8 +44,8 @@ public class UserEntity implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "profile_pic")
-    private String profilePic;
+//    @Column(name = "profile_pic")
+//    private String profilePic;
 
 
     @JsonIgnore
