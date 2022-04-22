@@ -1,5 +1,9 @@
 package com.dbc.vemserback.ecommerce.security;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
@@ -14,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 
 import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
 import com.dbc.vemserback.ecommerce.entity.PictureEntity;
@@ -63,7 +68,7 @@ public class TokenService {
         return UserLoginDto.builder()
         		.profile(user.getGroupEntity().getName()).username(user.getUsername())
         		.fullName(user.getFullName()).token(PREFIX + token)
-        		.profileImage(Base64.getEncoder().encode(findByUserId.getPicture()).toString())
+        		.profileImage(Base64.getEncoder().encodeToString(findByUserId.getPicture()))
         		.build();
     }
     

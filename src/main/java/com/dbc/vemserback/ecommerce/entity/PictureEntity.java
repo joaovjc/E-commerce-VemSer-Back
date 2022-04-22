@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.File;
+
 import javax.persistence.Id;
 
 @Getter
@@ -18,7 +20,5 @@ public class PictureEntity {
     private byte[] picture;
 
     private Integer userId;
-
-
 
 }
