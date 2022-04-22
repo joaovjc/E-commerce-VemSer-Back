@@ -1,15 +1,18 @@
 package com.dbc.vemserback.ecommerce.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.persistence.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+
+import javax.persistence.Id;
+
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.dbc.vemserback.ecommerce.enums.StatusEnum;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -27,7 +30,7 @@ public class TopicEntity {
 
     private BigDecimal totalValue;
 
-    private String status;
+    private StatusEnum status;
 
     @DBRef
     private List<PurchaseListEntity> pucharses;
