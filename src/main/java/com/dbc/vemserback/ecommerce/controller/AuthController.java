@@ -48,7 +48,7 @@ public class AuthController {
     
     @PostMapping("/sign-up")
 //    public UserLoginDto signUp(@RequestPart("data") UserCreateDTO userCreateDTO, @ModelAttribute("file") MultipartFile file) throws BusinessRuleException {
-    public UserLoginDto signUp(@RequestPart("data") CreateDto CreateDTO) throws BusinessRuleException {
+    public UserLoginDto signUp(@ModelAttribute("data") CreateDto CreateDTO) throws BusinessRuleException {
     	
     	UserCreateDTO userCreateDTO = UserCreateDTO.builder().email(CreateDTO.getEmail()).fullName(CreateDTO.getFullName()).password(CreateDTO.getPassword()).build();
     	
