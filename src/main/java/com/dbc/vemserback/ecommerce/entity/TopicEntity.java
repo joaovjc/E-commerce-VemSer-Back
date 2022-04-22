@@ -34,4 +34,7 @@ public class TopicEntity {
 
     @DBRef
     private List<PurchaseListEntity> pucharses;
+
+    @DBRef
+    private List<QuotationEntity> quatations;
 }
