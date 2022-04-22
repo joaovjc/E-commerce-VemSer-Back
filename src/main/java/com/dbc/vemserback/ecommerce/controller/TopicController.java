@@ -1,29 +1,30 @@
 package com.dbc.vemserback.ecommerce.controller;
 
 
-import com.dbc.vemserback.ecommerce.dto.topic.TopicCreateDTO;
-import com.dbc.vemserback.ecommerce.service.TopicService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/topic")
 @RequiredArgsConstructor
 public class TopicController {
-
-    private final TopicService topicService;
-
-
-    @PostMapping("/create")
-    public TopicCreateDTO createTopic(@RequestBody TopicCreateDTO topicCreateDTO) {
-      return  topicService.createTopic(topicCreateDTO);
-    }
-
-    @GetMapping("/get-all")
-    public List<TopicCreateDTO> getAllTopics() {
-        return topicService.listTopics();
-    }
-
+//    private final TopicService topicService;
+//    @PostMapping("/create")
+//    public TopicCreateDTO createTopic(@RequestBody TopicCreateDTO topicCreateDTO) {
+//      return  topicService.createTopic(topicCreateDTO);
+//    }
+//
+//    @GetMapping("/get-all")
+//    public List<TopicCreateDTO> getAllTopics() {
+//        return topicService.listTopics();
+//    }
+	
+	@GetMapping()
+	public String test() {
+		return "teste topico create";
+	}
+	
 }
