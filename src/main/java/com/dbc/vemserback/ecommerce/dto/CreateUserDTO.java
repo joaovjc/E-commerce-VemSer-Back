@@ -1,7 +1,5 @@
 package com.dbc.vemserback.ecommerce.dto;
 
-import java.util.Optional;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -28,6 +26,5 @@ public class CreateUserDTO{
 	@NotNull
 	@ValidPassword
     private String password;
-	@Builder.Default
-	private Optional<MultipartFile> file = Optional.empty();
+	private MultipartFile file;
 }

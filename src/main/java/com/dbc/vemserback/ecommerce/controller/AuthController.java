@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.CreateUserDTO;
 import com.dbc.vemserback.ecommerce.dto.LoginDTO;
@@ -45,7 +47,7 @@ public class AuthController {
     }
     
     @PostMapping("/sign-up")
-    public UserLoginDto signUp(@Valid @ModelAttribute(name = "data") CreateUserDTO CreateDTO, BindingResult bindingResult) throws BusinessRuleException {
+    public UserLoginDto signUp(@Valid @ModelAttribute(name = "data") CreateUserDTO CreateDTO,@RequestPart(name = "file",required = false) MultipartFile file,  BindingResult bindingResult) throws BusinessRuleException {
     	if(bindingResult.hasErrors()) {
     		StringBuilder builder = new StringBuilder();
         	bindingResult.getAllErrors().forEach(err -> builder.append(err.getDefaultMessage()));

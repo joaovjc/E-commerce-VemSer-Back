@@ -46,8 +46,8 @@ public class UserService {
         
         UserEntity savedUser = userRepository.save(user);
         String picture = null;     
-        if(CreateDTO.getFile().isPresent()) {
-        	PictureDTO create = pictureService.create(CreateDTO.getFile().get(),savedUser.getUserId());
+        if(CreateDTO.getFile()!=null) {
+        	PictureDTO create = pictureService.create(CreateDTO.getFile(),savedUser.getUserId());
         	picture = Base64.getEncoder().encodeToString(create.getPicture());
         }
         
