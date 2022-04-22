@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dbc.vemserback.ecommerce.dto.CreateDto;
 import com.dbc.vemserback.ecommerce.dto.LoginDTO;
 import com.dbc.vemserback.ecommerce.dto.UserCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
@@ -46,12 +47,12 @@ public class AuthController {
     }
     
     @PostMapping("/sign-up")
-    public UserLoginDto signUp(@RequestPart("data") UserCreateDTO userCreateDTO, @ModelAttribute("file") MultipartFile file) throws BusinessRuleException {
+//    public UserLoginDto signUp(@RequestPart("data") UserCreateDTO userCreateDTO, @ModelAttribute("file") MultipartFile file) throws BusinessRuleException {
+    public UserLoginDto signUp(@RequestPart("data") CreateDto CreateDTO) throws BusinessRuleException {
     	
-    	System.out.println(userCreateDTO.getEmail());
+    	UserCreateDTO userCreateDTO = UserCreateDTO.builder().email(CreateDTO.getEmail()).fullName(CreateDTO.getFullName()).password(CreateDTO.getPassword()).build();
     	
-    	
-    	UserCreateDTO createUser = userService.createUser(userCreateDTO, file);
+    	UserCreateDTO createUser = userService.createUser(userCreateDTO, CreateDTO.getFile());
     	
     	UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(

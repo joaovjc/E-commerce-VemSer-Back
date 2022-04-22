@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.tomcat.util.http.fileupload.impl.InvalidContentTypeException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,9 +40,20 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
         return new ResponseEntity<>(body, headers, status);
     }
-
+    
     @ExceptionHandler(BusinessRuleException.class)
     public ResponseEntity<Object> handleException(BusinessRuleException exception,
+                                                  HttpServletRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", new Date());
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        body.put("status", badRequest.value());
+        body.put("message", exception.getMessage());
+        return new ResponseEntity<>(body, badRequest);
+    }
+    
+    @ExceptionHandler(InvalidContentTypeException.class)
+    public ResponseEntity<Object> handleException(InvalidContentTypeException exception,
                                                   HttpServletRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());
