@@ -31,6 +31,7 @@ public class UserService {
     public List<LoginDTO> getAllUsers() {
         return userRepository.findAll().stream().map(user -> objectMapper.convertValue(user, LoginDTO.class)).collect(Collectors.toList());
     }
+    
     //TODO revisar a logica
     public UserLoginDto createUser(CreateUserDTO CreateDTO) throws BusinessRuleException {
     	
