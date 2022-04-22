@@ -1,5 +1,6 @@
 package com.dbc.vemserback.ecommerce.service;
 
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,11 @@ public class UserService {
     
     //TODO revisar a logica
     public UserLoginDto createUser(CreateUserDTO CreateDTO, MultipartFile file) throws BusinessRuleException {
-    	
+    	if(file!=null) {
+    		String fileName = file.getOriginalFilename();
+        	if(!Arrays.asList(".png",".jpg",".jpeg").contains(fileName.substring(fileName.lastIndexOf("."))))throw new BusinessRuleException("not a suported file type: "+fileName.substring(fileName.lastIndexOf(".")));
+
+    	}
     	if(this.findByEmail(CreateDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
     	
         UserEntity user = new UserEntity();
@@ -46,7 +51,7 @@ public class UserService {
         user.setPassword(new BCryptPasswordEncoder().encode(CreateDTO.getPassword()));
         
         UserEntity savedUser = userRepository.save(user);
-        String picture = null;     
+        String picture = null;
         if(file!=null) {
         	PictureDTO create = pictureService.create(file,savedUser.getUserId());
         	picture = Base64.getEncoder().encodeToString(create.getPicture());

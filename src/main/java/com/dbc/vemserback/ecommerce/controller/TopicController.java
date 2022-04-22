@@ -26,5 +26,4 @@ public class TopicController {
 	public String test() {
 		return "teste topico create";
 	}
-	
 }
