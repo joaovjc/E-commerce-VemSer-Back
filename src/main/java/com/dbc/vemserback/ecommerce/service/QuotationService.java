@@ -3,6 +3,7 @@ package com.dbc.vemserback.ecommerce.service;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
 import com.dbc.vemserback.ecommerce.entity.QuotationEntity;
+import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.repository.mongo.QuotationRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class QuotationService {
     public QuotationDTO createQuotation(QuotationCreateDTO quotationCreateDTO) {
         QuotationEntity quotationEntity = objectMapper.convertValue(quotationCreateDTO, QuotationEntity.class);
         quotationEntity.setUserId(userService.getLogedUserId());
+        quotationEntity.setQuotationStatus(StatusEnum.OPEN);
         QuotationEntity savedQuotationEntity = quotationRepository.save(quotationEntity);
         return objectMapper.convertValue(savedQuotationEntity, QuotationDTO.class);
     }
