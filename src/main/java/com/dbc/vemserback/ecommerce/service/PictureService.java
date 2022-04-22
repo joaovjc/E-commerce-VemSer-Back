@@ -28,11 +28,11 @@ public class PictureService {
 		try {
 			convertToFile = this.convertToFile(multipartFile, multipartFile.getOriginalFilename());
 			entity.setPicture(Files.readAllBytes(convertToFile.toPath()));
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		PictureEntity save = pictureRepository.save(entity);
+		convertToFile.delete();
 		return save.getPictureId();
 	}
 
