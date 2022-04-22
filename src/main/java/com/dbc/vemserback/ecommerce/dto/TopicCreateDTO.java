@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class TopicDTO {
+public class TopicCreateDTO {
 	
 	private String name;
 	private Double totalPrice;
-	List<PurchaseDTO> purchases;
 	
 }

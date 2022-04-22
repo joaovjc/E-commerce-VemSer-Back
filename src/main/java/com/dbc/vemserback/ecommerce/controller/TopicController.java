@@ -1,12 +1,18 @@
 package com.dbc.vemserback.ecommerce.controller;
 
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
-import org.springframework.web.bind.annotation.ModelAttribute;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.dbc.vemserback.ecommerce.dto.TopicDTO;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,12 +24,17 @@ public class TopicController {
 //	public String test() {
 //		return "teste topico create";
 //	}
-	
-	@PostMapping("/create")
-	public void cadastrar(@ModelAttribute(name = "data") TopicDTO topics) {
-		
-		System.out.println(topics.getPurchases().get(0).getFile().getOriginalFilename());
-		
+
+//	public void cadastrar(@ModelAttribute(name = "data") TopicCreateDTO topic,
+//	public void cadastrar(@RequestAttribute List<PurchaseDTO> purchases, @RequestPart List<MultipartFile> file) {
+	@PostMapping(consumes = {MULTIPART_FORM_DATA_VALUE}, path = "/create")
+	public void create(@RequestParam Map<String, String> allParams, HttpServletRequest request) {
+		Map<String, MultipartFile> fileMap = new HashMap<String, MultipartFile>();
+		if (request instanceof MultipartHttpServletRequest) {
+		    MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+		    fileMap = multiRequest.getFileMap();
+		}
+		fileMap.forEach((k,v)-> System.out.println("Key: "+k+" value: "+v.getOriginalFilename()));
 	}
-	
+
 }

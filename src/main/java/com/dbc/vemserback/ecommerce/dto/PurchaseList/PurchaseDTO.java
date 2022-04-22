@@ -18,6 +18,5 @@ public class PurchaseDTO {
 	private String name;
 	private String description;
 	private BigDecimal price;
-	MultipartFile file;
 	
 }
