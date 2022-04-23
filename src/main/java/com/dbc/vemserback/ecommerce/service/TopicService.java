@@ -63,11 +63,16 @@ public class TopicService {
 		PurchaseEntity save = purchaseRepository.save(build);
 		System.out.println("#### persisted: "+save.getName());
 		
-		findById.getPucharses().add(save);
+		List<PurchaseEntity> pucharses = findById.getPucharses();
 		
-		TopicEntity insert = this.topicRepository.save(findById);
+		pucharses.add(save);
 		
-		insert.getPucharses().forEach(System.out::println);
+		pucharses.forEach(s-> System.out.println("#######################################: "+s.getFileName()));
+		
+		findById.setPucharses(pucharses);
+		
+		this.topicRepository.save(findById);
+		
 		convertToFile.delete();
 	}
 
