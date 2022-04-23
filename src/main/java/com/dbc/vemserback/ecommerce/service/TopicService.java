@@ -16,6 +16,7 @@ import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.repository.mongo.PurchaseRepository;
 import com.dbc.vemserback.ecommerce.repository.mongo.TopicRepository;
+import com.dbc.vemserback.ecommerce.repository.mongo.custom.TopicrepositoryImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,13 +26,14 @@ public class TopicService {
 
 	private final TopicRepository topicRepository;
 	private final PurchaseRepository purchaseRepository;
+	private final TopicrepositoryImpl topicrepositoryImpl;
 	private final FileService fileService;
 //	private final ObjectMapper objectMapper;
 
 	public String createTopic(TopicDTO dto, Integer userId) {
 
 		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.OPEN)
-				.pucharses(new ArrayList<PurchaseEntity>()).title(dto.getTitle()).totalValue(BigDecimal.ZERO)
+				.purchases(new ArrayList<String>()).title(dto.getTitle()).totalValue(BigDecimal.ZERO)
 				.userId(userId).build();
 
 		entity = topicRepository.insert(entity);
@@ -49,23 +51,13 @@ public class TopicService {
 			e.printStackTrace();
 		}
 		
-		TopicEntity findById = topicRepository.findById(idTopic).orElseThrow();
-		
 		PurchaseEntity build = PurchaseEntity.builder().name(purchaseDTO.getName())
 				.totalValue(new BigDecimal(purchaseDTO.getPrice())).fileName(originalFilename).file(bytes)
 				.build();
 		
 		PurchaseEntity save = purchaseRepository.save(build);
 		
-		List<PurchaseEntity> pucharses = findById.getPucharses();
-		
-		pucharses.add(save);
-		
-		findById.setPucharses(pucharses);
-		
-		this.topicRepository.save(findById);
-		return true;
-		
+		return topicrepositoryImpl.updateAndAddItem(idTopic, save.getListId());
 	}
 
 	public List<TopicEntity> listTopics() {

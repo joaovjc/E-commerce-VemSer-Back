@@ -33,8 +33,7 @@ public class TopicEntity {
 
     private StatusEnum status;
 
-    @DBRef
-    private List<PurchaseEntity> pucharses;
+    private List<String> purchases;
 
     private List<QuotationEntity> quatations;
 }
