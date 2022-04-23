@@ -5,9 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
 import com.dbc.vemserback.ecommerce.dto.topic.TopicFinancierDTO;
-import com.dbc.vemserback.ecommerce.entity.QuotationEntity;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -43,8 +41,9 @@ public class TopicService {
 		return topicrepositoryImpl.updateAndAddItem(idTopic, idItem);
 	}
 
-	public TopicDTO updateStatusToTopic(String idTopic, StatusEnum status) throws BusinessRuleException {
-		TopicEntity topic = topicRepository.findById(idTopic).orElseThrow((() -> new BusinessRuleException("Topic not found")));
+	public TopicDTO updateStatusToTopic(String idTopic, StatusEnum status){
+		TopicEntity topic = topicRepository.findById(idTopic).orElseThrow();
+
 		topic.setStatus(status);
 		return objectMapper.convertValue(topicRepository.save(topic), TopicDTO.class);
 	}
