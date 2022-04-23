@@ -1,22 +1,14 @@
 package com.dbc.vemserback.ecommerce.dto;
 
-import java.util.List;
-
-import com.dbc.vemserback.ecommerce.dto.PurchaseList.PurchaseDTO;
-
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Builder
+@Getter
+@Setter
 public class TopicDTO {
-	
-	private String name;
-	private Double totalPrice;
-	List<PurchaseDTO> purchases;
-	
+	private String title;
 }

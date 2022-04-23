@@ -4,19 +4,20 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.Id;
-
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Document(collection = "TOPIC")
+@Builder
+@Document(collection = "topic")
 public class TopicEntity {
 
     @Id
@@ -33,8 +34,7 @@ public class TopicEntity {
     private StatusEnum status;
 
     @DBRef
-    private List<PurchaseListEntity> pucharses;
+    private List<PurchaseEntity> pucharses;
 
-    @DBRef
     private List<QuotationEntity> quatations;
 }

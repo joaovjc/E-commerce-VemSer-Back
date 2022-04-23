@@ -1,31 +1,30 @@
 package com.dbc.vemserback.ecommerce.entity;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 
-import javax.persistence.Id;
-
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@Document(collection = "PUCHARSE_LIST")
-public class PurchaseListEntity {
+@Builder
+@Document()
+public class PurchaseEntity {
 
     @Id
     private String listId;
 
-    private Integer topicId;
+    private String topicId;
 
     private String name;
 
-    private LocalDate date;
-
-    private Double totalValue;
+    private BigDecimal totalValue;
     
     private String fileName;
     
-    private Byte[] file;
+    private byte[] file;
 }

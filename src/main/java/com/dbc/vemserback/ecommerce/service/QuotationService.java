@@ -5,6 +5,7 @@ import com.dbc.vemserback.ecommerce.dto.quotation.QuotationCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
 import com.dbc.vemserback.ecommerce.entity.QuotationEntity;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
+import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.repository.mongo.QuotationRepository;
 import com.dbc.vemserback.ecommerce.repository.mongo.TopicRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,26 +31,27 @@ public class QuotationService {
     public QuotationDTO createQuotation(QuotationCreateDTO quotationCreateDTO) {
         QuotationEntity quotationEntity = objectMapper.convertValue(quotationCreateDTO, QuotationEntity.class);
         quotationEntity.setUserId(userService.getLogedUserId());
+        quotationEntity.setQuotationStatus(StatusEnum.OPEN);
         QuotationEntity savedQuotationEntity = quotationRepository.save(quotationEntity);
         return objectMapper.convertValue(savedQuotationEntity, QuotationDTO.class);
     }
 
-    public QuotationDTO updateManagerQuotation(QuotationManagerDTO quotationManagerDTO) throws BusinessRuleException {
-        if(quotationsByIdTopic(quotationManagerDTO.getTopicId()))
-        {
-            QuotationEntity quotationEntity = quotationRepository.findById(quotationManagerDTO.getQuotationId())
-                    .orElseThrow(()->new BusinessRuleException("Not found"));
-            quotationEntity.setQuotationStatus(quotationManagerDTO.getQuotationStatus());
-            QuotationEntity savedQuotationEntity = quotationRepository.save(quotationEntity);
-                return objectMapper.convertValue(savedQuotationEntity, QuotationDTO.class);
-        }
-        return null;
-    }
-
-
-    public Boolean quotationsByIdTopic(String topicId){
-        return topicRepository.findById(topicId).get().getQuatations().size()>=2;
-    }
+//    public QuotationDTO updateManagerQuotation(QuotationManagerDTO quotationManagerDTO) throws BusinessRuleException {
+//        if(quotationsByIdTopic(quotationManagerDTO.getTopicId()))
+//        {
+//            QuotationEntity quotationEntity = quotationRepository.findById(quotationManagerDTO.getQuotationId())
+//                    .orElseThrow(()->new BusinessRuleException("Not found"));
+//            quotationEntity.setQuotationStatus(quotationManagerDTO.getQuotationStatus());
+//            QuotationEntity savedQuotationEntity = quotationRepository.save(quotationEntity);
+//                return objectMapper.convertValue(savedQuotationEntity, QuotationDTO.class);
+//        }
+//        return null;
+//    }
+//
+//
+//    public Boolean quotationsByIdTopic(String topicId){
+//        return topicRepository.findById(topicId).get().getQuatations().size()>=2;
+//    }
 
 
 }
