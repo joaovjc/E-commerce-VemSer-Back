@@ -68,8 +68,8 @@ public class AuthController {
         return token;
     }
 
-//    @GetMapping("/getAllTopics")
-//    public List<TopicEntity> listTopics(String id, StatusEnum status){
-//        return topicService.updateStatusToTopic();
-//    }
+    @GetMapping("/getAllTopics")
+    public void listTopics(String id, StatusEnum status){
+        topicService.updateStatusToTopic(id, status);
+    }
 }
