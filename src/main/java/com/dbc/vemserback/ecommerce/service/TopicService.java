@@ -1,13 +1,9 @@
 package com.dbc.vemserback.ecommerce.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -29,60 +25,47 @@ public class TopicService {
 
 	private final TopicRepository topicRepository;
 	private final PurchaseRepository purchaseRepository;
+	private final FileService fileService;
 //	private final ObjectMapper objectMapper;
 
 	public String createTopic(TopicDTO dto, Integer userId) {
 
-		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.OPEN).pucharses(new ArrayList<PurchaseEntity>()).title(dto.getTitle())
-				.totalValue(BigDecimal.ZERO).userId(userId).build();
+		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.OPEN)
+				.pucharses(new ArrayList<PurchaseEntity>()).title(dto.getTitle()).totalValue(BigDecimal.ZERO)
+				.userId(userId).build();
 
 		entity = topicRepository.insert(entity);
 
 		return entity.getTopicId();
 	}
 
-	public void createPurchase(PurchaseDTO purchaseDTO, MultipartFile file, int idUser, String idTopic) {
-
+	public boolean createPurchase(PurchaseDTO purchaseDTO, MultipartFile file, int idUser, String idTopic) {
 		String originalFilename = file.getOriginalFilename();
 		
-		TopicEntity findById = topicRepository.findById(idTopic).orElseThrow();
-
-		File convertToFile = null;
-		byte[] readAllBytes = null;
+		byte[] bytes=null;
 		try {
-			convertToFile = this.convertToFile(file, originalFilename);
-			readAllBytes = Files.readAllBytes(convertToFile.toPath());
+			bytes = fileService.convertToByte(file, originalFilename);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
+		TopicEntity findById = topicRepository.findById(idTopic).orElseThrow();
+		
 		PurchaseEntity build = PurchaseEntity.builder().name(purchaseDTO.getName())
-				.totalValue(new BigDecimal(purchaseDTO.getPrice())).fileName(originalFilename).file(readAllBytes)
+				.totalValue(new BigDecimal(purchaseDTO.getPrice())).fileName(originalFilename).file(bytes)
 				.build();
 		
 		PurchaseEntity save = purchaseRepository.save(build);
-		System.out.println("#### persisted: "+save.getName());
 		
 		List<PurchaseEntity> pucharses = findById.getPucharses();
 		
 		pucharses.add(save);
 		
-		pucharses.forEach(s-> System.out.println("#######################################: "+s.getFileName()));
-		
 		findById.setPucharses(pucharses);
 		
 		this.topicRepository.save(findById);
+		return true;
 		
-		convertToFile.delete();
-	}
-
-	private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
-		File tempFile = new File(fileName);
-		try (FileOutputStream fos = new FileOutputStream(tempFile)) {
-			fos.write(multipartFile.getBytes());
-			fos.close();
-		}
-		return tempFile;
 	}
 
 	public List<TopicEntity> listTopics() {

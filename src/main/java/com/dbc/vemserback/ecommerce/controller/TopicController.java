@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,10 +39,11 @@ public class TopicController {
 		return topicService.createTopic(dto,Integer.parseInt((String) userb));
 	}
 	
-	@PostMapping("/create-item/{topic-id}")
+	@PostMapping(path = "/create-item/{topic-id}", consumes = {MULTIPART_FORM_DATA_VALUE})
 	public void createItem(@PathVariable(name = "topic-id") String idTopic,@Valid @ModelAttribute(name = "data") PurchaseDTO CreateDTO,
 			@RequestPart MultipartFile file, BindingResult bindingResult)
 			throws BusinessRuleException, InterruptedException {
+		System.out.println("chegou no controller: "+ CreateDTO.getName());
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		topicService.createPurchase(CreateDTO, file, Integer.parseInt((String) userb), idTopic);
 	}
