@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import com.dbc.vemserback.ecommerce.dto.TopicDTO;
@@ -21,12 +23,13 @@ public class TopicService {
 
 	private final TopicRepository topicRepository;
 	private final TopicrepositoryImpl topicrepositoryImpl;
+	private final ObjectMapper objectMapper;
 
 	public String createTopic(TopicDTO dto, Integer userId) {
 
 		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.OPEN)
 				.purchases(new ArrayList<String>()).title(dto.getTitle()).totalValue(BigDecimal.ZERO)
-				.quatations(new ArrayList<String>()).userId(userId).build();
+				.quotations(new ArrayList<String>()).userId(userId).build();
 
 		entity = topicRepository.insert(entity);
 
@@ -37,10 +40,16 @@ public class TopicService {
 		return topicrepositoryImpl.updateAndAddItem(idTopic, idItem);
 	}
 
+	public TopicEntity updateStatusToTopic(String idTopic, StatusEnum status){
+		TopicEntity topic = topicRepository.findById(idTopic).orElseThrow();
+		topic.setStatus(status);
+		return objectMapper.convertValue(topicRepository.save(topic), TopicEntity.class);
+	}
 	public List<TopicEntity> listTopics() {
 		return topicRepository.findAll();
 	}
 	public TopicEntity topicById(String topicId){
 		return topicRepository.findById(topicId).orElseThrow();
 	}
+
 }

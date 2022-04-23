@@ -35,5 +35,5 @@ public class TopicEntity {
 
     private List<String> purchases;
 
-    private List<String> quatations;
+    private List<String> quotations;
 }

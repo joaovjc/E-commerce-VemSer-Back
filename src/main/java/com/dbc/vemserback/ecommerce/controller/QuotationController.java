@@ -2,7 +2,6 @@ package com.dbc.vemserback.ecommerce.controller;
 
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
-import com.dbc.vemserback.ecommerce.dto.quotation.QuotationManagerDTO;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.service.QuotationService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ public class QuotationController {
 
     private final QuotationService quotationService;
 
-
     @GetMapping("/getAll")
     public List<QuotationDTO> getAll() {
         return quotationService.quotationList();
@@ -32,8 +30,8 @@ public class QuotationController {
     }
 
     @PostMapping("/update")
-    public QuotationDTO update(QuotationManagerDTO quotationmanegerDTO, String quotationId) throws BusinessRuleException {
-        return quotationService.updateManagerQuotation(quotationmanegerDTO, quotationId);
+    public QuotationDTO update(String idTopic, String quotationId) throws BusinessRuleException {
+        return quotationService.aproveManagerQuotation(idTopic, quotationId);
     }
 
 }
