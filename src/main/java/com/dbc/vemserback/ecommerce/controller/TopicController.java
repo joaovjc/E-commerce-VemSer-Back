@@ -39,6 +39,6 @@ public class TopicController {
 			@RequestPart(name = "file", required = false) MultipartFile file, BindingResult bindingResult)
 			throws BusinessRuleException {
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		purchasesService.createPurchase(CreateDTO, file, Integer.parseInt((String) userb), idTopic);
+		topicService.createPurchase(CreateDTO, file, Integer.parseInt((String) userb), idTopic);
 	}
 }

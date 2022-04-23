@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,7 @@ import com.dbc.vemserback.ecommerce.dto.topic.TopicCreateDTO;
 import com.dbc.vemserback.ecommerce.entity.PurchaseEntity;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
+import com.dbc.vemserback.ecommerce.repository.mongo.PurchaseRepository;
 import com.dbc.vemserback.ecommerce.repository.mongo.TopicRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class TopicService {
 
 	private final TopicRepository topicRepository;
+	private final PurchaseRepository purchaseRepository;
 	private final ObjectMapper objectMapper;
 
 	public String createTopic(TopicDTO dto, Integer userId) {
@@ -64,11 +67,14 @@ public class TopicService {
 				.totalValue(new BigDecimal(purchaseDTO.getPrice())).fileName(originalFilename).file(readAllBytes)
 				.build();
 		
+		build = purchaseRepository.save(build);
+		
+		if(findById.getPucharses()==null)findById.setPucharses(new ArrayList<PurchaseEntity>());
 		findById.getPucharses().add(build);
 		
-		this.topicRepository.insert(findById);
+		this.topicRepository.save(findById);
 		
-//    	purchaseListRepository.save(build);
+    	
 		convertToFile.delete();
 
 	}
