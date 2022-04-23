@@ -2,17 +2,15 @@ package com.dbc.vemserback.ecommerce.controller;
 
 import javax.validation.Valid;
 
+import com.dbc.vemserback.ecommerce.entity.TopicEntity;
+import com.dbc.vemserback.ecommerce.enums.StatusEnum;
+import com.dbc.vemserback.ecommerce.service.TopicService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.CreateUserDTO;
@@ -24,6 +22,8 @@ import com.dbc.vemserback.ecommerce.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -32,7 +32,8 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     private final UserService userService;
-	
+    private final TopicService topicService;
+
     @PostMapping("/login")
     public UserLoginDto auth(@RequestBody @Valid LoginDTO loginDTO) throws BusinessRuleException {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
@@ -67,4 +68,8 @@ public class AuthController {
         return token;
     }
 
+    @GetMapping("/getAllTopics")
+    public void listTopics(String id, StatusEnum status) throws BusinessRuleException {
+        topicService.updateStatusToTopic(id, status);
+    }
 }

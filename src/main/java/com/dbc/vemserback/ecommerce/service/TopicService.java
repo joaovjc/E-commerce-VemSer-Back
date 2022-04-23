@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.dbc.vemserback.ecommerce.dto.TopicDTO;
 import com.dbc.vemserback.ecommerce.dto.topic.TopicAgreg;
+import com.dbc.vemserback.ecommerce.dto.topic.TopicFinancierDTO;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
+import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.mongo.TopicRepository;
 import com.dbc.vemserback.ecommerce.repository.mongo.custom.TopicrepositoryImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,12 +25,13 @@ public class TopicService {
 
 	private final TopicRepository topicRepository;
 	private final TopicrepositoryImpl topicrepositoryImpl;
+	private final ObjectMapper objectMapper;
 
 	public String createTopic(TopicDTO dto, Integer userId) {
 
 		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.OPEN)
 				.purchases(new ArrayList<String>()).title(dto.getTitle()).totalValue(BigDecimal.ZERO)
-				.quatations(new ArrayList<String>()).userId(userId).build();
+				.quotations(new ArrayList<String>()).userId(userId).build();
 
 		entity = topicRepository.insert(entity);
 
@@ -38,6 +42,12 @@ public class TopicService {
 		return topicrepositoryImpl.updateAndAddItem(idTopic, idItem);
 	}
 
+	public TopicDTO updateStatusToTopic(String idTopic, StatusEnum status){
+		TopicEntity topic = topicRepository.findById(idTopic).orElseThrow();
+
+		topic.setStatus(status);
+		return objectMapper.convertValue(topicRepository.save(topic), TopicDTO.class);
+	}
 	public List<TopicEntity> listTopics() {
 		return topicRepository.findAll();
 	}
@@ -50,5 +60,20 @@ public class TopicService {
 	
 	public List<TopicAgreg> listAllTopics(int idUser) {
 		return this.topicRepository.findAllTopicsByIdUser(idUser);
+	}
+
+	public TopicDTO updateFinancierTopic(TopicFinancierDTO topicFinancierDTO) throws BusinessRuleException {
+		if (verifyStatusTopic(topicFinancierDTO.getTopicId())) {
+			return updateStatusToTopic(topicFinancierDTO.getTopicId(), topicFinancierDTO.getStatus());
+		}
+		return null;
+	}
+
+	public Boolean verifyStatusTopic(String idTopic) throws BusinessRuleException {
+		TopicEntity topic = topicRepository.findById(idTopic).orElseThrow((() -> new BusinessRuleException("Topic not found")));
+		if (topic.getStatus() == StatusEnum.MANAGER_APPROVED) {
+			return true;
+		}
+		return false;
 	}
 }
