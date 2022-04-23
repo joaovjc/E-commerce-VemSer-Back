@@ -36,20 +36,15 @@ public class TopicService {
 	public String createTopic(TopicDTO dto, Integer userId) {
 
 		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.OPEN).title(dto.getTitle())
-				.totalValue(BigDecimal.ZERO).userId(userId).build();
+				.totalValue(BigDecimal.ZERO).userId(userId).pucharses(new ArrayList<PurchaseEntity>()).build();
 
-		entity = topicRepository.insert(entity);
+		entity = topicRepository.save(entity);
 
 		return entity.getTopicId();
 	}
 
 	public void createPurchase(PurchaseDTO purchaseDTO, MultipartFile file, int idUser, String idTopic) {
 
-//    	if(file!=null) {
-//    		String fileName = file.getOriginalFilename();
-//        	if(!Arrays.asList(".png",".jpg",".jpeg").contains(fileName.substring(fileName.lastIndexOf("."))))throw new BusinessRuleException("not a suported file type: "+fileName.substring(fileName.lastIndexOf(".")));
-//
-//    	}
 		String originalFilename = file.getOriginalFilename();
 		
 		TopicEntity findById = topicRepository.findById(idTopic).orElseThrow();
@@ -68,13 +63,10 @@ public class TopicService {
 				.build();
 		
 		build = purchaseRepository.save(build);
-		
-		if(findById.getPucharses()==null)findById.setPucharses(new ArrayList<PurchaseEntity>());
 		findById.getPucharses().add(build);
 		
 		this.topicRepository.save(findById);
-		
-    	
+
 		convertToFile.delete();
 
 	}
@@ -88,9 +80,8 @@ public class TopicService {
 		return tempFile;
 	}
 
-	public List<TopicCreateDTO> listTopics() {
-		return topicRepository.findAll().stream().map(topic -> objectMapper.convertValue(topic, TopicCreateDTO.class))
-				.collect(Collectors.toList());
+	public List<TopicEntity> listTopics() {
+		return topicRepository.findAll();
 	}
 
 }

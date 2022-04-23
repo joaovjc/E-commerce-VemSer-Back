@@ -2,15 +2,10 @@ package com.dbc.vemserback.ecommerce.controller;
 
 import javax.validation.Valid;
 
+import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.TopicDTO;
@@ -20,6 +15,8 @@ import com.dbc.vemserback.ecommerce.service.PurchaseService;
 import com.dbc.vemserback.ecommerce.service.TopicService;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/topic")
@@ -40,5 +37,10 @@ public class TopicController {
 			throws BusinessRuleException {
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		topicService.createPurchase(CreateDTO, file, Integer.parseInt((String) userb), idTopic);
+	}
+
+	@GetMapping("/get-topics")
+	public List<TopicEntity> listTopics(){
+		return topicService.listTopics();
 	}
 }

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@Document()
+@Document
 public class PurchaseEntity {
 
     @Id
