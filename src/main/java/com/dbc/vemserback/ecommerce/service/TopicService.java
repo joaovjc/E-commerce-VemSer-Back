@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class TopicService {
 	public String createTopic(TopicDTO dto, Integer userId) {
 
 		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.OPEN).title(dto.getTitle())
-				.totalValue(BigDecimal.ZERO).userId(userId).pucharses(new ArrayList<PurchaseEntity>()).build();
+				.totalValue(BigDecimal.ZERO).userId(userId).build();
 
 		entity = topicRepository.save(entity);
 
@@ -59,13 +60,16 @@ public class TopicService {
 		PurchaseEntity build = PurchaseEntity.builder().topicId(idTopic).name(purchaseDTO.getName())
 				.totalValue(new BigDecimal(purchaseDTO.getPrice())).fileName(originalFilename).file(readAllBytes)
 				.build();
+		PurchaseEntity save = purchaseRepository.save(build);
+		if(findById.getPucharses()!=null) {
+			findById.getPucharses().add(save);
+		}else {
+			findById.setPucharses(new ArrayList<PurchaseEntity>(Arrays.asList(save)));
+		}
+		System.out.println(save.getName());
 		
-		build = purchaseRepository.save(build);
-		findById.getPucharses().add(build);
-		System.out.println(build.getName());
 		this.topicRepository.save(findById);
 		convertToFile.delete();
-		
 
 	}
 
