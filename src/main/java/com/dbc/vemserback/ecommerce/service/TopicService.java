@@ -33,7 +33,7 @@ public class TopicService {
 
 	public String createTopic(TopicDTO dto, Integer userId) {
 
-		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.OPEN).title(dto.getTitle())
+		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.OPEN).pucharses(new ArrayList<PurchaseEntity>()).title(dto.getTitle())
 				.totalValue(BigDecimal.ZERO).userId(userId).build();
 
 		entity = topicRepository.save(entity);
@@ -59,18 +59,16 @@ public class TopicService {
 		PurchaseEntity build = PurchaseEntity.builder().name(purchaseDTO.getName())
 				.totalValue(new BigDecimal(purchaseDTO.getPrice())).fileName(originalFilename).file(readAllBytes)
 				.build();
+		
 		PurchaseEntity save = purchaseRepository.save(build);
-		if(findById.getPucharses()!=null) {
-			findById.getPucharses().add(save);
-		}else {
-			findById.setPucharses(new ArrayList<PurchaseEntity>(Arrays.asList(save)));
-		}
-		System.out.println("persisted: "+save.getName());
+		System.out.println("#### persisted: "+save.getName());
+		
+		findById.getPucharses().add(save);
 		
 		TopicEntity insert = this.topicRepository.save(findById);
+		
 		insert.getPucharses().forEach(System.out::println);
 		convertToFile.delete();
-
 	}
 
 	private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {

@@ -39,17 +39,10 @@ public class TopicController {
 	
 	@PostMapping("/create-item/{topic-id}")
 	public void createItem(@PathVariable(name = "topic-id") String idTopic,@Valid @ModelAttribute(name = "data") PurchaseDTO CreateDTO,
-			@RequestPart(name = "file", required = false) MultipartFile file, BindingResult bindingResult)
+			@RequestPart MultipartFile file, BindingResult bindingResult)
 			throws BusinessRuleException, InterruptedException {
-		if(bindingResult.hasErrors()) {
-    		StringBuilder builder = new StringBuilder();
-        	bindingResult.getAllErrors().forEach(err -> builder.append(err.getDefaultMessage()));
-    		throw new BusinessRuleException(builder.toString());
-    	}
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		topicService.createPurchase(CreateDTO, file, Integer.parseInt((String) userb), idTopic);
-		Thread.sleep(1000);
-		System.out.println("nome no controller: "+CreateDTO.getName());
 	}
 
 	@GetMapping("/get-topics")
