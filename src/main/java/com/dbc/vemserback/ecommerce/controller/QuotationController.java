@@ -29,9 +29,14 @@ public class QuotationController {
         return quotationService.createQuotation(quotationCreateDTO);
     }
 
-    @PostMapping("/update")
-    public QuotationDTO update(String idTopic, String quotationId) throws BusinessRuleException {
-        return quotationService.aproveManagerQuotation(idTopic, quotationId);
+    @PostMapping("/aproveQuotation")
+    public QuotationDTO aproveQuotation(String idTopic, String quotationId) throws BusinessRuleException {
+        return quotationService.aproveQuotation(idTopic, quotationId);
+    }
+
+    @PostMapping("/reproveAllQuotations")
+    public void reproveAllQuotations(String idTopic){
+        quotationService.reproveAllQuotations(idTopic);
     }
 
 }

@@ -2,11 +2,9 @@ package com.dbc.vemserback.ecommerce.service;
 
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
-import com.dbc.vemserback.ecommerce.dto.quotation.QuotationManagerDTO;
 import com.dbc.vemserback.ecommerce.entity.QuotationEntity;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
-import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.mongo.QuotationRepository;
 import com.dbc.vemserback.ecommerce.repository.mongo.custom.TopicrepositoryImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,17 +48,22 @@ public class QuotationService {
 //        return objectMapper.convertValue(savedQuotationEntity, QuotationDTO.class);
 //    }
 
-    public QuotationDTO aproveManagerQuotation(String topicId, String idQuotation) {
+    public QuotationDTO aproveQuotation(String topicId, String idQuotation) {
         if(quotationsByIdTopic(topicId))
         {
             QuotationEntity quotationEntity = quotationRepository.findById(idQuotation).orElseThrow();
             quotationEntity.setQuotationStatus(StatusEnum.MANAGER_APPROVED);
-
+            topicService.updateStatusToTopic(topicId, StatusEnum.MANAGER_APPROVED);
             return objectMapper.convertValue(quotationRepository.save(quotationEntity), QuotationDTO.class);
         }
         return null;
     }
 
+    public void reproveAllQuotations(String topicId) {
+        if(quotationsByIdTopic(topicId)) {
+            topicService.updateStatusToTopic(topicId, StatusEnum.MANAGER_REPROVED);
+        }
+    }
 
     public Boolean quotationsByIdTopic(String topicId){
         TopicEntity topic= topicService.topicById(topicId);

@@ -40,10 +40,10 @@ public class TopicService {
 		return topicrepositoryImpl.updateAndAddItem(idTopic, idItem);
 	}
 
-	public TopicEntity updateStatusToTopic(String idTopic, StatusEnum status){
+	public TopicDTO updateStatusToTopic(String idTopic, StatusEnum status){
 		TopicEntity topic = topicRepository.findById(idTopic).orElseThrow();
 		topic.setStatus(status);
-		return objectMapper.convertValue(topicRepository.save(topic), TopicEntity.class);
+		return objectMapper.convertValue(topicRepository.save(topic), TopicDTO.class);
 	}
 	public List<TopicEntity> listTopics() {
 		return topicRepository.findAll();
