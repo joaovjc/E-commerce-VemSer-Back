@@ -63,5 +63,5 @@ public class TopicService {
 	public List<TopicEntity> listTopics() {
 		return topicRepository.findAll();
 	}
-
+	public TopicEntity topicById(String topicId){return  topicRepository.findById(topicId).orElseThrow();}
 }
