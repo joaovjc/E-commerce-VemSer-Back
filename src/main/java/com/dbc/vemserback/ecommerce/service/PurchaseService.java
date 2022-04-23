@@ -40,7 +40,7 @@ public class PurchaseService {
 		}
     	
     	PurchaseEntity build = PurchaseEntity.builder()
-    			.topicId(idTopic)
+//    			.topicId(idTopic)
     			.name(purchaseDTO.getName())
     			.totalValue(new BigDecimal(purchaseDTO.getPrice()))
     			.fileName(originalFilename)

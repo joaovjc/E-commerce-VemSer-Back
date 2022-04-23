@@ -20,7 +20,6 @@ import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.repository.mongo.PurchaseRepository;
 import com.dbc.vemserback.ecommerce.repository.mongo.TopicRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +29,7 @@ public class TopicService {
 
 	private final TopicRepository topicRepository;
 	private final PurchaseRepository purchaseRepository;
-	private final ObjectMapper objectMapper;
+//	private final ObjectMapper objectMapper;
 
 	public String createTopic(TopicDTO dto, Integer userId) {
 
@@ -57,7 +56,7 @@ public class TopicService {
 			e.printStackTrace();
 		}
 
-		PurchaseEntity build = PurchaseEntity.builder().topicId(idTopic).name(purchaseDTO.getName())
+		PurchaseEntity build = PurchaseEntity.builder().name(purchaseDTO.getName())
 				.totalValue(new BigDecimal(purchaseDTO.getPrice())).fileName(originalFilename).file(readAllBytes)
 				.build();
 		PurchaseEntity save = purchaseRepository.save(build);
@@ -68,7 +67,7 @@ public class TopicService {
 		}
 		System.out.println("persisted: "+save.getName());
 		
-		TopicEntity insert = this.topicRepository.insert(findById);
+		TopicEntity insert = this.topicRepository.save(findById);
 		insert.getPucharses().forEach(System.out::println);
 		convertToFile.delete();
 

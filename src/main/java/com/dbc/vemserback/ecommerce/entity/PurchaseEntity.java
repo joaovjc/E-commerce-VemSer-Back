@@ -18,8 +18,6 @@ public class PurchaseEntity {
     @Id
     private String listId;
 
-    private String topicId;
-
     private String name;
 
     private BigDecimal totalValue;
