@@ -70,18 +70,17 @@ public class TopicService {
 		return this.topicRepository.findAllTopicsByUserId(idUser, pageRequest);
 	}
 
-	public TopicDTO updateFinancierTopic(TopicFinancierDTO topicFinancierDTO) throws BusinessRuleException {
-		if (verifyStatusTopic(topicFinancierDTO.getTopicId())) {
-			return updateStatusToTopic(topicFinancierDTO.getTopicId(), topicFinancierDTO.getStatus());
+	public String updateFinancierTopic(TopicFinancierDTO topicFinancierDTO) throws BusinessRuleException {
+		TopicEntity topic = topicRepository.findById(topicFinancierDTO.getTopicId()).orElseThrow((() -> new BusinessRuleException("Topic not found")));
+		if (topicFinancierDTO.getStatus()) {
+			topic.setStatus(StatusEnum.CLOSED);
+			topicRepository.save(topic);
+			return "Topic closed";
+		} else {
+			topic.setStatus(StatusEnum.FINANCIALLY_REPROVED);
+			topicRepository.save(topic);
+			return "Topic financially reproved";
 		}
-		return null;
-	}
 
-	public Boolean verifyStatusTopic(String idTopic) throws BusinessRuleException {
-		TopicEntity topic = topicRepository.findById(idTopic).orElseThrow((() -> new BusinessRuleException("Topic not found")));
-		if (topic.getStatus() == StatusEnum.MANAGER_APPROVED) {
-			return true;
-		}
-		return false;
 	}
 }
