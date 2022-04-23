@@ -59,6 +59,7 @@ public class QuotationService {
         return null;
     }
 
+
     public void reproveAllQuotations(String topicId) {
         if(quotationsByIdTopic(topicId)) {
             topicService.updateStatusToTopic(topicId, StatusEnum.MANAGER_REPROVED);

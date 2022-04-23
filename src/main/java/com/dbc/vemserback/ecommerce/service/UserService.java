@@ -6,15 +6,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.dbc.vemserback.ecommerce.dto.*;
+import com.dbc.vemserback.ecommerce.entity.GroupEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbc.vemserback.ecommerce.dto.CreateUserDTO;
-import com.dbc.vemserback.ecommerce.dto.LoginDTO;
-import com.dbc.vemserback.ecommerce.dto.PictureDTO;
-import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
@@ -36,20 +34,20 @@ public class UserService {
     }
     
     //TODO revisar a logica
-    public UserLoginDto createUser(CreateUserDTO CreateDTO, MultipartFile file) throws BusinessRuleException {
+    public UserLoginDto createUser(UserAdmDto createDTO, MultipartFile file) throws BusinessRuleException {
     	if(file!=null) {
     		String fileName = file.getOriginalFilename();
         	if(!Arrays.asList(".png",".jpg",".jpeg").contains(fileName.substring(fileName.lastIndexOf("."))))throw new BusinessRuleException("not a suported file type: "+fileName.substring(fileName.lastIndexOf(".")));
 
     	}
-    	if(this.findByEmail(CreateDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
+    	if(this.findByEmail(createDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
     	
         UserEntity user = new UserEntity();
         
-        user.setEmail(CreateDTO.getEmail());
-        user.setFullName(CreateDTO.getFullName());
-        user.setGroupEntity(groupService.getById(Groups.USER.getGroupId()));
-        user.setPassword(new BCryptPasswordEncoder().encode(CreateDTO.getPassword()));
+        user.setEmail(createDTO.getEmail());
+        user.setFullName(createDTO.getFullName());
+        user.setGroupEntity(groupService.getById(createDTO.getGroups().getGroupId()));
+        user.setPassword(new BCryptPasswordEncoder().encode(createDTO.getPassword()));
         
         UserEntity savedUser = userRepository.save(user);
         String picture = null;
@@ -61,6 +59,13 @@ public class UserService {
         return UserLoginDto.builder().fullName(savedUser.getFullName()).username(user.getUsername()).profileImage(picture).build();
 
     }
+
+    public UserDTO updateUserbyAdmin(Groups group, Integer idUser) throws BusinessRuleException{
+        UserEntity userEntity = userRepository.getById(idUser);
+        userEntity.setGroupEntity(groupService.getById(group.getGroupId()));
+        return objectMapper.convertValue(userRepository.save(userEntity), UserDTO.class);
+    }
+
 	public Optional<UserEntity> findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
@@ -69,4 +74,6 @@ public class UserService {
     protected Integer getLogedUserId() {
         return Integer.parseInt((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
+
+
 }

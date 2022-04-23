@@ -2,9 +2,12 @@ package com.dbc.vemserback.ecommerce.controller;
 
 import javax.validation.Valid;
 
+import com.dbc.vemserback.ecommerce.dto.UserAdmDto;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
+import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.service.TopicService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,6 +36,7 @@ public class AuthController {
     private final TokenService tokenService;
     private final UserService userService;
     private final TopicService topicService;
+    private final ObjectMapper objectMapper;
 
     @PostMapping("/login")
     public UserLoginDto auth(@RequestBody @Valid LoginDTO loginDTO) throws BusinessRuleException {
@@ -48,19 +52,20 @@ public class AuthController {
     }
     
     @PostMapping("/sign-up")
-    public UserLoginDto signUp(@Valid @ModelAttribute(name = "data") CreateUserDTO CreateDTO, @RequestPart(name = "file",required = false) MultipartFile file, BindingResult bindingResult) throws BusinessRuleException {
+    public UserLoginDto signUp(@Valid @ModelAttribute(name = "data") CreateUserDTO createDTO, @RequestPart(name = "file",required = false) MultipartFile file, BindingResult bindingResult) throws BusinessRuleException {
     	if(bindingResult.hasErrors()) {
     		StringBuilder builder = new StringBuilder();
         	bindingResult.getAllErrors().forEach(err -> builder.append(err.getDefaultMessage()));
     		throw new BusinessRuleException(builder.toString());
     	}
-    	
-    	UserLoginDto createUser = userService.createUser(CreateDTO, file);
+    	UserAdmDto userAdmDto = objectMapper.convertValue(createDTO,UserAdmDto.class);
+        userAdmDto.setGroups(Groups.USER);
+    	UserLoginDto createUser = userService.createUser(userAdmDto, file);
     	
     	UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
                 		createUser.getUsername(),
-                		CreateDTO.getPassword()
+                		createDTO.getPassword()
                 );
 
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
@@ -72,4 +77,6 @@ public class AuthController {
     public void listTopics(String id, StatusEnum status) throws BusinessRuleException {
         topicService.updateStatusToTopic(id, status);
     }
+
+
 }
