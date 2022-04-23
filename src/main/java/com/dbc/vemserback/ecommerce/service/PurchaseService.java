@@ -26,7 +26,7 @@ public class PurchaseService {
 //        	if(!Arrays.asList(".png",".jpg",".jpeg").contains(fileName.substring(fileName.lastIndexOf("."))))throw new BusinessRuleException("not a suported file type: "+fileName.substring(fileName.lastIndexOf(".")));
 //
 //    	}
-
+		
 		String originalFilename = file.getOriginalFilename();
 
 		byte[] bytes = null;
@@ -38,10 +38,10 @@ public class PurchaseService {
 
 		PurchaseEntity build = PurchaseEntity.builder().name(purchaseDTO.getName())
 				.totalValue(new BigDecimal(purchaseDTO.getPrice())).fileName(originalFilename).file(bytes).build();
-
+		
 		PurchaseEntity save = purchaseRepository.save(build);
 		
-		return topicService.addPurchaseToTopic(idUser, idTopic, originalFilename);
+		return topicService.addPurchaseToTopic(idUser, idTopic, save.getListId());
 	}
 
 }

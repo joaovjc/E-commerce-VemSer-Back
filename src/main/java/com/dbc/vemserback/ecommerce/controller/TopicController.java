@@ -33,7 +33,6 @@ import lombok.RequiredArgsConstructor;
 public class TopicController {
 	private final TopicService topicService;
 	private final PurchaseService purchaseService;
-//	private final PurchaseService purchasesService;
 	
 	@PostMapping("/create-topic")
 	public String createTopic(@RequestBody TopicDTO dto){

@@ -26,7 +26,7 @@ public class TopicService {
 
 		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.OPEN)
 				.purchases(new ArrayList<String>()).title(dto.getTitle()).totalValue(BigDecimal.ZERO)
-				.userId(userId).build();
+				.quatations(new ArrayList<String>()).userId(userId).build();
 
 		entity = topicRepository.insert(entity);
 
@@ -40,5 +40,7 @@ public class TopicService {
 	public List<TopicEntity> listTopics() {
 		return topicRepository.findAll();
 	}
-	public TopicEntity topicById(String topicId){return  topicRepository.findById(topicId).orElseThrow();}
+	public TopicEntity topicById(String topicId){
+		return topicRepository.findById(topicId).orElseThrow();
+	}
 }
