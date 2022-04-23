@@ -37,6 +37,7 @@ public class TopicController {
 			throws BusinessRuleException {
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		topicService.createPurchase(CreateDTO, file, Integer.parseInt((String) userb), idTopic);
+		System.out.println(CreateDTO.getName());
 	}
 
 	@GetMapping("/get-topics")

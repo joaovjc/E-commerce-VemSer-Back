@@ -8,14 +8,12 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.TopicDTO;
 import com.dbc.vemserback.ecommerce.dto.PurchaseList.PurchaseDTO;
-import com.dbc.vemserback.ecommerce.dto.topic.TopicCreateDTO;
 import com.dbc.vemserback.ecommerce.entity.PurchaseEntity;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
@@ -64,10 +62,10 @@ public class TopicService {
 		
 		build = purchaseRepository.save(build);
 		findById.getPucharses().add(build);
-		
+		System.out.println(build.getName());
 		this.topicRepository.save(findById);
-
 		convertToFile.delete();
+		
 
 	}
 
