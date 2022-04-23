@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.dbc.vemserback.ecommerce.dto.TopicDTO;
+import com.dbc.vemserback.ecommerce.dto.topic.TopicAgreg;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.repository.mongo.TopicRepository;
@@ -42,5 +43,12 @@ public class TopicService {
 	}
 	public TopicEntity topicById(String topicId){
 		return topicRepository.findById(topicId).orElseThrow();
+	}
+	public List<String> purchasesByIdTopic(String topicId, int idUser){
+		return topicRepository.findAllPurchasesIdByIdTopicAndIdUser(topicId, idUser);
+	}
+	
+	public List<TopicAgreg> listAllTopics(int idUser) {
+		return this.topicRepository.findAllTopicsByIdUser(idUser);
 	}
 }
