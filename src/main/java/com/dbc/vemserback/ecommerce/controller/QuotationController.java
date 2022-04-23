@@ -2,6 +2,8 @@ package com.dbc.vemserback.ecommerce.controller;
 
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
+import com.dbc.vemserback.ecommerce.dto.quotation.QuotationManagerDTO;
+import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.service.QuotationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,5 +31,9 @@ public class QuotationController {
         return quotationService.createQuotation(quotationCreateDTO);
     }
 
+    @PostMapping("/update")
+    public QuotationDTO update(QuotationManagerDTO quotationmanegerDTO, String quotationId) throws BusinessRuleException {
+        return quotationService.updateManagerQuotation(quotationmanegerDTO, quotationId);
+    }
 
 }
