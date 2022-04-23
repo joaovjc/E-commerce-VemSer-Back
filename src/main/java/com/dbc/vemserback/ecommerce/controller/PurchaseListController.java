@@ -1,6 +1,6 @@
 package com.dbc.vemserback.ecommerce.controller;
 
-import com.dbc.vemserback.ecommerce.service.PurchaseListService;
+import com.dbc.vemserback.ecommerce.service.PurchaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class PurchaseListController {
 
-    private final PurchaseListService purchaseListService;
+    private final PurchaseService purchaseListService;
 
 
     @GetMapping
