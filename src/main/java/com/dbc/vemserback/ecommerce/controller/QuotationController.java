@@ -2,6 +2,7 @@ package com.dbc.vemserback.ecommerce.controller;
 
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
+import com.dbc.vemserback.ecommerce.dto.topic.TopicFinancierDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationManagerDTO;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.service.QuotationService;

@@ -6,16 +6,10 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.dbc.vemserback.ecommerce.dto.topic.TopicFinancierDTO;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.TopicDTO;
@@ -52,5 +46,10 @@ public class TopicController {
 	@GetMapping("/get-topics")
 	public List<TopicEntity> listTopics(){
 		return topicService.listTopics();
+	}
+
+	@PutMapping("/update-status-topic-by-financier")
+	public TopicFinancierDTO updateFinancierTopic(TopicFinancierDTO topicFinancierDTO) throws BusinessRuleException {
+		return topicService.updateFinancierTopic(topicFinancierDTO);
 	}
 }
