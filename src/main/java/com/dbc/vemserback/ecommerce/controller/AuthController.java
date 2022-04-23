@@ -69,7 +69,7 @@ public class AuthController {
     }
 
     @GetMapping("/getAllTopics")
-    public void listTopics(String id, StatusEnum status){
+    public void listTopics(String id, StatusEnum status) throws BusinessRuleException {
         topicService.updateStatusToTopic(id, status);
     }
 }
