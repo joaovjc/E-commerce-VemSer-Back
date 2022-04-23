@@ -49,7 +49,7 @@ public class TopicController {
 	}
 
 	@PutMapping("/update-status-topic-by-financier")
-	public TopicFinancierDTO updateFinancierTopic(TopicFinancierDTO topicFinancierDTO) throws BusinessRuleException {
+	public TopicDTO updateFinancierTopic(TopicFinancierDTO topicFinancierDTO) throws BusinessRuleException {
 		return topicService.updateFinancierTopic(topicFinancierDTO);
 	}
 }

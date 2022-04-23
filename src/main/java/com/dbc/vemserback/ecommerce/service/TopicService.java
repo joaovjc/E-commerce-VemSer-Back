@@ -43,10 +43,10 @@ public class TopicService {
 		return topicrepositoryImpl.updateAndAddItem(idTopic, idItem);
 	}
 
-	public TopicEntity updateStatusToTopic(String idTopic, StatusEnum status){
-		TopicEntity topic = topicRepository.findById(idTopic).orElseThrow();
+	public TopicDTO updateStatusToTopic(String idTopic, StatusEnum status) throws BusinessRuleException {
+		TopicEntity topic = topicRepository.findById(idTopic).orElseThrow((() -> new BusinessRuleException("Topic not found")));
 		topic.setStatus(status);
-		return objectMapper.convertValue(topicRepository.save(topic), TopicEntity.class);
+		return objectMapper.convertValue(topicRepository.save(topic), TopicDTO.class);
 	}
 	public List<TopicEntity> listTopics() {
 		return topicRepository.findAll();
@@ -55,11 +55,9 @@ public class TopicService {
 		return topicRepository.findById(topicId).orElseThrow();
 	}
 
-	public TopicFinancierDTO updateFinancierTopic(TopicFinancierDTO topicFinancierDTO) throws BusinessRuleException {
-		TopicEntity topicEntity = topicRepository.findById(topicFinancierDTO.getTopicId()).orElseThrow((() -> new BusinessRuleException("Topic not found")));
-		topicEntity.setStatus(topicFinancierDTO.getStatus());
-
-		return objectMapper.convertValue(topicRepository.save(topicEntity), TopicFinancierDTO.class);
+	public TopicDTO updateFinancierTopic(TopicFinancierDTO topicFinancierDTO) throws BusinessRuleException {
+		return updateStatusToTopic(topicFinancierDTO.getTopicId(), topicFinancierDTO.getStatus());
 
 	}
+
 }
