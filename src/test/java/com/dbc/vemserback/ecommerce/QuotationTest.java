@@ -35,19 +35,19 @@ public class QuotationTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    public void testCreateQuotation() {
-        QuotationEntity quotationEntity = new QuotationEntity();
-        QuotationCreateDTO quotationCreateDTO = new QuotationCreateDTO();
-
-        when(objectMapper.convertValue(quotationCreateDTO, QuotationEntity.class)).thenReturn(quotationEntity);
-        when(quotationRepository.save(any(QuotationEntity.class))).thenReturn(quotationEntity);
-
-        quotationService.createQuotation(quotationCreateDTO);
-
-        verify(quotationRepository, times(1)).save(any(QuotationEntity.class));
-
-    }
+//    @Test
+//    public void testCreateQuotation() {
+//        QuotationEntity quotationEntity = new QuotationEntity();
+//        QuotationCreateDTO quotationCreateDTO = new QuotationCreateDTO();
+//
+//        when(objectMapper.convertValue(quotationCreateDTO, QuotationEntity.class)).thenReturn(quotationEntity);
+//        when(quotationRepository.save(any(QuotationEntity.class))).thenReturn(quotationEntity);
+//
+//        quotationService.createQuotation(quotationCreateDTO);
+//
+//        verify(quotationRepository, times(1)).save(any(QuotationEntity.class));
+//
+//    }
 
 
 

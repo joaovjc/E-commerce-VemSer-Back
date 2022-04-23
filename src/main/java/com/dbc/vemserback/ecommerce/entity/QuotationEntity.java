@@ -1,6 +1,7 @@
 package com.dbc.vemserback.ecommerce.entity;
 
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,7 +10,8 @@ import org.springframework.data.annotation.Id;
 
 @Getter
 @Setter
-@Document(collection = "quotation")
+@Builder
+@Document
 public class QuotationEntity {
 
     @Id

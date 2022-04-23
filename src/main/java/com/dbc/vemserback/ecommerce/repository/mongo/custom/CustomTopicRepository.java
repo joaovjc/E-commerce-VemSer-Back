@@ -6,5 +6,5 @@ import org.springframework.stereotype.Component;
 public interface CustomTopicRepository {
 	
 	boolean updateAndAddItem(String topicId, String entityId);
-	
+	boolean updateAndAddQuotation(String topicId, String entityId);
 }

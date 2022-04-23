@@ -25,4 +25,13 @@ public class TopicrepositoryImpl implements CustomTopicRepository{
 		
 		return updateFirst.wasAcknowledged();
 	}
+	@Override
+	public boolean updateAndAddQuotation(String topicId, String entityId) {
+		Query query = new Query(Criteria.where("_id").is(topicId));
+		Update update = new Update();
+		update.addToSet("quotation", entityId);
+		UpdateResult updateFirst = mongoTemplate.updateFirst(query, update, TopicEntity.class);
+
+		return updateFirst.wasAcknowledged();
+	}
 }

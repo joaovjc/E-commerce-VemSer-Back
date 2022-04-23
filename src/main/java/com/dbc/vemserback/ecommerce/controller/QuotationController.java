@@ -25,8 +25,8 @@ public class QuotationController {
     }
 
     @PostMapping("/create")
-    public QuotationDTO create(QuotationCreateDTO quotationDTO) {
-        return quotationService.createQuotation(quotationDTO);
+    public boolean create(QuotationCreateDTO quotationCreateDTO) {
+        return quotationService.createQuotation(quotationCreateDTO);
     }
 
 

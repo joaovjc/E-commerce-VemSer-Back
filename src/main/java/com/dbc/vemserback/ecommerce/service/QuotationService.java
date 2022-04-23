@@ -1,13 +1,12 @@
 package com.dbc.vemserback.ecommerce.service;
 
-import com.dbc.vemserback.ecommerce.dto.quotation.QuotationManagerDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
+import com.dbc.vemserback.ecommerce.entity.PurchaseEntity;
 import com.dbc.vemserback.ecommerce.entity.QuotationEntity;
-import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
-import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.repository.mongo.QuotationRepository;
 import com.dbc.vemserback.ecommerce.repository.mongo.TopicRepository;
+import com.dbc.vemserback.ecommerce.repository.mongo.custom.TopicrepositoryImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuotationService {
 
+    private final TopicrepositoryImpl topicrepositoryImpl;
     private final QuotationRepository quotationRepository;
     private final TopicRepository topicRepository;
     private final ObjectMapper objectMapper;
@@ -28,13 +28,25 @@ public class QuotationService {
         return quotationRepository.findAll().stream().map(quotation -> objectMapper.convertValue(quotation, QuotationDTO.class)).collect(java.util.stream.Collectors.toList());
     }
 
-    public QuotationDTO createQuotation(QuotationCreateDTO quotationCreateDTO) {
-        QuotationEntity quotationEntity = objectMapper.convertValue(quotationCreateDTO, QuotationEntity.class);
-        quotationEntity.setUserId(userService.getLogedUserId());
-        quotationEntity.setQuotationStatus(StatusEnum.OPEN);
-        QuotationEntity savedQuotationEntity = quotationRepository.save(quotationEntity);
-        return objectMapper.convertValue(savedQuotationEntity, QuotationDTO.class);
+    public boolean createQuotation(QuotationCreateDTO quotationCreateDTO) {
+
+        QuotationEntity build = QuotationEntity.builder()
+                .quotationPrice(quotationCreateDTO.getQuotationPrice())
+                .userId(userService.getLogedUserId())
+                .build();
+
+        QuotationEntity save = quotationRepository.save(build);
+
+        return topicrepositoryImpl.updateAndAddQuotation(quotationCreateDTO.getTopicId(), save.getQuotationId());
     }
+
+//    public QuotationDTO createQuotation(QuotationCreateDTO quotationCreateDTO) {
+//        QuotationEntity quotationEntity = objectMapper.convertValue(quotationCreateDTO, QuotationEntity.class);
+//        quotationEntity.setUserId(userService.getLogedUserId());
+//        quotationEntity.setQuotationStatus(StatusEnum.OPEN);
+//        QuotationEntity savedQuotationEntity = quotationRepository.save(quotationEntity);
+//        return objectMapper.convertValue(savedQuotationEntity, QuotationDTO.class);
+//    }
 
 //    public QuotationDTO updateManagerQuotation(QuotationManagerDTO quotationManagerDTO) throws BusinessRuleException {
 //        if(quotationsByIdTopic(quotationManagerDTO.getTopicId()))
