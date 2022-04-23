@@ -66,9 +66,10 @@ public class TopicService {
 		}else {
 			findById.setPucharses(new ArrayList<PurchaseEntity>(Arrays.asList(save)));
 		}
-		System.out.println(save.getName());
+		System.out.println("persisted: "+save.getName());
 		
-		this.topicRepository.save(findById);
+		TopicEntity insert = this.topicRepository.insert(findById);
+		insert.getPucharses().forEach(System.out::println);
 		convertToFile.delete();
 
 	}
