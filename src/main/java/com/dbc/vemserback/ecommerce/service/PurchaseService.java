@@ -1,10 +1,7 @@
 package com.dbc.vemserback.ecommerce.service;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,51 +15,33 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class PurchaseService {
-    private final PurchaseRepository purchaseListRepository;
+	private final PurchaseRepository purchaseRepository;
+	private final FileService fileService;
+	private final TopicService topicService;
 
-    public void createPurchase(PurchaseDTO purchaseDTO, MultipartFile file, int idUser, String idTopic) {
-    	
+	public boolean createPurchase(PurchaseDTO purchaseDTO, MultipartFile file, int idUser, String idTopic) {
+
 //    	if(file!=null) {
 //    		String fileName = file.getOriginalFilename();
 //        	if(!Arrays.asList(".png",".jpg",".jpeg").contains(fileName.substring(fileName.lastIndexOf("."))))throw new BusinessRuleException("not a suported file type: "+fileName.substring(fileName.lastIndexOf(".")));
 //
 //    	}
-    	
-    	String originalFilename = file.getOriginalFilename();
-    	
-    	File convertToFile = null;
-    	byte[] readAllBytes = null;
+
+		String originalFilename = file.getOriginalFilename();
+
+		byte[] bytes = null;
 		try {
-			convertToFile = this.convertToFile(file, originalFilename);
-			readAllBytes = Files.readAllBytes(convertToFile.toPath());
+			bytes = fileService.convertToByte(file, originalFilename);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	
-    	PurchaseEntity build = PurchaseEntity.builder()
-//    			.topicId(idTopic)
-    			.name(purchaseDTO.getName())
-    			.totalValue(new BigDecimal(purchaseDTO.getPrice()))
-    			.fileName(originalFilename)
-    			.file(readAllBytes).build();
-    	
-    	purchaseListRepository.save(build);
-    	convertToFile.delete();
-    	
-    }
 
-//    public List<PurchaseListCreateDTO> listTopics() {
-//        return purchaseListRepository.findAll().stream().map(purchaseList -> objectMapper.convertValue(purchaseList, PurchaseListCreateDTO.class)).collect(Collectors.toList());
-//    }
-    
-    private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
-		File tempFile = new File(fileName);
-		try (FileOutputStream fos = new FileOutputStream(tempFile)) {
-			fos.write(multipartFile.getBytes());
-			fos.close();
-		}
-		return tempFile;
+		PurchaseEntity build = PurchaseEntity.builder().name(purchaseDTO.getName())
+				.totalValue(new BigDecimal(purchaseDTO.getPrice())).fileName(originalFilename).file(bytes).build();
+
+		PurchaseEntity save = purchaseRepository.save(build);
+		
+		return topicService.addPurchaseToTopic(idUser, idTopic, originalFilename);
 	}
-
 
 }

@@ -22,6 +22,7 @@ import com.dbc.vemserback.ecommerce.dto.TopicDTO;
 import com.dbc.vemserback.ecommerce.dto.PurchaseList.PurchaseDTO;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
+import com.dbc.vemserback.ecommerce.service.PurchaseService;
 import com.dbc.vemserback.ecommerce.service.TopicService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TopicController {
 	private final TopicService topicService;
+	private final PurchaseService purchaseService;
 //	private final PurchaseService purchasesService;
 	
 	@PostMapping("/create-topic")
@@ -45,7 +47,7 @@ public class TopicController {
 			throws BusinessRuleException, InterruptedException {
 		System.out.println("chegou no controller: "+ CreateDTO.getName());
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return topicService.createPurchase(CreateDTO, file, Integer.parseInt((String) userb), idTopic);
+		return purchaseService.createPurchase(CreateDTO, file, Integer.parseInt((String) userb), idTopic);
 	}
 
 	@GetMapping("/get-topics")
