@@ -27,7 +27,7 @@ public class MainPageController {
 		return this.topicService.listAllTopics(Integer.parseInt((String) userb), page);
 	}
 	
-//	@GetMapping("/topics/itens/{id-topic}")
+	@GetMapping("/topics/itens/{id-topic}")
 	public Object allItens(@PathVariable(name = "id-topic") String idTopic) {
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //		
