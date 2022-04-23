@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.dbc.vemserback.ecommerce.dto.TopicDTO;
@@ -58,8 +61,13 @@ public class TopicService {
 		return topicRepository.findAllPurchasesByIdAndIdUser(topicId, idUser);
 	}
 	
-	public List<TopicAgreg> listAllTopics(int idUser) {
-		return this.topicRepository.findAllTopicsByIdUser(idUser);
+	public Slice<TopicAgreg> listAllTopics(int idUser, int page) {
+		PageRequest pageRequest = PageRequest.of(
+                page,
+                10,
+                Sort.Direction.ASC,
+                "name");
+		return this.topicRepository.findAllTopicsByUserId(idUser, pageRequest);
 	}
 
 	public TopicDTO updateFinancierTopic(TopicFinancierDTO topicFinancierDTO) throws BusinessRuleException {

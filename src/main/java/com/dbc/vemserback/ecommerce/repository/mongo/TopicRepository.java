@@ -2,6 +2,8 @@ package com.dbc.vemserback.ecommerce.repository.mongo;
 
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -13,12 +15,8 @@ import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 @Repository
 public interface TopicRepository extends MongoRepository<TopicEntity, String> {
 
-	@Aggregation(pipeline = { 
-			"{ '$match' : {'userId': ?0} }", 
-			"{'$sort':{'date':-1}}" 
-	})
-	@Query(fields = "{topicId : 1, title : 1, date : 1, totalValue : 1, status : 1}")
-	List<TopicAgreg> findAllTopicsByIdUser(int idUser);
+	@Query(fields = "{_id : 1 , title : 1, date : 1, totalValue : 1, status : 1}")
+	Slice<TopicAgreg> findAllTopicsByUserId(int userId, PageRequest pageRequest);
 //	Page<TopicAgreg> findAllTopicsByIdUser(int idUser, Pageable pageable);
 	
 	@Aggregation(pipeline = { 

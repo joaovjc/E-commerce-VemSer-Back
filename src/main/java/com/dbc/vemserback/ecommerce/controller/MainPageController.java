@@ -1,12 +1,11 @@
 package com.dbc.vemserback.ecommerce.controller;
 
-import java.util.List;
-
-import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbc.vemserback.ecommerce.dto.topic.TopicAgreg;
@@ -23,9 +22,9 @@ public class MainPageController {
 	private final PurchaseService purchaseService; 
 	
 	@GetMapping("/topics")
-	public List<TopicAgreg> allTopics() {
+	public Slice<TopicAgreg> allTopics(@RequestParam int page) {
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return this.topicService.listAllTopics(Integer.parseInt((String) userb));
+		return this.topicService.listAllTopics(Integer.parseInt((String) userb), page);
 	}
 	
 //	@GetMapping("/topics/itens/{id-topic}")

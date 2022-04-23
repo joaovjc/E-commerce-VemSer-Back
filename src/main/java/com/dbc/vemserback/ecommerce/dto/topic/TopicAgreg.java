@@ -3,6 +3,8 @@ package com.dbc.vemserback.ecommerce.dto.topic;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.springframework.data.annotation.Id;
+
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 
 import lombok.AllArgsConstructor;
@@ -17,6 +19,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class TopicAgreg {
+	@Id
 	private String topicId;
 	private String title;
 	private LocalDate date;
