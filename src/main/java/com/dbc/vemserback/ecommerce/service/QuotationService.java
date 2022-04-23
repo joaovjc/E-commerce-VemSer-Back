@@ -5,6 +5,7 @@ import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationManagerDTO;
 import com.dbc.vemserback.ecommerce.entity.QuotationEntity;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
+import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.mongo.QuotationRepository;
 import com.dbc.vemserback.ecommerce.repository.mongo.custom.TopicrepositoryImpl;
@@ -49,11 +50,11 @@ public class QuotationService {
 //        return objectMapper.convertValue(savedQuotationEntity, QuotationDTO.class);
 //    }
 
-    public QuotationDTO updateManagerQuotation(QuotationManagerDTO quotationManagerDTO, String idQuotation) throws BusinessRuleException {
-        if(quotationsByIdTopic(quotationManagerDTO.getTopicId()))
+    public QuotationDTO aproveManagerQuotation(String topicId, String idQuotation) {
+        if(quotationsByIdTopic(topicId))
         {
             QuotationEntity quotationEntity = quotationRepository.findById(idQuotation).orElseThrow();
-            quotationEntity.setQuotationStatus(quotationManagerDTO.getQuotationStatus());
+            quotationEntity.setQuotationStatus(StatusEnum.MANAGER_APPROVED);
 
             return objectMapper.convertValue(quotationRepository.save(quotationEntity), QuotationDTO.class);
         }
@@ -63,7 +64,7 @@ public class QuotationService {
 
     public Boolean quotationsByIdTopic(String topicId){
         TopicEntity topic= topicService.topicById(topicId);
-        return topic.getQuatations().size() >= 2;
+        return topic.getQuotations().size() >= 2;
     }
 
 
