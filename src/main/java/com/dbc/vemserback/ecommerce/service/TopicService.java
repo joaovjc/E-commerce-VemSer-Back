@@ -56,8 +56,19 @@ public class TopicService {
 	}
 
 	public TopicDTO updateFinancierTopic(TopicFinancierDTO topicFinancierDTO) throws BusinessRuleException {
-		return updateStatusToTopic(topicFinancierDTO.getTopicId(), topicFinancierDTO.getStatus());
-
+		if (verifyStatusTopic(topicFinancierDTO.getTopicId())) {
+			return updateStatusToTopic(topicFinancierDTO.getTopicId(), topicFinancierDTO.getStatus());
+		}
+		return null;
 	}
+
+	public Boolean verifyStatusTopic(String idTopic) throws BusinessRuleException {
+		TopicEntity topic = topicRepository.findById(idTopic).orElseThrow((() -> new BusinessRuleException("Topic not found")));
+		if (topic.getStatus() == StatusEnum.MANAGER_APPROVED) {
+			return true;
+		}
+		return false;
+	}
+
 
 }
