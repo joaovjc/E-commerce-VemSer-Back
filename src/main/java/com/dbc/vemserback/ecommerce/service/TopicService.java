@@ -55,7 +55,7 @@ public class TopicService {
 		return topicRepository.findById(topicId).orElseThrow();
 	}
 	public List<String> purchasesByIdTopic(String topicId, int idUser){
-		return topicRepository.findAllPurchasesIdByIdTopicAndIdUser(topicId, idUser);
+		return topicRepository.findAllPurchasesByIdAndIdUser(topicId, idUser);
 	}
 	
 	public List<TopicAgreg> listAllTopics(int idUser) {

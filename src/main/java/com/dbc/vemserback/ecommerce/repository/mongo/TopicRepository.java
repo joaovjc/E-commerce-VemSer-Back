@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.dbc.vemserback.ecommerce.dto.topic.TopicAgreg;
@@ -22,6 +21,9 @@ public interface TopicRepository extends MongoRepository<TopicEntity, String> {
 	List<TopicAgreg> findAllTopicsByIdUser(int idUser);
 //	Page<TopicAgreg> findAllTopicsByIdUser(int idUser, Pageable pageable);
 	
+	@Aggregation(pipeline = { 
+			"{ '$match' : {'$and' : [{'_id':?0} , {'userId':?1} }"
+	})
 	@Query(fields = "{purchases : 1}")
-	List<String> findAllPurchasesIdByIdTopicAndIdUser(@Param(value = "_id") String idTopic, int idUser);
+	List<String> findAllPurchasesByIdAndIdUser(String idTopic, int idUser);
 }
