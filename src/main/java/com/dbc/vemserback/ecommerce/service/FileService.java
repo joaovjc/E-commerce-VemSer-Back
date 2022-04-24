@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 
 import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.tasks.UnsupportedFormatException;
 
 @Service
 public class FileService {
@@ -37,7 +38,7 @@ public class FileService {
 		return Base64.getEncoder().encode(readAllBytes);
 	}
 	
-	private byte[] resizeImage(File originalImage) {
+	private byte[] resizeImage(File originalImage) throws BusinessRuleException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    try {
 			Thumbnails.of(originalImage)
@@ -46,9 +47,8 @@ public class FileService {
 			    .outputQuality(0.50)
 			    .toOutputStream(outputStream);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new BusinessRuleException(e.getMessage());
 		}
 		return outputStream.toByteArray();
 	}
-	
 }

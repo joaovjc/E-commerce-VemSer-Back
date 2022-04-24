@@ -33,7 +33,6 @@ public class UserService {
         return userRepository.findAll().stream().map(user -> objectMapper.convertValue(user, LoginDTO.class)).collect(Collectors.toList());
     }
     
-    //TODO revisar a logica
     public UserLoginDto createUser(UserAdmDto createDTO, MultipartFile file) throws BusinessRuleException {
     	if(this.findByEmail(createDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
     	
