@@ -66,7 +66,7 @@ public class TokenService {
         return UserLoginDto.builder()
         		.profile(user.getGroupEntity().getName()).username(user.getUsername())
         		.fullName(user.getFullName()).token(PREFIX + token)
-        		.profileImage(new String(picture))
+        		.profileImage(picture!=null?new String(picture):null)
         		.build();
     }
     

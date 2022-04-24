@@ -103,6 +103,11 @@
 			<artifactId>thumbnailator</artifactId>
 			<version>0.4.17</version>
 		</dependency>
+		<!--test-->
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
 
 	</dependencies>
 

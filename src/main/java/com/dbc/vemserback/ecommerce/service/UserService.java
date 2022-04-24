@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dbc.vemserback.ecommerce.entity.PictureEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
@@ -69,8 +70,13 @@ public class UserService {
                 20,
                 Sort.Direction.ASC,
                 "fullName");
+        Page<UserPageDTO> findAllOrOrderByFullName = userRepository.findAllOrOrderByFullName(pageRequest);
+        findAllOrOrderByFullName.forEach(p->{
+        	PictureEntity findByUserId = this.pictureService.findByUserId(p.getUserId());
+        	p.setImage(findByUserId!=null?new String(findByUserId.getPicture()):null);
+        });
 
-        return userRepository.findAllOrOrderByFullName(pageRequest);
+        return findAllOrOrderByFullName;
     }
 
 
@@ -78,5 +84,9 @@ public class UserService {
         return Integer.parseInt((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 
+	public List<UserEntity> getByFullName(String nome) {
+		return this.userRepository.getUserByFullName(nome);
+	}
 
+    
 }
