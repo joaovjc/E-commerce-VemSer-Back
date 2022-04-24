@@ -50,7 +50,7 @@ public class AdminController {
         return token;
     }
 
-    @PostMapping("/adm-set-group-user")
+    @PutMapping("/adm-set-group-user")
     public void admSetGroupUser( @RequestParam Groups groups, @RequestParam Integer idUser) throws BusinessRuleException {
         userService.updateUserbyAdmin(groups, idUser);
     }
