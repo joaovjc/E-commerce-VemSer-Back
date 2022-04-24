@@ -30,6 +30,8 @@ public class FileService {
 			fos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			
+			
 		}
 		
 		byte[] readAllBytes = resizeImage(tempFile);
