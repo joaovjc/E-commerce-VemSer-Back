@@ -1,7 +1,6 @@
 package com.dbc.vemserback.ecommerce.security;
 
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,7 +66,7 @@ public class TokenService {
         return UserLoginDto.builder()
         		.profile(user.getGroupEntity().getName()).username(user.getUsername())
         		.fullName(user.getFullName()).token(PREFIX + token)
-        		.profileImage(picture==null?null:Base64.getEncoder().encodeToString(picture))
+        		.profileImage(new String(picture))
         		.build();
     }
     

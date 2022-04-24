@@ -2,30 +2,30 @@ package com.dbc.vemserback.ecommerce.controller;
 
 import javax.validation.Valid;
 
-import com.dbc.vemserback.ecommerce.dto.UserAdmDto;
-import com.dbc.vemserback.ecommerce.entity.TopicEntity;
-import com.dbc.vemserback.ecommerce.enums.Groups;
-import com.dbc.vemserback.ecommerce.enums.StatusEnum;
-import com.dbc.vemserback.ecommerce.service.TopicService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.CreateUserDTO;
 import com.dbc.vemserback.ecommerce.dto.LoginDTO;
+import com.dbc.vemserback.ecommerce.dto.UserAdmDto;
 import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
+import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.security.TokenService;
 import com.dbc.vemserback.ecommerce.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -35,7 +35,6 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     private final UserService userService;
-    private final TopicService topicService;
     private final ObjectMapper objectMapper;
 
     @PostMapping("/login")
@@ -72,11 +71,4 @@ public class AuthController {
         UserLoginDto token = tokenService.getToken(authenticate,createUser);
         return token;
     }
-
-    @GetMapping("/getAllTopics")
-    public void listTopics(String id, StatusEnum status) throws BusinessRuleException {
-        topicService.updateStatusToTopic(id, status);
-    }
-
-
 }

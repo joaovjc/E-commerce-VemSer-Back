@@ -1,18 +1,19 @@
 package com.dbc.vemserback.ecommerce.service;
 
-import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.dbc.vemserback.ecommerce.dto.*;
-import com.dbc.vemserback.ecommerce.entity.GroupEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dbc.vemserback.ecommerce.dto.LoginDTO;
+import com.dbc.vemserback.ecommerce.dto.PictureDTO;
+import com.dbc.vemserback.ecommerce.dto.UserAdmDto;
+import com.dbc.vemserback.ecommerce.dto.UserDTO;
+import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
@@ -35,11 +36,6 @@ public class UserService {
     
     //TODO revisar a logica
     public UserLoginDto createUser(UserAdmDto createDTO, MultipartFile file) throws BusinessRuleException {
-    	if(file!=null) {
-    		String fileName = file.getOriginalFilename();
-        	if(!Arrays.asList(".png",".jpg",".jpeg").contains(fileName.substring(fileName.lastIndexOf("."))))throw new BusinessRuleException("not a suported file type: "+fileName.substring(fileName.lastIndexOf(".")));
-
-    	}
     	if(this.findByEmail(createDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
     	
         UserEntity user = new UserEntity();
@@ -53,9 +49,8 @@ public class UserService {
         String picture = null;
         if(file!=null) {
         	PictureDTO create = pictureService.create(file,savedUser.getUserId());
-        	picture = Base64.getEncoder().encodeToString(create.getPicture());
+        	picture = new String(create.getPicture());
         }
-        
         return UserLoginDto.builder().fullName(savedUser.getFullName()).username(user.getUsername()).profileImage(picture).build();
 
     }

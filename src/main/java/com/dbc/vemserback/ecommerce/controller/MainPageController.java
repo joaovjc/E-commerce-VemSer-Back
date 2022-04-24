@@ -30,7 +30,6 @@ public class MainPageController {
 	@GetMapping("/topics/itens/{id-topic}")
 	public Object allItens(@PathVariable(name = "id-topic") String idTopic) {
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		
 		return this.purchaseService.listAllTopics(idTopic,Integer.parseInt((String) userb));
 	}
 	

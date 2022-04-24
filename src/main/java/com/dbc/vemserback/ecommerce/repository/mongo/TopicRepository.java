@@ -20,7 +20,7 @@ public interface TopicRepository extends MongoRepository<TopicEntity, String> {
 //	Page<TopicAgreg> findAllTopicsByIdUser(int idUser, Pageable pageable);
 	
 	@Aggregation(pipeline = { 
-			"{ '$match' : {'$and' : [{'_id':?0} , {'userId':?1} ] } }",
+			"{ '$match' : {'$and' : [{'_id':?0} , {'userId':?1} ] } }"
 	})
 	@Query(fields = "{purchases : 1}")
 	List<String> findAllPurchasesByIdAndIdUser(String idTopic, int idUser);
