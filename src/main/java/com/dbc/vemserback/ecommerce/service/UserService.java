@@ -4,16 +4,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.dbc.vemserback.ecommerce.dto.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbc.vemserback.ecommerce.dto.LoginDTO;
-import com.dbc.vemserback.ecommerce.dto.PictureDTO;
-import com.dbc.vemserback.ecommerce.dto.UserAdmDto;
-import com.dbc.vemserback.ecommerce.dto.UserDTO;
-import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
@@ -64,6 +63,16 @@ public class UserService {
 	public Optional<UserEntity> findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
+
+    public Page<UserPageDTO> listUsersForAdmin(int page) {
+        PageRequest pageRequest = PageRequest.of(
+                page,
+                20,
+                Sort.Direction.ASC,
+                "fullName");
+
+        return userRepository.findAllOrOrderByFullName(pageRequest);
+    }
 
 
     protected Integer getLogedUserId() {

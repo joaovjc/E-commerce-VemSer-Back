@@ -3,12 +3,14 @@ package com.dbc.vemserback.ecommerce.controller;
 import com.dbc.vemserback.ecommerce.dto.CreateUserDTO;
 import com.dbc.vemserback.ecommerce.dto.UserAdmDto;
 import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
+import com.dbc.vemserback.ecommerce.dto.UserPageDTO;
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.security.TokenService;
 import com.dbc.vemserback.ecommerce.service.TopicService;
 import com.dbc.vemserback.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
+
 @RestController
 @RequestMapping("/admin")
 @RequiredArgsConstructor
@@ -53,5 +57,10 @@ public class AdminController {
     @PutMapping("/adm-set-group-user")
     public void admSetGroupUser( @RequestParam Groups groups, @RequestParam Integer idUser) throws BusinessRuleException {
         userService.updateUserbyAdmin(groups, idUser);
+    }
+
+    @GetMapping("/adm-get-all-users")
+    public Page<UserPageDTO> admGetAllUsers(int page){
+        return userService.listUsersForAdmin(page);
     }
 }
