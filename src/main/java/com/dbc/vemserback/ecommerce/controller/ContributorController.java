@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.Item.ItemCreateDTO;
+import com.dbc.vemserback.ecommerce.dto.Item.ItemFullDTO;
 import com.dbc.vemserback.ecommerce.dto.topic.TopicCreateDTO;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.service.ItemService;
@@ -39,7 +40,7 @@ public class ContributorController {
 	}
 
     @PostMapping(path = "/create-item/{topic-id}", consumes = {MULTIPART_FORM_DATA_VALUE})
-	public void createItem(@PathVariable(name = "topic-id") Integer idTopic, @Valid @ModelAttribute(name = "data") ItemCreateDTO CreateDTO,
+	public ItemFullDTO createItem(@PathVariable(name = "topic-id") Integer idTopic, @Valid @ModelAttribute(name = "data") ItemCreateDTO CreateDTO,
                               @RequestPart MultipartFile file, BindingResult bindingResult) throws BusinessRuleException, InterruptedException {
     	if(bindingResult.hasErrors()) {
     		StringBuilder builder = new StringBuilder();
@@ -47,7 +48,7 @@ public class ContributorController {
     		throw new BusinessRuleException(builder.toString());
     	}
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        purchaseService.createPurchase(CreateDTO, file, Integer.parseInt((String) userb), idTopic);
+        return purchaseService.createPurchase(CreateDTO, file, Integer.parseInt((String) userb), idTopic);
 	}
     
     @PutMapping("/update-status/{topic-id}")
