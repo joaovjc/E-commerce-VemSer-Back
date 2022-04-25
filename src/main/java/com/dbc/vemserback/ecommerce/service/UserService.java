@@ -71,6 +71,7 @@ public class UserService {
                 Sort.Direction.ASC,
                 "fullName");
         Page<UserPageDTO> findAllOrOrderByFullName = userRepository.findAllOrOrderByFullName(pageRequest);
+        
         findAllOrOrderByFullName.forEach(p->{
         	PictureEntity findByUserId = this.pictureService.findByUserId(p.getUserId());
         	p.setImage(findByUserId!=null?new String(findByUserId.getPicture()):null);
