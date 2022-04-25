@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class PurchaseDTO {
+public class ItemCreateDTO {
 	private String name;
 	private String description;
 	private Double price;

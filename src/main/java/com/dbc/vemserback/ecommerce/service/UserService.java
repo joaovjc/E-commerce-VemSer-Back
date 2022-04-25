@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.dbc.vemserback.ecommerce.dto.*;
+import com.dbc.vemserback.ecommerce.dto.user.PictureDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

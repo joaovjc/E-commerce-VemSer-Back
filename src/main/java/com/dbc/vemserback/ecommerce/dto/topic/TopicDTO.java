@@ -29,6 +29,4 @@ public class TopicDTO {
 	private BigDecimal totalValue;
 	@Enumerated(EnumType.STRING)
 	private StatusEnum status;
-
-
 }

@@ -3,6 +3,7 @@ package com.dbc.vemserback.ecommerce.controller;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbc.vemserback.ecommerce.dto.PurchaseList.ItensDTO;
+import com.dbc.vemserback.ecommerce.dto.PurchaseList.ItemDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationByTopicDTO;
 import com.dbc.vemserback.ecommerce.dto.topic.TopicDTO;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
@@ -29,15 +30,15 @@ public class MainPageController {
 	private final QuotationService quotationService;
 
 	// para os colaboradores
-	@GetMapping("/topics-by-userid")
-	public Page<TopicDTO> allTopicsByUserId(@RequestParam int page) {
-		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return this.topicService.listAllTopicsByUserId(Integer.parseInt((String) userb), page);
-	}
+//	@GetMapping("/topics-by-logged-user")
+//	public Page<TopicDTO> allTopicsByUserId(@RequestParam int page) {
+//		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		return this.topicService.listAllTopicsByUserId(Integer.parseInt((String) userb), page);
+//	}
 
 	// para todos
 	@GetMapping("/items/{topic-id}")
-	public List<ItensDTO> allPurchasesByTopicId(@PathVariable("topic-id") Integer topicId) {
+	public List<ItemDTO> allPurchasesByTopicId(@PathVariable("topic-id") Integer topicId) {
 		return purchaseService.listPurchasesByTopicId(topicId);
 	}
 
@@ -48,8 +49,12 @@ public class MainPageController {
 	}
 
 	// TODO ->
-	// Topic Por status (Para Comprador, Gestor, Financeiro)
-	public Page<TopicDTO> allTopicsByStatus() {
-		return null;
+	// Topic Por status / usuario
+	@GetMapping("/topic-by-status")
+	public Page<TopicDTO> allTopicsByStatus(@RequestParam int page) throws BusinessRuleException {
+		@SuppressWarnings("unchecked")
+		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return this.topicService.getTopics(authorities, Integer.parseInt((String) userb), page);
 	}
 }

@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Builder
-public class ItensDTO {
+public class ItemDTO {
 	
 	private String itemName;
 	private String description;

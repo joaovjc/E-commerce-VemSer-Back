@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbc.vemserback.ecommerce.dto.PurchaseList.PurchaseDTO;
+import com.dbc.vemserback.ecommerce.dto.PurchaseList.ItemCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.topic.TopicCreateDTO;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.service.PurchaseService;
@@ -38,7 +38,7 @@ public class ContributorController {
 	}
 
     @PostMapping(path = "/create-item/{topic-id}", consumes = {MULTIPART_FORM_DATA_VALUE})
-	public void createItem(@PathVariable(name = "topic-id") Integer idTopic, @Valid @ModelAttribute(name = "data") PurchaseDTO CreateDTO,
+	public void createItem(@PathVariable(name = "topic-id") Integer idTopic, @Valid @ModelAttribute(name = "data") ItemCreateDTO CreateDTO,
                               @RequestPart MultipartFile file, BindingResult bindingResult) throws BusinessRuleException, InterruptedException {
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         purchaseService.createPurchase(CreateDTO, file, Integer.parseInt((String) userb), idTopic);

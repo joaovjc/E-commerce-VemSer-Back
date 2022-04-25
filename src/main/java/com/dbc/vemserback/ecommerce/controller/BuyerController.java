@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationCreateDTO;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.service.QuotationService;
+import com.dbc.vemserback.ecommerce.service.TopicService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,13 +15,9 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/buyer")
 @RequiredArgsConstructor
 public class BuyerController {
-
+	
     private final QuotationService quotationService;
-
-//    @GetMapping("/getAll")
-//    public List<QuotationDTO> getAll() {
-//        return quotationService.quotationList();
-//    }
+    private final TopicService service;
 
     @PostMapping("/create")
     public String create(QuotationCreateDTO quotationCreateDTO) throws BusinessRuleException {

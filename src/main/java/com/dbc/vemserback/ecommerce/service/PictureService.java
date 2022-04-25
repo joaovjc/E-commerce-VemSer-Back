@@ -3,7 +3,7 @@ package com.dbc.vemserback.ecommerce.service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbc.vemserback.ecommerce.dto.PictureDTO;
+import com.dbc.vemserback.ecommerce.dto.user.PictureDTO;
 import com.dbc.vemserback.ecommerce.entity.PictureEntity;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.mongo.PictureRepository;
