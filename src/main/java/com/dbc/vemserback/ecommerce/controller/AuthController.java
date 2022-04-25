@@ -1,5 +1,7 @@
 package com.dbc.vemserback.ecommerce.controller;
 
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+
 import javax.validation.Valid;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,7 +52,7 @@ public class AuthController {
         return token;
     }
     
-    @PostMapping("/sign-up")
+    @PostMapping(path = "/sign-up", consumes = {MULTIPART_FORM_DATA_VALUE})
     public UserLoginDto signUp(@Valid @ModelAttribute(name = "data") CreateUserDTO createDTO, @RequestPart(name = "file",required = false) MultipartFile file, BindingResult bindingResult) throws BusinessRuleException {
     	if(bindingResult.hasErrors()) {
     		StringBuilder builder = new StringBuilder();

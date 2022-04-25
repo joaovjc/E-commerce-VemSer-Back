@@ -31,6 +31,7 @@ public class UserService {
     private final PictureService pictureService;
     private final ObjectMapper objectMapper;
     private final GroupService groupService;
+    private final FileService fileService;
 
     public List<LoginDTO> getAllUsers() {
         return userRepository.findAll().stream().map(user -> objectMapper.convertValue(user, LoginDTO.class)).collect(Collectors.toList());
@@ -45,13 +46,11 @@ public class UserService {
         user.setFullName(createDTO.getFullName());
         user.setGroupEntity(groupService.getById(createDTO.getGroups().getGroupId()));
         user.setPassword(new BCryptPasswordEncoder().encode(createDTO.getPassword()));
+        String picture = null;
+        user.setProfileImage(file!=null?fileService.convertToByte(file):null);
         
         UserEntity savedUser = userRepository.save(user);
-        String picture = null;
-        if(file!=null) {
-        	PictureDTO create = pictureService.create(file,savedUser.getUserId());
-        	picture = new String(create.getPicture());
-        }
+        
         return UserLoginDto.builder().fullName(savedUser.getFullName()).username(user.getUsername()).profileImage(picture).build();
 
     }
