@@ -1,5 +1,7 @@
 package com.dbc.vemserback.ecommerce.controller;
 
+import com.dbc.vemserback.ecommerce.dto.PurchaseList.PurchaseAgreg;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,8 @@ import com.dbc.vemserback.ecommerce.service.TopicService;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/main-page")
 @RequiredArgsConstructor
@@ -22,15 +26,14 @@ public class MainPageController {
 	private final PurchaseService purchaseService; 
 	
 	@GetMapping("/topics")
-	public Slice<TopicAgreg> allTopics(@RequestParam int page) {
+	public Page<TopicAgreg> allTopics(@RequestParam int page) {
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return this.topicService.listAllTopics(Integer.parseInt((String) userb), page);
+		return this.topicService.listAllTopicsByUserId(Integer.parseInt((String) userb), page);
 	}
-	
-	@GetMapping("/topics/itens/{id-topic}")
-	public Object allItens(@PathVariable(name = "id-topic") String idTopic) {
-		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return this.purchaseService.listAllTopics(idTopic,Integer.parseInt((String) userb));
+
+	@GetMapping("/items/{topicId}")
+	public List<PurchaseAgreg> allPurchasesByTopicId(@PathVariable("topicId") Integer topicId) {
+		return purchaseService.listPurchasesByTopicId(topicId);
 	}
-	
+
 }

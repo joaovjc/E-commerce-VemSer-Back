@@ -1,9 +1,8 @@
 package com.dbc.vemserback.ecommerce.controller;
 
+import com.dbc.vemserback.ecommerce.dto.quotation.QuotationByTopicDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
-import com.dbc.vemserback.ecommerce.dto.topic.TopicFinancierDTO;
-import com.dbc.vemserback.ecommerce.dto.quotation.QuotationManagerDTO;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.service.QuotationService;
 import lombok.RequiredArgsConstructor;
@@ -27,18 +26,23 @@ public class QuotationController {
     }
 
     @PostMapping("/create")
-    public boolean create(QuotationCreateDTO quotationCreateDTO) {
+    public String create(QuotationCreateDTO quotationCreateDTO) throws BusinessRuleException {
         return quotationService.createQuotation(quotationCreateDTO);
     }
 
     @PostMapping("/aproveQuotation")
-    public QuotationDTO aproveQuotation(String idTopic, String quotationId) throws BusinessRuleException {
+    public QuotationDTO aproveQuotation(Integer idTopic, Integer quotationId) throws BusinessRuleException {
         return quotationService.aproveQuotation(idTopic, quotationId);
     }
 
     @PostMapping("/reproveAllQuotations")
-    public void reproveAllQuotations(String idTopic){
+    public void reproveAllQuotations(Integer idTopic) throws BusinessRuleException {
         quotationService.reproveAllQuotations(idTopic);
+    }
+
+    @GetMapping("/getQuotationByTopic")
+    public List<QuotationByTopicDTO> getQuotationByTopic(Integer idTopic) throws BusinessRuleException {
+        return quotationService.quotationsByTopic(idTopic);
     }
 
 }

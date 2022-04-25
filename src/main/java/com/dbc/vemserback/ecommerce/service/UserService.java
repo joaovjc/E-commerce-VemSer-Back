@@ -88,5 +88,8 @@ public class UserService {
 		return this.userRepository.getUserByFullName(nome);
 	}
 
-    
+
+    protected UserEntity findById(Integer userId) throws BusinessRuleException {
+        return userRepository.findById(userId).orElseThrow(() -> new BusinessRuleException("Usuário não encontrado"));
+    }
 }
