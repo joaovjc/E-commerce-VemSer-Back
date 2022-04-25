@@ -16,7 +16,7 @@ public interface TopicRepository extends JpaRepository<TopicEntity, Integer> {
 	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.topic.TopicDTO(t.topicId, t.title, t.date, t.totalValue, t.status) FROM topic t WHERE t.userId = ?1")
 	Page<TopicDTO> findAllByUserId(Integer userId, Pageable pageable);
 
-	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.topic.TopicDTO(t.topicId, t.title, t.date, t.totalValue, t.status) FROM topic t WHERE t.status = ?0")
+	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.topic.TopicDTO(t.topicId, t.title, t.date, t.totalValue, t.status) FROM topic t WHERE t.status = ?1")
 	Page<TopicDTO> findAllByStatus(StatusEnum enumTopic, Pageable pageable);
 
 

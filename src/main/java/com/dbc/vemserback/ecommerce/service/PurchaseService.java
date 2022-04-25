@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.dbc.vemserback.ecommerce.dto.PurchaseList.ItemDTO;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
+import com.dbc.vemserback.ecommerce.enums.StatusEnum;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +29,7 @@ public class PurchaseService {
 		String originalFilename = file.getOriginalFilename();
 
 		TopicEntity topicEntity = topicService.topicById(idTopic);
-
+		if(topicEntity.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("the topic is not on creating status!!!");
 		PurchaseEntity build = PurchaseEntity.builder().itemName(purchaseDTO.getName()).description(purchaseDTO.getDescription())
 				.value(new BigDecimal(purchaseDTO.getPrice())).fileName(originalFilename).file(fileService.convertToByte(file)).topicId(idTopic).topicEntity(topicEntity).build();
 		purchaseRepository.save(build);

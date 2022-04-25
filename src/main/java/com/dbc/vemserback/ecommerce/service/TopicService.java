@@ -34,11 +34,10 @@ public class TopicService {
 
 	public Integer createTopic(TopicCreateDTO dto, Integer userId) throws BusinessRuleException {
 		UserEntity user = userService.findById(userId);
-		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.valueOf(StatusEnum.OPEN.name()))
+		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.valueOf(StatusEnum.CREATING.name()))
 				.title(dto.getTitle()).totalValue(BigDecimal.ZERO).user(user)
 				.userId(user.getUserId()).build();
 
-		System.out.println(StatusEnum.valueOf(StatusEnum.OPEN.name()));
 		entity = topicRepository.save(entity);
 
 		return entity.getTopicId();
@@ -100,12 +99,11 @@ public class TopicService {
 	
 	public Page<TopicDTO> getTopics(List<SimpleGrantedAuthority> authorities, int userId, int page) throws BusinessRuleException {
 		List<String> collect = authorities.stream().map(smp -> smp.getAuthority()).collect(Collectors.toList());
-		if(collect.contains(Groups.BUYER.getGroupName())) {
+		collect.forEach(System.out::println);
+		if(collect.contains("ROLE_BUYER") || collect.contains("ROLE_MANEGER")) {
 			return this.findAllByStatus(StatusEnum.OPEN, page);
-		}if(collect.contains(Groups.MANEGER.getGroupName())) {
-			return this.findAllByStatus(StatusEnum.OPEN, page);
-		}if(collect.contains(Groups.FINANCIER.getGroupName())) {
-			return this.findAllByStatus(StatusEnum.OPEN, page);
+		}if(collect.contains("ROLE_FINANCIER")) {
+			return this.findAllByStatus(StatusEnum.MANAGER_APPROVED, page);
 		}else {
 			return this.listAllTopicsByUserId(userId,page);
 		}
