@@ -73,9 +73,9 @@ public class UserService {
     }
 
 
-    protected Integer getLogedUserId() {
-        return Integer.parseInt((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-    }
+//    protected Integer getLogedUserId() {
+//        return Integer.parseInt((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+//    }
 
     //    todo
 	public List<UserEntity> getByFullName(String nome) {

@@ -1,7 +1,6 @@
 package com.dbc.vemserback.ecommerce.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,25 +33,25 @@ public class QuotationService {
         return quotationRepository.findAll().stream().map(quotation -> objectMapper.convertValue(quotation, QuotationDTO.class)).collect(java.util.stream.Collectors.toList());
     }
 
-    public String createQuotation(QuotationCreateDTO quotationCreateDTO) throws BusinessRuleException {
+    public QuotationEntity createQuotation(QuotationCreateDTO quotationCreateDTO, int userId) throws BusinessRuleException {
 
         TopicEntity topicEntity = topicService.topicById(quotationCreateDTO.getTopicId());
 
-        UserEntity userEntity = userService.findById(userService.getLogedUserId());
+        UserEntity userEntity = userService.findById(userId);
 
         QuotationEntity build = QuotationEntity.builder()
                 .quotationPrice(quotationCreateDTO.getQuotationPrice())
-                .userId(userEntity.getUserId())
                 .quotationStatus(StatusEnum.OPEN)
-                .topicId(topicEntity.getTopicId())
                 .topic(topicEntity)
-                .userId(userEntity.getUserId())
                 .userEntity(userEntity)
                 .build();
 
-        quotationRepository.save(build);
-
-        return "Quotation created";
+        QuotationEntity save = quotationRepository.save(build);
+        
+        save.setTopicId(quotationCreateDTO.getTopicId());
+        save.setUserId(userId);
+        
+        return save;
     }
 
     public QuotationDTO aproveQuotation(List<SimpleGrantedAuthority> authorities, Integer idQuotation) throws BusinessRuleException {
