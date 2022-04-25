@@ -1,12 +1,9 @@
 package com.dbc.vemserback.ecommerce;
 
-import com.dbc.vemserback.ecommerce.dto.quotation.QuotationCreateDTO;
-import com.dbc.vemserback.ecommerce.entity.QuotationEntity;
-import com.dbc.vemserback.ecommerce.repository.mongo.QuotationRepository;
+import com.dbc.vemserback.ecommerce.repository.post.QuotationRepository;
 import com.dbc.vemserback.ecommerce.service.QuotationService;
 import com.dbc.vemserback.ecommerce.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -15,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class QuotationTest {

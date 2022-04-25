@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 public class QuotationManagerDTO {
 
-    private String topicId;
+    private Integer topicId;
     private StatusEnum quotationStatus;
 }

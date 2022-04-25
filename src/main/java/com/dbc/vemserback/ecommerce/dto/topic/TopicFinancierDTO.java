@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TopicFinancierDTO {
-    private String topicId;
+    private Integer topicId;
     private Boolean status;
 }

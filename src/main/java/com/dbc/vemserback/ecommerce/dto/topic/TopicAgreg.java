@@ -13,6 +13,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -20,9 +23,12 @@ import lombok.Setter;
 @Builder
 public class TopicAgreg {
 	@Id
-	private String topicId;
+	private Integer topicId;
 	private String title;
 	private LocalDate date;
 	private BigDecimal totalValue;
+	@Enumerated(EnumType.STRING)
 	private StatusEnum status;
+
+
 }

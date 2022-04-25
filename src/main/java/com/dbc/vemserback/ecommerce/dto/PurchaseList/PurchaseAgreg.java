@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -13,8 +15,9 @@ import lombok.Setter;
 @Builder
 public class PurchaseAgreg {
 	
-	private String name;
-	private Double totalValue;
+	private String itemName;
+	private String description;
+	private BigDecimal value;
 	private byte[] file;
 	
 }

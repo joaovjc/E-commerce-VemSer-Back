@@ -4,36 +4,59 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+
+import javax.persistence.*;
 
 @Getter
 @Setter
 @Builder
-@Document(collection = "topic")
+@Entity(name = "topic")
+@NoArgsConstructor
+@AllArgsConstructor
 public class TopicEntity {
 
     @Id
-    private String topicId;
+    @Column(name = "topic_id", columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer topicId;
 
+    @Column(name = "user_id", insertable = false, updatable = false)
     private Integer userId;
 
+    @Column(name = "title")
     private String title;
 
+    @Column(name = "topic_date")
     private LocalDate date;
 
+    @Column(name = "total_value")
     private BigDecimal totalValue;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
-    private List<String> purchases;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private UserEntity user;
 
-    private List<String> quotations;
+    @JsonIgnore
+    @OneToMany(mappedBy = "topicEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<PurchaseEntity> purchases;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<QuotationEntity> quotations;
+
+//    private List<String> purchases;
+//
+//    private List<String> quotations;
 }

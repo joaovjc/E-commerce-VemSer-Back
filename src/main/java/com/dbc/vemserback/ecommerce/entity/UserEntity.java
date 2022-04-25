@@ -3,14 +3,9 @@ package com.dbc.vemserback.ecommerce.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,6 +43,15 @@ public class UserEntity implements UserDetails {
     @ManyToOne
     @JoinColumn(referencedColumnName = "group_id", name = "group_id")
     private GroupEntity groupEntity;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TopicEntity> topics;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<QuotationEntity> quotations;
+
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
