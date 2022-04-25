@@ -18,6 +18,6 @@ public class ItemDTO {
 	private String itemName;
 	private String description;
 	private BigDecimal value;
-	private byte[] file;
+	private String file;
 	
 }

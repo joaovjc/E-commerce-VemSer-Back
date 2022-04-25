@@ -2,6 +2,7 @@ package com.dbc.vemserback.ecommerce.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.dbc.vemserback.ecommerce.dto.PurchaseList.ItemDTO;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
@@ -37,7 +38,13 @@ public class PurchaseService {
 	}
 
 	public List<ItemDTO> listPurchasesByTopicId(Integer topicId) {
-		return purchaseRepository.findAllByTopicId(topicId);
+		return purchaseRepository.findAllByTopicId(topicId).stream().map(ent->{
+			return ItemDTO.builder()
+					.description(ent.getDescription())
+					.itemName(ent.getItemName())
+					.file(ent.getFile()!=null?new String(ent.getFile()):null)
+					.value(ent.getValue()).build();
+		}).collect(Collectors.toList());
 	}
 
 
