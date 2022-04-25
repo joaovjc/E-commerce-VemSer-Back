@@ -40,6 +40,11 @@ public class ContributorController {
     @PostMapping(path = "/create-item/{topic-id}", consumes = {MULTIPART_FORM_DATA_VALUE})
 	public void createItem(@PathVariable(name = "topic-id") Integer idTopic, @Valid @ModelAttribute(name = "data") ItemCreateDTO CreateDTO,
                               @RequestPart MultipartFile file, BindingResult bindingResult) throws BusinessRuleException, InterruptedException {
+    	if(bindingResult.hasErrors()) {
+    		StringBuilder builder = new StringBuilder();
+        	bindingResult.getAllErrors().forEach(err -> builder.append(err.getDefaultMessage()));
+    		throw new BusinessRuleException(builder.toString());
+    	}
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         purchaseService.createPurchase(CreateDTO, file, Integer.parseInt((String) userb), idTopic);
 	}

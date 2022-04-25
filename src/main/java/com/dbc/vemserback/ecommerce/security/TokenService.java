@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
-import com.dbc.vemserback.ecommerce.service.PictureService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -27,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class TokenService {
-	private final PictureService pictureService; 
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String PREFIX = "Bearer ";
     private static final String KEY_RULES = "RULES";

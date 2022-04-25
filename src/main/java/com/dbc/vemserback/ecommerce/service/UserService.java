@@ -30,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final PictureService pictureService;
     private final ObjectMapper objectMapper;
     private final GroupService groupService;
     private final FileService fileService;

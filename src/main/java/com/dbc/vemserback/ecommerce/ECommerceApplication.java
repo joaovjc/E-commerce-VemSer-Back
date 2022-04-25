@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication
-@EnableMongoRepositories(basePackages = "com.dbc.vemserback.ecommerce.repository.mongo")
 @EnableJpaRepositories(basePackages="com.dbc.vemserback.ecommerce.repository.post")
 public class ECommerceApplication {
 
