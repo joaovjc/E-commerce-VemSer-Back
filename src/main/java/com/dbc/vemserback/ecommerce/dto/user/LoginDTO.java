@@ -1,4 +1,4 @@
-package com.dbc.vemserback.ecommerce.dto;
+package com.dbc.vemserback.ecommerce.dto.user;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -18,5 +18,5 @@ public class LoginDTO {
 	@ApiModelProperty(value = "password", example = "String@123", required = true)
 	@NotEmpty
 	private String password;
-	
+
 }

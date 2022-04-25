@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbc.vemserback.ecommerce.dto.UserAdmDto;
-import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
-import com.dbc.vemserback.ecommerce.dto.UserPageDTO;
+import com.dbc.vemserback.ecommerce.dto.user.UserCreateDTO;
+import com.dbc.vemserback.ecommerce.dto.user.UserLoginDto;
+import com.dbc.vemserback.ecommerce.dto.user.UserPageDTO;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
@@ -45,19 +45,19 @@ public class AdminController {
 
 
     @PostMapping(path = "/adm-creat-user", consumes = {MULTIPART_FORM_DATA_VALUE})
-    public UserLoginDto admCreateUser(@Valid @ModelAttribute(name = "data") UserAdmDto userAdmDTO, @RequestPart(name = "file",required = false) MultipartFile file, BindingResult bindingResult) throws BusinessRuleException {
+    public UserLoginDto admCreateUser(@Valid @ModelAttribute(name = "data") UserCreateDTO userCreateDTO, @RequestPart(name = "file",required = false) MultipartFile file, BindingResult bindingResult) throws BusinessRuleException {
         if(bindingResult.hasErrors()) {
             StringBuilder builder = new StringBuilder();
             bindingResult.getAllErrors().forEach(err -> builder.append(err.getDefaultMessage()));
             throw new BusinessRuleException(builder.toString());
         }
 
-        UserLoginDto createUser = userService.createUser(userAdmDTO, file);
+        UserLoginDto createUser = userService.createUser(userCreateDTO, file);
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
                         createUser.getUsername(),
-                        userAdmDTO.getPassword()
+                        userCreateDTO.getPassword()
                 );
 
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);

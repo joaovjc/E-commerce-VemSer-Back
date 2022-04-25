@@ -16,26 +16,10 @@ import lombok.RequiredArgsConstructor;
 public class BuyerController {
 	
     private final QuotationService quotationService;
-//    private final TopicService service;
 
     @PostMapping("/create")
     public String create(QuotationCreateDTO quotationCreateDTO) throws BusinessRuleException {
         return quotationService.createQuotation(quotationCreateDTO);
     }
-
-//    @PostMapping("/aproveQuotation")
-//    public QuotationDTO aproveQuotation(Integer idTopic, Integer quotationId) throws BusinessRuleException {
-//        return quotationService.aproveQuotation(idTopic, quotationId);
-//    }
-//
-//    @PostMapping("/reproveAllQuotations")
-//    public void reproveAllQuotations(Integer idTopic) throws BusinessRuleException {
-//        quotationService.reproveAllQuotations(idTopic);
-//    }
-
-//    @GetMapping("/getQuotationByTopic")
-//    public List<QuotationByTopicDTO> getQuotationByTopic(Integer idTopic) throws BusinessRuleException {
-//        return quotationService.quotationsByTopic(idTopic);
-//    }
 
 }

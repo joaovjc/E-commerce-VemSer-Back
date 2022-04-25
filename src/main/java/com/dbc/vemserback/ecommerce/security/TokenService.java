@@ -14,7 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
+import com.dbc.vemserback.ecommerce.dto.user.UserLoginDto;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 

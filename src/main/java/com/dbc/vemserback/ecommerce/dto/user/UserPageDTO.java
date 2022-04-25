@@ -1,4 +1,4 @@
-package com.dbc.vemserback.ecommerce.dto;
+package com.dbc.vemserback.ecommerce.dto.user;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ public class UserPageDTO {
     private String email;
 
     private String groups;
-    
+
     private String image;
 
 	public UserPageDTO(Integer userId, String fullName, String email, String groups, byte[] image) {
@@ -31,6 +31,6 @@ public class UserPageDTO {
 			this.image = null;
 		}
 	}
-    
-    
+
+
 }

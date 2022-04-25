@@ -29,13 +29,6 @@ public class MainPageController {
 	private final PurchaseService purchaseService;
 	private final QuotationService quotationService;
 
-	// para os colaboradores
-//	@GetMapping("/topics-by-logged-user")
-//	public Page<TopicDTO> allTopicsByUserId(@RequestParam int page) {
-//		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		return this.topicService.listAllTopicsByUserId(Integer.parseInt((String) userb), page);
-//	}
-
 	// para todos
 	@GetMapping("/items/{topic-id}")
 	public List<ItemDTO> allPurchasesByTopicId(@PathVariable("topic-id") Integer topicId) {

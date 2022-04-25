@@ -12,11 +12,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbc.vemserback.ecommerce.dto.LoginDTO;
-import com.dbc.vemserback.ecommerce.dto.UserAdmDto;
-import com.dbc.vemserback.ecommerce.dto.UserDTO;
-import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
-import com.dbc.vemserback.ecommerce.dto.UserPageDTO;
+import com.dbc.vemserback.ecommerce.dto.user.LoginDTO;
+import com.dbc.vemserback.ecommerce.dto.user.UserCreateDTO;
+import com.dbc.vemserback.ecommerce.dto.user.UserDTO;
+import com.dbc.vemserback.ecommerce.dto.user.UserLoginDto;
+import com.dbc.vemserback.ecommerce.dto.user.UserPageDTO;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
@@ -32,12 +32,8 @@ public class UserService {
     private final ObjectMapper objectMapper;
     private final GroupService groupService;
     private final FileService fileService;
-
-    public List<LoginDTO> getAllUsers() {
-        return userRepository.findAll().stream().map(user -> objectMapper.convertValue(user, LoginDTO.class)).collect(Collectors.toList());
-    }
     
-    public UserLoginDto createUser(UserAdmDto createDTO, MultipartFile file) throws BusinessRuleException {
+    public UserLoginDto createUser(UserCreateDTO createDTO, MultipartFile file) throws BusinessRuleException {
     	if(this.findByEmail(createDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
     	
         UserEntity user = new UserEntity();
@@ -61,6 +57,7 @@ public class UserService {
         return objectMapper.convertValue(userRepository.save(userEntity), UserDTO.class);
     }
 
+//    todo
 	public Optional<UserEntity> findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
@@ -80,6 +77,7 @@ public class UserService {
         return Integer.parseInt((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 
+    //    todo
 	public List<UserEntity> getByFullName(String nome) {
 		return this.userRepository.getUserByFullName(nome);
 	}

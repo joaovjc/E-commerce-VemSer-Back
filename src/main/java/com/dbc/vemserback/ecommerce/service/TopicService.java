@@ -16,7 +16,6 @@ import com.dbc.vemserback.ecommerce.dto.topic.TopicDTO;
 import com.dbc.vemserback.ecommerce.dto.topic.TopicFinancierDTO;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
-import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.post.TopicRepository;
@@ -43,21 +42,13 @@ public class TopicService {
 		return entity.getTopicId();
 	}
 
+	//todo generalizar
 	public TopicCreateDTO updateStatusToTopic(Integer idTopic, StatusEnum status) throws BusinessRuleException {
 		TopicEntity topic = topicRepository.findById(idTopic).orElseThrow((() -> new BusinessRuleException("Topic not found")));
 		topic.setStatus(status);
 		return objectMapper.convertValue(topicRepository.save(topic), TopicCreateDTO.class);
 	}
 
-//	public List<FullTopicDTO> listTopicsFull() {
-//		return new ArrayList<>(topicRepository.findAll().stream().map(this::getTopicFull).toList());
-//	}
-//	private FullTopicDTO getTopicFull(TopicEntity topicEntity) {
-//		FullTopicDTO fullTopicDTO = objectMapper.convertValue(topicEntity, FullTopicDTO.class);
-//		fullTopicDTO.setPurchases(topicEntity.getPurchases().stream().map(purchase -> objectMapper.convertValue(purchase, PurchaseGetDTO.class)).collect(Collectors.toList()));
-//		fullTopicDTO.setQuotations(topicEntity.getQuotations().stream().map(quotation -> objectMapper.convertValue(quotation, QuotationGetDTO.class)).collect(Collectors.toList()));
-//		return fullTopicDTO;
-//	}
 
 	public TopicEntity topicById(Integer topicId) throws BusinessRuleException{
 		return topicRepository.findById(topicId).orElseThrow((() -> new BusinessRuleException("Topic not found")));
@@ -72,6 +63,7 @@ public class TopicService {
 		return topicRepository.findAllByUserId(idUser, pageRequest);
 	}
 
+	//todo generalizar
 	public String updateFinancierTopic(TopicFinancierDTO topicFinancierDTO) throws BusinessRuleException {
 		TopicEntity topic = topicRepository.findById(topicFinancierDTO.getTopicId()).orElseThrow((() -> new BusinessRuleException("Topic not found")));
 		if (topicFinancierDTO.getStatus()) {
@@ -98,7 +90,6 @@ public class TopicService {
 	
 	public Page<TopicDTO> getTopics(List<SimpleGrantedAuthority> authorities, int userId, int page) throws BusinessRuleException {
 		List<String> collect = authorities.stream().map(smp -> smp.getAuthority()).collect(Collectors.toList());
-		collect.forEach(System.out::println);
 		if(collect.contains("ROLE_BUYER") || collect.contains("ROLE_MANEGER")) {
 			return this.findAllByStatus(StatusEnum.OPEN, page);
 		}if(collect.contains("ROLE_FINANCIER")) {
@@ -120,4 +111,5 @@ public class TopicService {
 	private TopicEntity findById(int idTopic) throws BusinessRuleException {
 		return this.topicRepository.findById(idTopic).orElseThrow(()->new BusinessRuleException("The topic was not found"));
 	}
+
 }

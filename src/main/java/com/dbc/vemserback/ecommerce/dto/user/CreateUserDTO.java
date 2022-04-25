@@ -1,4 +1,4 @@
-package com.dbc.vemserback.ecommerce.dto;
+package com.dbc.vemserback.ecommerce.dto.user;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

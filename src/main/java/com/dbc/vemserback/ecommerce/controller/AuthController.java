@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbc.vemserback.ecommerce.dto.CreateUserDTO;
-import com.dbc.vemserback.ecommerce.dto.LoginDTO;
-import com.dbc.vemserback.ecommerce.dto.UserAdmDto;
-import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
+import com.dbc.vemserback.ecommerce.dto.user.CreateUserDTO;
+import com.dbc.vemserback.ecommerce.dto.user.LoginDTO;
+import com.dbc.vemserback.ecommerce.dto.user.UserCreateDTO;
+import com.dbc.vemserback.ecommerce.dto.user.UserLoginDto;
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.security.TokenService;
@@ -34,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 public class AuthController {
+
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     private final UserService userService;
@@ -59,9 +60,9 @@ public class AuthController {
         	bindingResult.getAllErrors().forEach(err -> builder.append(err.getDefaultMessage()));
     		throw new BusinessRuleException(builder.toString());
     	}
-    	UserAdmDto userAdmDto = objectMapper.convertValue(createDTO,UserAdmDto.class);
-        userAdmDto.setGroups(Groups.USER);
-    	UserLoginDto createUser = userService.createUser(userAdmDto, file);
+    	UserCreateDTO userCreateDTO = objectMapper.convertValue(createDTO, UserCreateDTO.class);
+        userCreateDTO.setGroups(Groups.USER);
+    	UserLoginDto createUser = userService.createUser(userCreateDTO, file);
     	
     	UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
@@ -73,4 +74,5 @@ public class AuthController {
         UserLoginDto token = tokenService.getToken(authenticate,createUser);
         return token;
     }
+
 }

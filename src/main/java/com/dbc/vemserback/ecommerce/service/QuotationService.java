@@ -1,8 +1,10 @@
 package com.dbc.vemserback.ecommerce.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationByTopicDTO;
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class QuotationService {
+
     private final QuotationRepository quotationRepository;
     private final TopicService topicService;
     private final ObjectMapper objectMapper;
@@ -52,31 +55,37 @@ public class QuotationService {
         return "Quotation created";
     }
 
-    public QuotationDTO aproveQuotation(Integer topicId, Integer idQuotation) throws BusinessRuleException {
-        if(quotationsByIdTopic(topicId))
-        {
-            QuotationEntity quotationEntity = quotationRepository.findById(idQuotation).orElseThrow((() -> new BusinessRuleException("Quotation not found")));
-            quotationEntity.setQuotationStatus(StatusEnum.MANAGER_APPROVED);
-            topicService.updateStatusToTopic(topicId, StatusEnum.MANAGER_APPROVED);
-            return objectMapper.convertValue(quotationRepository.save(quotationEntity), QuotationDTO.class);
+    public QuotationDTO aproveQuotation(List<SimpleGrantedAuthority> authorities, Integer idQuotation) throws BusinessRuleException {
+        List<String> collect = authorities.stream().map(smp -> smp.getAuthority()).collect(Collectors.toList());
+
+        if(collect.contains("ROLE_MANEGER")) {
+            QuotationEntity quotationEntity = findQuotationById(idQuotation);
+            if (quotationsByIdTopic(quotationEntity.getTopicId())){
+                quotationEntity.setQuotationStatus(StatusEnum.MANAGER_APPROVED);
+                topicService.updateStatusToTopic(quotationEntity.getTopicId(), StatusEnum.MANAGER_APPROVED);
+                return objectMapper.convertValue(quotationRepository.save(quotationEntity), QuotationDTO.class);
+            }
         }
         return null;
     }
 
-
-    public void reproveAllQuotations(Integer topicId) throws BusinessRuleException {
-        if(quotationsByIdTopic(topicId)) {
-            List<QuotationEntity> quotationEntities = quotationRepository.findAllByTopicId(topicId);
-            quotationEntities.forEach(quotationEntity -> {
-                quotationEntity.setQuotationStatus(StatusEnum.MANAGER_REPROVED);
-            });
-            quotationRepository.saveAll(quotationEntities);
-            topicService.updateStatusToTopic(topicId, StatusEnum.MANAGER_REPROVED);
+    public void reproveAllQuotations(List<SimpleGrantedAuthority> authorities, Integer topicId) throws BusinessRuleException {
+        List<String> collect = authorities.stream().map(smp -> smp.getAuthority()).collect(Collectors.toList());
+        if(collect.contains("ROLE_MANEGER")) {
+            if (quotationsByIdTopic(topicId)) {
+                List<QuotationEntity> quotationEntities = quotationRepository.findAllByTopicId(topicId);
+                quotationEntities.forEach(quotationEntity -> {
+                    quotationEntity.setQuotationStatus(StatusEnum.MANAGER_REPROVED);
+                });
+                quotationRepository.saveAll(quotationEntities);
+                topicService.updateStatusToTopic(topicId, StatusEnum.MANAGER_REPROVED);
+            }
         }
     }
 
     public Boolean quotationsByIdTopic(Integer topicId) throws BusinessRuleException {
         TopicEntity topic = topicService.topicById(topicId);
+        if(topic.getStatus()!=StatusEnum.OPEN) throw new BusinessRuleException("Topic not open");
         return topic.getQuotations().size() >= 2;
     }
 
@@ -85,5 +94,8 @@ public class QuotationService {
         return topic.getQuotations().stream().map(quotation -> objectMapper.convertValue(quotation, QuotationByTopicDTO.class)).collect(Collectors.toList());
     }
 
+    private QuotationEntity findQuotationById(Integer quotationId) throws BusinessRuleException {
+        return quotationRepository.findById(quotationId).orElseThrow((() -> new BusinessRuleException("Quotation not found")));
+    }
 
 }

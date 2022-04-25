@@ -1,4 +1,4 @@
-package com.dbc.vemserback.ecommerce.dto;
+package com.dbc.vemserback.ecommerce.dto.user;
 
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.validation.ValidPassword;
@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Data
 @Builder
-public class UserAdmDto {
+public class UserCreateDTO {
         @NotEmpty
         private String fullName;
         @NotNull
