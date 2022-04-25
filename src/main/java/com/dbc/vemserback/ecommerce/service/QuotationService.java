@@ -1,13 +1,12 @@
 package com.dbc.vemserback.ecommerce.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationByTopicDTO;
-import com.dbc.vemserback.ecommerce.dto.quotation.QuotationCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
 import com.dbc.vemserback.ecommerce.entity.QuotationEntity;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
@@ -33,14 +32,14 @@ public class QuotationService {
         return quotationRepository.findAll().stream().map(quotation -> objectMapper.convertValue(quotation, QuotationDTO.class)).collect(java.util.stream.Collectors.toList());
     }
 
-    public QuotationEntity createQuotation(QuotationCreateDTO quotationCreateDTO, int userId) throws BusinessRuleException {
+    public QuotationEntity createQuotation(int topicId, Double preco, int userId) throws BusinessRuleException {
 
-        TopicEntity topicEntity = topicService.topicById(quotationCreateDTO.getTopicId());
+        TopicEntity topicEntity = topicService.topicById(topicId);
 
         UserEntity userEntity = userService.findById(userId);
 
         QuotationEntity build = QuotationEntity.builder()
-                .quotationPrice(quotationCreateDTO.getQuotationPrice())
+                .quotationPrice(new BigDecimal(preco))
                 .quotationStatus(StatusEnum.OPEN)
                 .topic(topicEntity)
                 .userEntity(userEntity)
@@ -48,8 +47,10 @@ public class QuotationService {
 
         QuotationEntity save = quotationRepository.save(build);
         
-        save.setTopicId(quotationCreateDTO.getTopicId());
+        save.setTopicId(topicId);
         save.setUserId(userId);
+        
+//        QuotationCreateDTO
         
         return save;
     }
