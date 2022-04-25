@@ -1,4 +1,4 @@
-package com.dbc.vemserback.ecommerce.controller;
+package com.dbc.vemserback.ecommerce.controller.others;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

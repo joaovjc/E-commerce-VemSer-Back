@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Builder
-public class PurchaseAgreg {
+public class ItensDTO {
 	
 	private String itemName;
 	private String description;

@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 
 import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.tasks.UnsupportedFormatException;
 
 @Service
 public class FileService {

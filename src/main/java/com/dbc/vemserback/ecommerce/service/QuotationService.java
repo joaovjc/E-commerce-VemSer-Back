@@ -1,5 +1,10 @@
 package com.dbc.vemserback.ecommerce.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationByTopicDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
@@ -9,19 +14,13 @@ import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.post.QuotationRepository;
-import com.dbc.vemserback.ecommerce.repository.mongo.custom.TopicrepositoryImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class QuotationService {
-
-    private final TopicrepositoryImpl topicrepositoryImpl;
     private final QuotationRepository quotationRepository;
     private final TopicService topicService;
     private final ObjectMapper objectMapper;

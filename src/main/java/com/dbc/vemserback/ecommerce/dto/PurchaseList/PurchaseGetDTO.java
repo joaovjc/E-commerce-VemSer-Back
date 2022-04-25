@@ -1,12 +1,8 @@
 package com.dbc.vemserback.ecommerce.dto.PurchaseList;
 
-import lombok.Data;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.math.BigDecimal;
+
+import lombok.Data;
 
 @Data
 public class PurchaseGetDTO {

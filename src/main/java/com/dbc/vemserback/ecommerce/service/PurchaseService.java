@@ -3,7 +3,7 @@ package com.dbc.vemserback.ecommerce.service;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.dbc.vemserback.ecommerce.dto.PurchaseList.PurchaseAgreg;
+import com.dbc.vemserback.ecommerce.dto.PurchaseList.ItensDTO;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +34,7 @@ public class PurchaseService {
 		return "item adicionado com sucesso";
 	}
 
-	public List<PurchaseAgreg> listPurchasesByTopicId(Integer topicId) {
+	public List<ItensDTO> listPurchasesByTopicId(Integer topicId) {
 		return purchaseRepository.findAllByTopicId(topicId);
 	}
 

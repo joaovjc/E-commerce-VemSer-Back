@@ -1,13 +1,10 @@
 package com.dbc.vemserback.ecommerce.dto.quotation;
 
-import com.dbc.vemserback.ecommerce.entity.TopicEntity;
-import com.dbc.vemserback.ecommerce.entity.UserEntity;
-import com.dbc.vemserback.ecommerce.enums.StatusEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-
-import javax.persistence.*;
 import java.math.BigDecimal;
+
+import com.dbc.vemserback.ecommerce.enums.StatusEnum;
+
+import lombok.Data;
 
 @Data
 public class QuotationGetDTO {

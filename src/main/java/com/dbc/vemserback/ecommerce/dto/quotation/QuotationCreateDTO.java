@@ -1,9 +1,8 @@
 package com.dbc.vemserback.ecommerce.dto.quotation;
 
-import com.dbc.vemserback.ecommerce.enums.StatusEnum;
-import lombok.Data;
-
 import java.math.BigDecimal;
+
+import lombok.Data;
 
 @Data
 public class QuotationCreateDTO {

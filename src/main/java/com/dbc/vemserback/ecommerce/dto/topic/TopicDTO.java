@@ -21,7 +21,7 @@ import javax.persistence.Enumerated;
 @Getter
 @Setter
 @Builder
-public class TopicAgreg {
+public class TopicDTO {
 	@Id
 	private Integer topicId;
 	private String title;

@@ -1,24 +1,14 @@
 package com.dbc.vemserback.ecommerce.dto.topic;
 
-import java.time.LocalDate;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import com.dbc.vemserback.ecommerce.dto.PurchaseList.PurchaseDTO;
-
-import lombok.Data;
-
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class TopicCreateDTO {
-
-    private Integer userId;
-
-    private String title;
-
-    private LocalDate date;
-
-    private Double totalValue;
-
-    private String status;
-
-    List<PurchaseDTO> purchases;
+	private String title;
 }
