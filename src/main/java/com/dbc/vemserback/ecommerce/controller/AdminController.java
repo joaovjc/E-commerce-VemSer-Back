@@ -1,5 +1,7 @@
 package com.dbc.vemserback.ecommerce.controller;
 
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -42,7 +44,7 @@ public class AdminController {
     private final UserService userService;
 
 
-    @PostMapping("/adm-creat-user")
+    @PostMapping(path = "/adm-creat-user", consumes = {MULTIPART_FORM_DATA_VALUE})
     public UserLoginDto admCreateUser(@Valid @ModelAttribute(name = "data") UserAdmDto userAdmDTO, @RequestPart(name = "file",required = false) MultipartFile file, BindingResult bindingResult) throws BusinessRuleException {
         if(bindingResult.hasErrors()) {
             StringBuilder builder = new StringBuilder();

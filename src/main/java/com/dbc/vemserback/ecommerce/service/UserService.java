@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.dbc.vemserback.ecommerce.dto.*;
-import com.dbc.vemserback.ecommerce.dto.user.PictureDTO;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,6 +12,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dbc.vemserback.ecommerce.dto.LoginDTO;
+import com.dbc.vemserback.ecommerce.dto.UserAdmDto;
+import com.dbc.vemserback.ecommerce.dto.UserDTO;
+import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
+import com.dbc.vemserback.ecommerce.dto.UserPageDTO;
 import com.dbc.vemserback.ecommerce.entity.PictureEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.Groups;
@@ -46,12 +48,12 @@ public class UserService {
         user.setFullName(createDTO.getFullName());
         user.setGroupEntity(groupService.getById(createDTO.getGroups().getGroupId()));
         user.setPassword(new BCryptPasswordEncoder().encode(createDTO.getPassword()));
-        String picture = null;
         user.setProfileImage(file!=null?fileService.convertToByte(file):null);
         
         UserEntity savedUser = userRepository.save(user);
+        byte[] profileImage = savedUser.getProfileImage();
         
-        return UserLoginDto.builder().fullName(savedUser.getFullName()).username(user.getUsername()).profileImage(picture).build();
+        return UserLoginDto.builder().fullName(savedUser.getFullName()).username(user.getUsername()).profileImage(profileImage!=null?new String(profileImage):null).build();
 
     }
 
@@ -72,12 +74,6 @@ public class UserService {
                 Sort.Direction.ASC,
                 "fullName");
         Page<UserPageDTO> findAllOrOrderByFullName = userRepository.findAllOrOrderByFullName(pageRequest);
-        
-        findAllOrOrderByFullName.forEach(p->{
-        	PictureEntity findByUserId = this.pictureService.findByUserId(p.getUserId());
-        	p.setImage(findByUserId!=null?new String(findByUserId.getPicture()):null);
-        });
-
         return findAllOrOrderByFullName;
     }
 

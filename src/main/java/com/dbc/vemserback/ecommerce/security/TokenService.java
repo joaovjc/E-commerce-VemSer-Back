@@ -15,7 +15,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
-import com.dbc.vemserback.ecommerce.entity.PictureEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.service.PictureService;
@@ -56,17 +55,11 @@ public class TokenService {
                 .setExpiration(exp)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
-        
-        PictureEntity findByUserId = pictureService.findByUserId(user.getUserId());
-        byte[] picture = null;
-        if(findByUserId!=null) {
-        	 picture = findByUserId.getPicture();
-        }
        
         return UserLoginDto.builder()
         		.profile(user.getGroupEntity().getName()).username(user.getUsername())
         		.fullName(user.getFullName()).token(PREFIX + token)
-        		.profileImage(picture!=null?new String(picture):null)
+        		.profileImage(user.getProfileImage()!=null?new String(user.getProfileImage()):null)
         		.build();
     }
     
