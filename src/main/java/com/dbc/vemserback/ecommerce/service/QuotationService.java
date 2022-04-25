@@ -32,9 +32,10 @@ public class QuotationService {
         return quotationRepository.findAll().stream().map(quotation -> objectMapper.convertValue(quotation, QuotationDTO.class)).collect(java.util.stream.Collectors.toList());
     }
 
-    public QuotationEntity createQuotation(Integer topicId, Double preco, int userId) throws BusinessRuleException {
+    public boolean createQuotation(Integer topicId, Double preco, int userId) throws BusinessRuleException {
 
         TopicEntity topicEntity = topicService.topicById(topicId);
+        if(topicEntity.getStatus()!=StatusEnum.OPEN)throw new BusinessRuleException("the topic isnt open to cotations");
 
         UserEntity userEntity = userService.findById(userId);
 
@@ -50,9 +51,7 @@ public class QuotationService {
         save.setTopicId(topicId);
         save.setUserId(userId);
         
-//        QuotationCreateDTO
-        
-        return save;
+        return true;
     }
 
     //Manager
