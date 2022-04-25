@@ -27,7 +27,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/auth/**").permitAll()
-//                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/main-page/topic-by-status").hasRole("USER")
+                .antMatchers("/main-page/**").hasAnyRole("COLLABORATOR", "BUYER", "MANEGER", "FINANCIER", "ADMINISTRATOR")
+                .antMatchers("/admin/**").hasRole("ADMINISTRATOR")
+                .antMatchers("/buyer/**").hasRole("BUYER")
+                .antMatchers("/contributor/**").hasRole("COLLABORATOR")
+                .antMatchers("/financier/**").hasRole("FINANCIER")
+                .antMatchers("/Manager/**").hasRole("MANEGER")
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
     }

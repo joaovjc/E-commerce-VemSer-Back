@@ -94,6 +94,8 @@ public class TopicService {
 			return this.findAllByStatus(StatusEnum.OPEN, page);
 		}if(collect.contains("ROLE_FINANCIER")) {
 			return this.findAllByStatus(StatusEnum.MANAGER_APPROVED, page);
+		}if(collect.contains("ROLE_USER")&&collect.size()==1) {
+			return this.findAllByStatus(StatusEnum.CLOSED, 0);
 		}else {
 			return this.listAllTopicsByUserId(userId,page);
 		}

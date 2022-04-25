@@ -29,20 +29,16 @@ public class MainPageController {
 	private final ItemService purchaseService;
 	private final QuotationService quotationService;
 
-	// para todos
 	@GetMapping("/items/{topic-id}")
 	public List<ItemDTO> allPurchasesByTopicId(@PathVariable("topic-id") Integer topicId) {
 		return purchaseService.listPurchasesByTopicId(topicId);
 	}
 
-	// para todos
 	@GetMapping("/quotation/{topic-id}")
 	public List<QuotationByTopicDTO> getQuotationByTopic(@PathVariable("topic-id") Integer idTopic) throws BusinessRuleException {
 		return quotationService.quotationsByTopic(idTopic);
 	}
-
-	// TODO ->
-	// Topic Por status / usuario
+	
 	@GetMapping("/topic-by-status")
 	public Page<TopicDTO> allTopicsByStatus(@RequestParam int page) throws BusinessRuleException {
 		@SuppressWarnings("unchecked")
