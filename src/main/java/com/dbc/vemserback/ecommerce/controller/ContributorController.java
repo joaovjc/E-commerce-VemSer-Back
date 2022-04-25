@@ -58,9 +58,9 @@ public class ContributorController {
     }
     
     @DeleteMapping("/delete/{item-id}")
-    public void deleteById(@PathVariable(name = "topic-id") int idTopic) throws BusinessRuleException {
+    public void deleteById(@PathVariable(name = "item-id") int itemId) throws BusinessRuleException {
     	Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	this.purchaseService.deleteById(idTopic, Integer.parseInt((String) userb));
+    	this.purchaseService.deleteById(itemId, Integer.parseInt((String) userb));
     }
     
 }
