@@ -39,6 +39,9 @@ public class UserEntity implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "profile_image")
+    private byte[] profileImage;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(referencedColumnName = "group_id", name = "group_id")
