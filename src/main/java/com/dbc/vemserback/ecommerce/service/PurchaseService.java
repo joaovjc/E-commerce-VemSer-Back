@@ -47,5 +47,9 @@ public class PurchaseService {
 		}).collect(Collectors.toList());
 	}
 
+	public void deleteById(int idItem, int parseInt) {
+		this.purchaseRepository.deleteById(idItem);
+	}
+
 
 }

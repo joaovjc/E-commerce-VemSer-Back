@@ -17,7 +17,6 @@ import com.dbc.vemserback.ecommerce.dto.UserAdmDto;
 import com.dbc.vemserback.ecommerce.dto.UserDTO;
 import com.dbc.vemserback.ecommerce.dto.UserLoginDto;
 import com.dbc.vemserback.ecommerce.dto.UserPageDTO;
-import com.dbc.vemserback.ecommerce.entity.PictureEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;

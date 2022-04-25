@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,6 +54,12 @@ public class ContributorController {
     public void closeTopicById(@PathVariable(name = "topic-id") int idTopic) throws BusinessRuleException {
     	Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     	this.topicService.openTopic(idTopic, Integer.parseInt((String) userb));
+    }
+    
+    @DeleteMapping("/delete/{item-id}")
+    public void deleteById(@PathVariable(name = "topic-id") int idTopic) throws BusinessRuleException {
+    	Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	this.purchaseService.deleteById(idTopic, Integer.parseInt((String) userb));
     }
     
 }
