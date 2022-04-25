@@ -1,17 +1,17 @@
 package com.dbc.vemserback.ecommerce.controller;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbc.vemserback.ecommerce.entity.QuotationEntity;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.service.QuotationService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -22,7 +22,7 @@ public class BuyerController {
     private final QuotationService quotationService;
 
     @PostMapping("/create/{topic-id}")
-    public QuotationEntity create(@PathParam("topic-id") Integer topicId, @RequestBody Double preco) throws BusinessRuleException {
+    public QuotationEntity create(@PathVariable("topic-id") Integer topicId, @RequestParam Double preco) throws BusinessRuleException {
     	Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return quotationService.createQuotation(topicId, preco, Integer.parseInt((String) userb));
     }
