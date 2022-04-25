@@ -47,9 +47,15 @@ public class PurchaseService {
 		}).collect(Collectors.toList());
 	}
 
-	public void deleteById(int idItem, int parseInt) {
-		this.purchaseRepository.deleteById(idItem);
+	public void deleteById(int idItem, int userId) throws BusinessRuleException {
+		PurchaseEntity byId = this.getById(idItem);
+		if(byId.getTopicEntity().getUserId()!=userId)throw new BusinessRuleException("this item isnt from the autenticated user");
+		if(byId.getTopicEntity().getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("the topic was already closed for changes");
+		this.purchaseRepository.delete(byId);
 	}
-
+	
+	private PurchaseEntity getById(int idItem) throws BusinessRuleException {
+		return this.purchaseRepository.findById(idItem).orElseThrow(()-> new BusinessRuleException("item not found, please reload the page"));
+	}
 
 }
