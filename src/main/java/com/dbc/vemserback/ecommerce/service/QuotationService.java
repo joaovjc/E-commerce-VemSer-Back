@@ -54,31 +54,26 @@ public class QuotationService {
         return save;
     }
 
-    public QuotationDTO aproveQuotation(List<SimpleGrantedAuthority> authorities, Integer idQuotation) throws BusinessRuleException {
-        List<String> collect = authorities.stream().map(smp -> smp.getAuthority()).collect(Collectors.toList());
-
-        if(collect.contains("ROLE_MANEGER")) {
-            QuotationEntity quotationEntity = findQuotationById(idQuotation);
-            if (quotationsByIdTopic(quotationEntity.getTopicId())){
-                quotationEntity.setQuotationStatus(StatusEnum.MANAGER_APPROVED);
-                topicService.updateStatusToTopic(quotationEntity.getTopicId(), StatusEnum.MANAGER_APPROVED);
-                return objectMapper.convertValue(quotationRepository.save(quotationEntity), QuotationDTO.class);
-            }
+    //Manager
+    public QuotationDTO aproveQuotation(Integer idQuotation) throws BusinessRuleException {
+        QuotationEntity quotationEntity = findQuotationById(idQuotation);
+        if (quotationsByIdTopic(quotationEntity.getTopicId())){
+            quotationEntity.setQuotationStatus(StatusEnum.MANAGER_APPROVED);
+            topicService.updateStatusToTopic(quotationEntity.getTopicId(), StatusEnum.MANAGER_APPROVED);
+            return objectMapper.convertValue(quotationRepository.save(quotationEntity), QuotationDTO.class);
         }
         return null;
     }
 
-    public void reproveAllQuotations(List<SimpleGrantedAuthority> authorities, Integer topicId) throws BusinessRuleException {
-        List<String> collect = authorities.stream().map(smp -> smp.getAuthority()).collect(Collectors.toList());
-        if(collect.contains("ROLE_MANEGER")) {
-            if (quotationsByIdTopic(topicId)) {
-                List<QuotationEntity> quotationEntities = quotationRepository.findAllByTopicId(topicId);
-                quotationEntities.forEach(quotationEntity -> {
-                    quotationEntity.setQuotationStatus(StatusEnum.MANAGER_REPROVED);
-                });
-                quotationRepository.saveAll(quotationEntities);
-                topicService.updateStatusToTopic(topicId, StatusEnum.MANAGER_REPROVED);
-            }
+    //Manager
+    public void reproveAllQuotations(Integer topicId) throws BusinessRuleException {
+        if (quotationsByIdTopic(topicId)) {
+            List<QuotationEntity> quotationEntities = quotationRepository.findAllByTopicId(topicId);
+            quotationEntities.forEach(quotationEntity -> {
+                quotationEntity.setQuotationStatus(StatusEnum.MANAGER_REPROVED);
+            });
+            quotationRepository.saveAll(quotationEntities);
+            topicService.updateStatusToTopic(topicId, StatusEnum.MANAGER_REPROVED);
         }
     }
 
