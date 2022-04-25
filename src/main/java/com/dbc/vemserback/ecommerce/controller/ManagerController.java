@@ -21,16 +21,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ManagerController {
 	private final QuotationService quotationService;
-	
+
+    //Manager
 	@PostMapping("/aproveQuotation/{quotation-id}")
     public QuotationDTO aproveQuotation( @PathParam("quotation-id") Integer quotationId) throws BusinessRuleException {
-        List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        return quotationService.aproveQuotation(authorities, quotationId);
+       return quotationService.aproveQuotation(quotationId);
     }
 
+    //Manager
     @PostMapping("/reproveAllQuotations/{topic-id}")
-    public void reproveAllQuotations(List<SimpleGrantedAuthority> authorities, @PathParam("topic-id") Integer idTopic) throws BusinessRuleException {
-        quotationService.reproveAllQuotations(authorities, idTopic);
+    public void reproveAllQuotations(@PathParam("topic-id") Integer idTopic) throws BusinessRuleException {
+        quotationService.reproveAllQuotations(idTopic);
     }
 	
 }
