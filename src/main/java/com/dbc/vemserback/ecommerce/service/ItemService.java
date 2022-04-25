@@ -38,7 +38,7 @@ public class ItemService {
 		return ItemFullDTO.builder()
 				.description(save.getDescription())
 				.file(new String(save.getFile()))
-				.itemName(save.getFileName())
+				.itemName(save.getItemName())
 				.itemId(save.getPurchaseId())
 				.value(save.getValue()).build();
 	}
