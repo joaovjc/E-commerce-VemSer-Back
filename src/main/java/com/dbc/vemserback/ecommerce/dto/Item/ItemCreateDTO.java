@@ -1,4 +1,4 @@
-package com.dbc.vemserback.ecommerce.dto.PurchaseList;
+package com.dbc.vemserback.ecommerce.dto.Item;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

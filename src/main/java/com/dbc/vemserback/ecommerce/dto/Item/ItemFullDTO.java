@@ -1,20 +1,19 @@
-package com.dbc.vemserback.ecommerce.dto.PurchaseList;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+package com.dbc.vemserback.ecommerce.dto.Item;
 
 import java.math.BigDecimal;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
-public class ItemDTO {
+public class ItemFullDTO{
 	
+	private Integer itemId;
 	private String itemName;
 	private String description;
 	private BigDecimal value;

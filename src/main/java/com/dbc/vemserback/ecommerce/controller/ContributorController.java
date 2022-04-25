@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbc.vemserback.ecommerce.dto.PurchaseList.ItemCreateDTO;
+import com.dbc.vemserback.ecommerce.dto.Item.ItemCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.topic.TopicCreateDTO;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
-import com.dbc.vemserback.ecommerce.service.PurchaseService;
+import com.dbc.vemserback.ecommerce.service.ItemService;
 import com.dbc.vemserback.ecommerce.service.TopicService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ContributorController {
 	private final TopicService topicService;
-	private final PurchaseService purchaseService;
+	private final ItemService purchaseService;
 	
 	@PostMapping("/create-topic")
 	public Integer createTopic(@RequestBody TopicCreateDTO dto) throws BusinessRuleException {

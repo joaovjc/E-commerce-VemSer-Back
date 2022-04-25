@@ -4,15 +4,15 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.dbc.vemserback.ecommerce.dto.PurchaseList.ItemDTO;
-import com.dbc.vemserback.ecommerce.entity.TopicEntity;
-import com.dbc.vemserback.ecommerce.enums.StatusEnum;
-
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbc.vemserback.ecommerce.dto.PurchaseList.ItemCreateDTO;
+import com.dbc.vemserback.ecommerce.dto.Item.ItemCreateDTO;
+import com.dbc.vemserback.ecommerce.dto.Item.ItemDTO;
+import com.dbc.vemserback.ecommerce.dto.Item.ItemFullDTO;
 import com.dbc.vemserback.ecommerce.entity.PurchaseEntity;
+import com.dbc.vemserback.ecommerce.entity.TopicEntity;
+import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.post.PurchaseRepository;
 
@@ -20,12 +20,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class PurchaseService {
+public class ItemService {
 	private final PurchaseRepository purchaseRepository;
 	private final FileService fileService;
 	private final TopicService topicService;
 
-	public String createPurchase(ItemCreateDTO purchaseDTO, MultipartFile file, int idUser, Integer idTopic) throws BusinessRuleException {
+	public ItemFullDTO createPurchase(ItemCreateDTO purchaseDTO, MultipartFile file, int idUser, Integer idTopic) throws BusinessRuleException {
 		if(file==null)throw new BusinessRuleException("the item file cannot be null");
 		String originalFilename = file.getOriginalFilename();
 
@@ -33,8 +33,14 @@ public class PurchaseService {
 		if(topicEntity.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("the topic is not on creating status!!!");
 		PurchaseEntity build = PurchaseEntity.builder().itemName(purchaseDTO.getName()).description(purchaseDTO.getDescription())
 				.value(new BigDecimal(purchaseDTO.getPrice())).fileName(originalFilename).file(fileService.convertToByte(file)).topicId(idTopic).topicEntity(topicEntity).build();
-		purchaseRepository.save(build);
-		return "item adicionado com sucesso";
+		PurchaseEntity save = purchaseRepository.save(build);
+		
+		return ItemFullDTO.builder()
+				.description(save.getDescription())
+				.file(new String(save.getFile()))
+				.itemName(save.getFileName())
+				.itemId(save.getPurchaseId())
+				.value(save.getValue()).build();
 	}
 
 	public List<ItemDTO> listPurchasesByTopicId(Integer topicId) {

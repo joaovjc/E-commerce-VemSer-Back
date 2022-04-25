@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbc.vemserback.ecommerce.dto.PurchaseList.ItemDTO;
+import com.dbc.vemserback.ecommerce.dto.Item.ItemDTO;
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationByTopicDTO;
 import com.dbc.vemserback.ecommerce.dto.topic.TopicDTO;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
-import com.dbc.vemserback.ecommerce.service.PurchaseService;
+import com.dbc.vemserback.ecommerce.service.ItemService;
 import com.dbc.vemserback.ecommerce.service.QuotationService;
 import com.dbc.vemserback.ecommerce.service.TopicService;
 
@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MainPageController {
 	private final TopicService topicService;
-	private final PurchaseService purchaseService;
+	private final ItemService purchaseService;
 	private final QuotationService quotationService;
 
 	// para todos

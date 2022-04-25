@@ -2,17 +2,14 @@ package com.dbc.vemserback.ecommerce.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbc.vemserback.ecommerce.dto.user.LoginDTO;
 import com.dbc.vemserback.ecommerce.dto.user.UserCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.user.UserDTO;
 import com.dbc.vemserback.ecommerce.dto.user.UserLoginDto;
