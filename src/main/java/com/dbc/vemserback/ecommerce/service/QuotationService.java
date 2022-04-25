@@ -32,7 +32,7 @@ public class QuotationService {
         return quotationRepository.findAll().stream().map(quotation -> objectMapper.convertValue(quotation, QuotationDTO.class)).collect(java.util.stream.Collectors.toList());
     }
 
-    public QuotationEntity createQuotation(int topicId, Double preco, int userId) throws BusinessRuleException {
+    public QuotationEntity createQuotation(Integer topicId, Double preco, int userId) throws BusinessRuleException {
 
         TopicEntity topicEntity = topicService.topicById(topicId);
 

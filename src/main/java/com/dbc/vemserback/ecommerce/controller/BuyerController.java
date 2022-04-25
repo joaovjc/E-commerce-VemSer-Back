@@ -22,7 +22,7 @@ public class BuyerController {
     private final QuotationService quotationService;
 
     @PostMapping("/create/{topic-id}")
-    public QuotationEntity create(@PathParam("topic-id") int topicId, @RequestBody Double preco) throws BusinessRuleException {
+    public QuotationEntity create(@PathParam("topic-id") Integer topicId, @RequestBody Double preco) throws BusinessRuleException {
     	Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return quotationService.createQuotation(topicId, preco, Integer.parseInt((String) userb));
     }
