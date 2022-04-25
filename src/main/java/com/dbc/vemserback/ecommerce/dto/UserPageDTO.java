@@ -19,12 +19,17 @@ public class UserPageDTO {
     
     private String image;
 
-	public UserPageDTO(Integer userId, String fullName, String email, String groups) {
+	public UserPageDTO(Integer userId, String fullName, String email, String groups, byte[] image) {
 		super();
 		this.userId = userId;
 		this.fullName = fullName;
 		this.email = email;
 		this.groups = groups;
+		if(image != null) {
+			this.image = new String(image);
+		} else {
+			this.image = null;
+		}
 	}
     
     

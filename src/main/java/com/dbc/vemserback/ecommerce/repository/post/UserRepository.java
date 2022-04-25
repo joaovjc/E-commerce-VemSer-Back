@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 	Optional<UserEntity> findByEmail(String email);
 
-	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.UserPageDTO(u.userId, u.fullName, u.email, u.groupEntity.name) FROM USER_COMMERCE u")
+	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.UserPageDTO(u.userId, u.fullName, u.email, u.groupEntity.name, u.profileImage) FROM USER_COMMERCE u")
 	Page<UserPageDTO> findAllOrOrderByFullName(Pageable pageable);
 
 	List<UserEntity> getUserByFullName(String fullName);
