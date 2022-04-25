@@ -90,9 +90,8 @@ public class TopicService {
 		TopicEntity findById = this.findById(idTopic);
 		if(findById.getUserId()!=userId)throw new BusinessRuleException("The topic is not owned by you, thus you cannot change it!!!");
 		if(findById.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("the topic was already opened!!!");
-		BigDecimal bigDecimal = BigDecimal.ZERO;
-		findById.getPurchases().forEach(it->bigDecimal.add(it.getValue()));
-		findById.setTotalValue(bigDecimal);
+		double sum = findById.getPurchases().stream().mapToDouble(item->item.getValue().doubleValue()).sum();
+		findById.setTotalValue(new BigDecimal(sum));
 		findById.setStatus(StatusEnum.OPEN);
 		this.topicRepository.save(findById);
 	}
