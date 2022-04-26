@@ -28,7 +28,7 @@ CREATE TABLE ROLE_GROUP (
 insert into ROLE_COMMERCE(name)
 	values ('ROLE_COLLABORATOR'),
 	('ROLE_BUYER'),
-	('ROLE_MANEGER'),
+	('ROLE_MANAGER'),
 	('ROLE_FINANCIER'),
 	('ROLE_ADMINISTRATOR'),
 	('ROLE_USER');
@@ -36,7 +36,7 @@ insert into ROLE_COMMERCE(name)
 insert into group_commerce (name)
 values ('COLLABORATOR'),
 	('BUYER'),
-	('MANEGER'),
+	('MANAGER'),
 	('FINANCIER'),
 	('ADMINISTRATOR'),
 	('USER');

@@ -3,7 +3,7 @@ package com.dbc.vemserback.ecommerce.enums;
 public enum Groups {
     COLLABORATOR(1, "Collaborator"),
     BUYER(2, "Buyer"),
-    MANEGER(3, "Maneger"),
+    MANAGER(3, "Maneger"),
     FINANCIER(4, "Financier"),
     ADMINISTRATOR(5, "Administrator"),
     USER(6, "User");

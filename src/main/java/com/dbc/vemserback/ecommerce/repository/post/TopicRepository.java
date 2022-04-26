@@ -1,6 +1,7 @@
 package com.dbc.vemserback.ecommerce.repository.post;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,11 @@ public interface TopicRepository extends JpaRepository<TopicEntity, Integer> {
 
 	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.topic.TopicDTO(t.topicId, t.title, t.date, t.totalValue, t.status) FROM topic t WHERE t.status = ?1")
 	Page<TopicDTO> findAllByStatus(StatusEnum enumTopic, Pageable pageable);
-
+	
+	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.topic.TopicDTO(t.topicId, t.title, t.date, t.totalValue, t.status) FROM topic t WHERE t.title = ?1")
+	Page<TopicDTO> findAllByTitle(String title, PageRequest pageRequest);
+	
+	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.topic.TopicDTO(t.topicId, t.title, t.date, t.totalValue, t.status) FROM topic t WHERE t.status <> ?1")
+	Page<TopicDTO> findAllByStatusDifferent(StatusEnum enumTopic, PageRequest pageRequest);
 
 }

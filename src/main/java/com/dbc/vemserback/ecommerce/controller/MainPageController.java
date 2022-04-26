@@ -39,11 +39,18 @@ public class MainPageController {
 		return quotationService.quotationsByTopic(idTopic);
 	}
 	
-	@GetMapping("/topic-by-status")
-	public Page<TopicDTO> allTopicsByStatus(@RequestParam int page) throws BusinessRuleException {
+	@GetMapping("/topics")
+	public Page<TopicDTO> allTopics(@RequestParam int page) throws BusinessRuleException {
 		@SuppressWarnings("unchecked")
 		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return this.topicService.getTopics(authorities, Integer.parseInt((String) userb), page);
+	}
+	
+	@GetMapping("/topic-by-titulo")
+	public Page<TopicDTO> allTopicsByTitle(@RequestParam int page,@RequestParam String title) throws BusinessRuleException {
+		@SuppressWarnings("unchecked")
+		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		return this.topicService.getTopicsByTitle(authorities, title, page);
 	}
 }

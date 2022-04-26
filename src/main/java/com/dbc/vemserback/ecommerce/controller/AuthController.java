@@ -44,7 +44,7 @@ public class AuthController {
     public UserLoginDto auth(@RequestBody @Valid LoginDTO loginDTO) throws BusinessRuleException {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(
-                		loginDTO.getEmail(),
+                		loginDTO.getUsername(),
                 		loginDTO.getPassword()
                 );
 

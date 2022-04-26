@@ -28,12 +28,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/auth/**").permitAll()
 //                .antMatchers("/main-page/topic-by-status").hasRole("USER")
-//                .antMatchers("/main-page/**").hasAnyRole("COLLABORATOR", "BUYER", "MANEGER", "FINANCIER", "ADMINISTRATOR")
+//                .antMatchers("/main-page/**").hasAnyRole("COLLABORATOR", "BUYER", "MANAGER", "FINANCIER", "ADMINISTRATOR")
 //                .antMatchers("/admin/**").hasRole("ADMINISTRATOR")
 //                .antMatchers("/buyer/**").hasRole("BUYER")
 //                .antMatchers("/contributor/**").hasRole("COLLABORATOR")
 //                .antMatchers("/financier/**").hasRole("FINANCIER")
-//                .antMatchers("/Manager/**").hasRole("MANEGER")
+//                .antMatchers("/Manager/**").hasRole("MANAGER")
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
     }

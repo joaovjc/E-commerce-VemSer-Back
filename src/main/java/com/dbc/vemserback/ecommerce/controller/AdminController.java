@@ -7,9 +7,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,12 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.user.UserCreateDTO;
-import com.dbc.vemserback.ecommerce.dto.user.UserLoginDto;
 import com.dbc.vemserback.ecommerce.dto.user.UserPageDTO;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
-import com.dbc.vemserback.ecommerce.security.TokenService;
 import com.dbc.vemserback.ecommerce.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,31 +33,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Validated
 public class AdminController {
-
-    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
     private final UserService userService;
 
 
     @PostMapping(path = "/adm-creat-user", consumes = {MULTIPART_FORM_DATA_VALUE})
-    public UserLoginDto admCreateUser(@Valid @ModelAttribute(name = "data") UserCreateDTO userCreateDTO, @RequestPart(name = "file",required = false) MultipartFile file, BindingResult bindingResult) throws BusinessRuleException {
+    public void admCreateUser(@Valid @ModelAttribute(name = "data") UserCreateDTO userCreateDTO, @RequestPart(name = "file",required = false) MultipartFile file, BindingResult bindingResult) throws BusinessRuleException {
         if(bindingResult.hasErrors()) {
             StringBuilder builder = new StringBuilder();
             bindingResult.getAllErrors().forEach(err -> builder.append(err.getDefaultMessage()));
             throw new BusinessRuleException(builder.toString());
         }
-
-        UserLoginDto createUser = userService.createUser(userCreateDTO, file);
-
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(
-                        createUser.getUsername(),
-                        userCreateDTO.getPassword()
-                );
-
-        Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        UserLoginDto token = tokenService.getToken(authenticate,createUser);
-        return token;
+        userService.createUser(userCreateDTO, file);
     }
 
     @PutMapping("/adm-set-group-user")
