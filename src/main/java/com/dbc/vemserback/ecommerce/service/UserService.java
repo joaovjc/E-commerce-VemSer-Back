@@ -34,7 +34,6 @@ public class UserService {
     	if(this.findByEmail(createDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
     	
         UserEntity user = new UserEntity();
-        
         user.setEmail(createDTO.getEmail());
         user.setFullName(createDTO.getFullName());
         user.setGroupEntity(groupService.getById(createDTO.getGroups().getGroupId()));
