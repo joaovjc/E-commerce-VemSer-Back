@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
+@Builder
 @Getter
 @Setter
 @Entity(name = "USER_COMMERCE")
