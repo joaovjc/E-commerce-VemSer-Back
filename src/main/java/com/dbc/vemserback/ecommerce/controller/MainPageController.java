@@ -47,11 +47,10 @@ public class MainPageController {
 		return this.topicService.getTopics(authorities, Integer.parseInt((String) userb), page);
 	}
 	
-	@GetMapping("/topic-by-titulo")
-	public Page<TopicDTO> allTopicsByTitle(@RequestParam int page,@RequestParam String title) throws BusinessRuleException {
+	@GetMapping("/topic-by-titulo/{title}")
+	public Page<TopicDTO> allTopicsByTitle(@RequestParam int page,@PathVariable("title") String title) throws BusinessRuleException {
 		@SuppressWarnings("unchecked")
 		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		return this.topicService.getTopicsByTitle(authorities, title, page);
-		
 	}
 }
