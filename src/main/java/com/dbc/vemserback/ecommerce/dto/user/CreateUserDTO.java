@@ -20,7 +20,7 @@ public class CreateUserDTO{
     private String fullName;
 	@NotNull
 	@Email
-    private String email;
+    private String username;
 	@NotNull
 	@ValidPassword
     private String password;

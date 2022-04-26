@@ -81,6 +81,7 @@ public class TopicService {
 		TopicEntity findById = this.findById(idTopic);
 		if(findById.getUserId()!=userId)throw new BusinessRuleException("The topic is not owned by you, thus you cannot change it!!!");
 		if(findById.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("the topic was already opened!!!");
+		if(findById.getPurchases().size()<1)throw new BusinessRuleException("the topic must have at least one");
 		double sum = findById.getPurchases().stream().mapToDouble(item->item.getValue().doubleValue()).sum();
 		findById.setTotalValue(new BigDecimal(sum));
 		findById.setStatus(StatusEnum.OPEN);
@@ -89,17 +90,26 @@ public class TopicService {
 	
 	public Page<TopicDTO> getTopics(List<SimpleGrantedAuthority> authorities, int userId, int page) throws BusinessRuleException {
 		List<String> collect = authorities.stream().map(smp -> smp.getAuthority()).collect(Collectors.toList());
-		if(collect.contains("ROLE_BUYER") || collect.contains("ROLE_MANEGER")) {
+		if(collect.contains("ROLE_MANEGER")) {
 			return this.findAllByStatus(StatusEnum.OPEN, page);
-		}if(collect.contains("ROLE_FINANCIER")) {
+		}else if(collect.contains("ROLE_FINANCIER")) {
 			return this.findAllByStatus(StatusEnum.MANAGER_APPROVED, page);
-		}if(collect.contains("ROLE_USER")&&collect.size()==1) {
-			return this.findAllByStatus(StatusEnum.CLOSED, 0);
+		}else if(collect.contains("ROLE_BUYER")) {
+			return this.findAllByDifferenStatus(StatusEnum.CREATING, page);
 		}else {
 			return this.listAllTopicsByUserId(userId,page);
 		}
 	}
 	
+	private Page<TopicDTO> findAllByDifferenStatus(StatusEnum enumTopic, int page) {
+		PageRequest pageRequest = PageRequest.of(
+                page,
+                10,
+                Sort.Direction.ASC,
+                "title");
+		return this.topicRepository.findAllByStatusDifferent(enumTopic, pageRequest);
+	}
+
 	private Page<TopicDTO> findAllByStatus(StatusEnum enumTopic, int page) throws BusinessRuleException{
 		PageRequest pageRequest = PageRequest.of(
                 page,
