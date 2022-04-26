@@ -15,7 +15,7 @@ public class FinancierController {
 
 
     @PutMapping("/update-status/{topicId}/{status}")
-    public String updateFinancierTopic(@RequestParam Integer topicId, @RequestParam Boolean status) throws BusinessRuleException {
+    public String updateFinancierTopic(@PathVariable Integer topicId, @PathVariable Boolean status) throws BusinessRuleException {
         return topicService.updateFinancierTopic(topicId, status);
     }
 }
