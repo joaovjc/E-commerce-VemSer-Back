@@ -13,7 +13,7 @@ public class LoginDTO {
 
 	@ApiModelProperty(value = "email", example = "teste@mail.com", required = true)
 	@NotNull
-	private String email;
+	private String username;
 
 	@ApiModelProperty(value = "password", example = "String@123", required = true)
 	@NotEmpty
