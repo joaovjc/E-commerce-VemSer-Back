@@ -18,6 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
+import static com.dbc.vemserback.ecommerce.enums.StatusEnum.MANAGER_APPROVED;
+
 @Service
 @RequiredArgsConstructor
 public class QuotationService {
@@ -54,33 +56,24 @@ public class QuotationService {
         return true;
     }
 
-    //Manager
-    public QuotationDTO aproveQuotation(Integer idQuotation) throws BusinessRuleException {
-        QuotationEntity quotationEntity = findQuotationById(idQuotation);
-        if (quotationsByIdTopic(quotationEntity.getTopicId())){
-            quotationEntity.setQuotationStatus(StatusEnum.MANAGER_APPROVED);
-            topicService.updateStatusToTopic(quotationEntity.getTopicId(), StatusEnum.MANAGER_APPROVED);
-            return objectMapper.convertValue(quotationRepository.save(quotationEntity), QuotationDTO.class);
-        }
-        return null;
-    }
-
-    //Manager
-    public void reproveAllQuotations(Integer topicId) throws BusinessRuleException {
-        if (quotationsByIdTopic(topicId)) {
-            List<QuotationEntity> quotationEntities = quotationRepository.findAllByTopicId(topicId);
-            quotationEntities.forEach(quotationEntity -> {
-                quotationEntity.setQuotationStatus(StatusEnum.MANAGER_REPROVED);
-            });
-            quotationRepository.saveAll(quotationEntities);
-            topicService.updateStatusToTopic(topicId, StatusEnum.MANAGER_REPROVED);
-        }
-    }
-
-    public Boolean quotationsByIdTopic(Integer topicId) throws BusinessRuleException {
+    public List<QuotationEntity> managerAproveOrReproveTopic(Integer topicId, Integer quotationId, Boolean flag) throws BusinessRuleException {
         TopicEntity topic = topicService.topicById(topicId);
-        if(topic.getStatus()!=StatusEnum.OPEN) throw new BusinessRuleException("Topic not open");
-        return topic.getQuotations().size() >= 2;
+
+        if(topic.getStatus()!=StatusEnum.OPEN){throw new BusinessRuleException("Topic not open");}
+        if(topic.getQuotations().size()<2){throw new BusinessRuleException("Topic does not have two quotations");}
+            List<QuotationEntity> quotationEntities = topic.getQuotations();
+
+        quotationEntities.forEach(quotationEntity -> {
+            quotationEntity.setQuotationStatus(StatusEnum.MANAGER_REPROVED);}
+        );
+            if (flag){
+                quotationEntities.stream().filter(quotationEntity -> quotationEntity.getQuotationId().equals(quotationId)
+                ).findFirst().orElseThrow((() -> new BusinessRuleException("Quotation not found"))).setQuotationStatus(MANAGER_APPROVED);
+                topic.setStatus(MANAGER_APPROVED);
+            } else {topic.setStatus(StatusEnum.MANAGER_REPROVED);}
+            topic.setQuotations(quotationEntities);
+            this.topicService.save(topic);
+        return quotationEntities;
     }
 
     public List<QuotationByTopicDTO> quotationsByTopic(Integer topicId) throws BusinessRuleException {
@@ -88,7 +81,7 @@ public class QuotationService {
         return topic.getQuotations().stream().map(quotation -> objectMapper.convertValue(quotation, QuotationByTopicDTO.class)).collect(Collectors.toList());
     }
 
-    private QuotationEntity findQuotationById(Integer quotationId) throws BusinessRuleException {
+    public QuotationEntity findQuotationById(Integer quotationId) throws BusinessRuleException {
         return quotationRepository.findById(quotationId).orElseThrow((() -> new BusinessRuleException("Quotation not found")));
     }
 
