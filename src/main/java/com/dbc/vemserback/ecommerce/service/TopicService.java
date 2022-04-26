@@ -90,7 +90,7 @@ public class TopicService {
 	
 	public Page<TopicDTO> getTopics(List<SimpleGrantedAuthority> authorities, int userId, int page) throws BusinessRuleException {
 		List<String> collect = authorities.stream().map(smp -> smp.getAuthority()).collect(Collectors.toList());
-		if(collect.contains("ROLE_MANEGER")) {
+		if(collect.contains("ROLE_MANAGER")) {
 			return this.findAllByStatus(StatusEnum.OPEN, page);
 		}else if(collect.contains("ROLE_FINANCIER")) {
 			return this.findAllByStatus(StatusEnum.MANAGER_APPROVED, page);
