@@ -104,7 +104,7 @@ public class TopicService {
 	private Page<TopicDTO> findAllByDifferenStatus(StatusEnum enumTopic, int page) {
 		PageRequest pageRequest = PageRequest.of(
                 page,
-                10,
+                3,
                 Sort.Direction.ASC,
                 "title");
 		return this.topicRepository.findAllByStatusDifferent(enumTopic, pageRequest);
@@ -113,7 +113,7 @@ public class TopicService {
 	private Page<TopicDTO> findAllByStatus(StatusEnum enumTopic, int page) throws BusinessRuleException{
 		PageRequest pageRequest = PageRequest.of(
                 page,
-                10,
+                3,
                 Sort.Direction.ASC,
                 "title");
 		return this.topicRepository.findAllByStatus(enumTopic, pageRequest);
@@ -126,7 +126,7 @@ public class TopicService {
 	public Page<TopicDTO> getTopicsByTitle(List<SimpleGrantedAuthority> authorities, String title, int page) {
 		PageRequest pageRequest = PageRequest.of(
                 page,
-                10,
+                3,
                 Sort.Direction.ASC,
                 "title");
 		return this.topicRepository.findAllByTitle(title, pageRequest);
