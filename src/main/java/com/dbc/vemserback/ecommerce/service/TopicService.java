@@ -32,6 +32,7 @@ public class TopicService {
 	private final UserService userService;
 
 	public Integer createTopic(TopicCreateDTO dto, Integer userId) throws BusinessRuleException {
+		if (dto.getTitle()==null) throw new BusinessRuleException("Topic name cannot be null");
 		UserEntity user = userService.findById(userId);
 		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.valueOf(StatusEnum.CREATING.name()))
 				.title(dto.getTitle()).totalValue(BigDecimal.ZERO).user(user)
