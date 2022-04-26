@@ -75,7 +75,6 @@ public class TopicService {
 			topicRepository.save(topic);
 			return "Topic financially reproved";
 		}
-
 	}
 
 	public void openTopic(int idTopic, int userId) throws BusinessRuleException {
@@ -112,6 +111,15 @@ public class TopicService {
 	
 	private TopicEntity findById(int idTopic) throws BusinessRuleException {
 		return this.topicRepository.findById(idTopic).orElseThrow(()->new BusinessRuleException("The topic was not found"));
+	}
+
+	public Page<TopicDTO> getTopicsByTitle(List<SimpleGrantedAuthority> authorities, String title, int page) {
+		PageRequest pageRequest = PageRequest.of(
+                page,
+                10,
+                Sort.Direction.ASC,
+                "title");
+		return this.topicRepository.findAllByTitle(title, pageRequest);
 	}
 
 }
