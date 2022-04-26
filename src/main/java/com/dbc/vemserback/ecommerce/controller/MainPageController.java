@@ -52,5 +52,6 @@ public class MainPageController {
 		@SuppressWarnings("unchecked")
 		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		return this.topicService.getTopicsByTitle(authorities, title, page);
+		
 	}
 }
