@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationByTopicDTO;
@@ -76,9 +77,14 @@ public class QuotationService {
         return quotationEntities;
     }
 
-    public List<QuotationByTopicDTO> quotationsByTopic(Integer topicId) throws BusinessRuleException {
+    public List<QuotationByTopicDTO> quotationsByTopic(Integer topicId, List<SimpleGrantedAuthority> authorities) throws BusinessRuleException {
         TopicEntity topic = topicService.topicById(topicId);
-        return topic.getQuotations().stream().map(quotation -> objectMapper.convertValue(quotation, QuotationByTopicDTO.class)).collect(Collectors.toList());
+        List<String> collect = authorities.stream().map(smp -> smp.getAuthority()).collect(Collectors.toList());
+        if(collect.contains("ROLE_FINANCIER")) {
+        	return this.quotationRepository.findAllByTopicIdWhereStatusApproved(topicId);
+        }else {
+        	return topic.getQuotations().stream().map(quotation -> objectMapper.convertValue(quotation, QuotationByTopicDTO.class)).collect(Collectors.toList());
+    	}
     }
 
     public QuotationEntity findQuotationById(Integer quotationId) throws BusinessRuleException {

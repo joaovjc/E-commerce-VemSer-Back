@@ -36,7 +36,9 @@ public class MainPageController {
 
 	@GetMapping("/quotation/{topic-id}")
 	public List<QuotationByTopicDTO> getQuotationByTopic(@PathVariable("topic-id") Integer idTopic) throws BusinessRuleException {
-		return quotationService.quotationsByTopic(idTopic);
+		@SuppressWarnings("unchecked")
+		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		return quotationService.quotationsByTopic(idTopic, authorities);
 	}
 	
 	@GetMapping("/topics")
