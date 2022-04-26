@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.dbc.vemserback.ecommerce.dto.topic.TopicCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.topic.TopicDTO;
-import com.dbc.vemserback.ecommerce.dto.topic.TopicFinancierDTO;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
@@ -133,4 +132,7 @@ public class TopicService {
 		return this.topicRepository.findAllByTitle(title, pageRequest);
 	}
 
+	public void save(TopicEntity topic) {
+		this.topicRepository.save(topic);
+	}
 }

@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.service.QuotationService;
 
@@ -20,14 +19,15 @@ public class ManagerController {
 
     //Manager
 	@PostMapping("/aproveQuotation/{quotation-id}")
-    public QuotationDTO aproveQuotation( @PathVariable("quotation-id") Integer quotationId) throws BusinessRuleException {
-       return quotationService.aproveQuotation(quotationId);
+    public void aproveQuotation( @PathVariable("quotation-id") Integer quotationId) throws BusinessRuleException {
+        Integer topicId = quotationService.findQuotationById(quotationId).getTopicId();
+        quotationService.managerAproveOrReproveTopic(topicId, quotationId, true);
     }
 
     //Manager
     @PutMapping("/reproveAllQuotations/{topic-id}")
     public void reproveAllQuotations(@PathVariable("topic-id") Integer idTopic) throws BusinessRuleException {
-        quotationService.reproveAllQuotations(idTopic);
+        quotationService.managerAproveOrReproveTopic(idTopic, null, false);
     }
 	
 }
