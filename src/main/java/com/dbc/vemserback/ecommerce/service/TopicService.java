@@ -57,7 +57,7 @@ public class TopicService {
 	public Page<TopicDTO> listAllTopicsByUserId(int idUser, int page) {
 		PageRequest pageRequest = PageRequest.of(
                 page,
-                10,
+                3,
                 Sort.Direction.ASC,
                 "title");
 		return topicRepository.findAllByUserId(idUser, pageRequest);
