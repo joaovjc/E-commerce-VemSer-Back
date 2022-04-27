@@ -38,11 +38,9 @@ public class TopicService {
 				.userId(user.getUserId()).build();
 		
 		entity = topicRepository.save(entity);
-
 		return entity.getTopicId();
 	}
 
-	//todo generalizar
 	public TopicCreateDTO updateStatusToTopic(Integer idTopic, StatusEnum status) throws BusinessRuleException {
 		TopicEntity topic = topicRepository.findById(idTopic).orElseThrow((() -> new BusinessRuleException("Topic not found")));
 		topic.setStatus(status);
@@ -63,7 +61,6 @@ public class TopicService {
 		return topicRepository.findAllByUserId(idUser, pageRequest);
 	}
 
-	//todo generalizar
 	public String updateFinancierTopic(Integer topicId, Boolean status) throws BusinessRuleException {
 		TopicEntity topic = topicRepository.findById(topicId).orElseThrow((() -> new BusinessRuleException("Topic not found")));
 		if (status) {
