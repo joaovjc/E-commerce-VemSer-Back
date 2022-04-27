@@ -79,7 +79,7 @@ public class UserService {
 	}
 
 
-    protected UserEntity findById(Integer userId) throws BusinessRuleException {
+    public UserEntity findById(Integer userId) throws BusinessRuleException {
         return userRepository.findById(userId).orElseThrow(() -> new BusinessRuleException("Usuário não encontrado"));
     }
 }
