@@ -36,7 +36,7 @@ public class TopicService {
 		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.valueOf(StatusEnum.CREATING.name()))
 				.title(dto.getTitle()).totalValue(BigDecimal.ZERO).user(user)
 				.userId(user.getUserId()).build();
-
+		
 		entity = topicRepository.save(entity);
 
 		return entity.getTopicId();

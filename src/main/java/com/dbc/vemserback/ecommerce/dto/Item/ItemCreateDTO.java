@@ -1,5 +1,10 @@
 package com.dbc.vemserback.ecommerce.dto.Item;
 
+import java.math.BigDecimal;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +15,11 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class ItemCreateDTO {
+	@NotNull
+	@NotEmpty
 	private String name;
+	@NotNull
 	private String description;
-	private Double price;
+	@NotNull
+	private BigDecimal price;
 }
