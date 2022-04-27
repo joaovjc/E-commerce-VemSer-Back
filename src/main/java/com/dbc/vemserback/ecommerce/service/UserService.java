@@ -61,7 +61,7 @@ public class UserService {
     public Page<UserPageDTO> listUsersForAdmin(int page) {
         PageRequest pageRequest = PageRequest.of(
                 page,
-                20,
+                5,
                 Sort.Direction.ASC,
                 "fullName");
         Page<UserPageDTO> findAllOrOrderByFullName = userRepository.findAllOrOrderByFullName(pageRequest);

@@ -43,7 +43,7 @@ public interface Admin {
 //			@ApiResponse(code = 403, message = "you dont have the permission to create an user"),
 //			@ApiResponse(code = 500, message = "One exception was throwed") 
 //	})
-	public Page<UserPageDTO> admGetAllUsers(int page);
+	public Page<UserPageDTO> admGetAllUsers(@RequestParam int page);
 	
 	@ApiOperation(value = "Recives the full name or a part of it of the User")
 	@ApiResponses(value = { 
@@ -51,5 +51,5 @@ public interface Admin {
 			@ApiResponse(code = 403, message = "you dont have the permission to create an user"),
 			@ApiResponse(code = 500, message = "One exception was throwed") 
 	})
-	public List<UserPageDTO> admGetAllUsersByFullName(String nome);
+	public List<UserPageDTO> admGetAllUsersByFullName(@RequestParam String nome);
 }

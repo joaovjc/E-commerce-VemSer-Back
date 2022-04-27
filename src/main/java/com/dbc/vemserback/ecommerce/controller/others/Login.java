@@ -1,6 +1,11 @@
 package com.dbc.vemserback.ecommerce.controller.others;
 
+import javax.validation.Valid;
+
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.user.CreateUserDTO;
@@ -20,7 +25,7 @@ public interface Login {
 			@ApiResponse(code = 403, message = "user or login are wrong"),
 			@ApiResponse(code = 500, message = "One exception was throwed") 
 	})
-	public UserLoginDto auth(LoginDTO loginDTO) throws BusinessRuleException;
+	public UserLoginDto auth(@RequestBody @Valid LoginDTO loginDTO) throws BusinessRuleException;
 	
 	@ApiOperation(value = "Recives an user")
 	@ApiResponses(value = { 
@@ -28,7 +33,7 @@ public interface Login {
 			@ApiResponse(code = 403, message = "user or login are wrong"),
 			@ApiResponse(code = 500, message = "One exception was throwed") 
 	})
-	public UserLoginDto signUp(CreateUserDTO createDTO, MultipartFile file, BindingResult bindingResult)
+	public UserLoginDto signUp(@Valid @ModelAttribute(name = "data") CreateUserDTO createDTO, @RequestPart(name = "file",required = false) MultipartFile file, BindingResult bindingResult)
 			throws BusinessRuleException;
 
 }
