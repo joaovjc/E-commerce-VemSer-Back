@@ -45,15 +45,14 @@ public class QuotationService {
         QuotationEntity build = QuotationEntity.builder()
                 .quotationPrice(new BigDecimal(preco))
                 .quotationStatus(StatusEnum.OPEN)
+                .topicId(topicId)
+                .userId(userId)
                 .topic(topicEntity)
                 .userEntity(userEntity)
                 .build();
 
-        QuotationEntity save = quotationRepository.save(build);
-        
-        save.setTopicId(topicId);
-        save.setUserId(userId);
-        
+        quotationRepository.save(build);
+
         return true;
     }
 
