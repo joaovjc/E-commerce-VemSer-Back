@@ -32,6 +32,7 @@ public class TopicService {
 
 	public Integer createTopic(TopicCreateDTO dto, Integer userId) throws BusinessRuleException {
 		if (dto.getTitle()==null) throw new BusinessRuleException("Topic name cannot be null");
+		if(topicRepository.findByTitle(dto.getTitle())!=null)throw new BusinessRuleException("Topic name already exists");
 		UserEntity user = userService.findById(userId);
 		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.valueOf(StatusEnum.CREATING.name()))
 				.title(dto.getTitle()).totalValue(BigDecimal.ZERO).user(user)
@@ -46,10 +47,10 @@ public class TopicService {
 		return topicRepository.findById(topicId).orElseThrow((() -> new BusinessRuleException("Topic not found")));
 	}
 	
-	public Page<TopicDTO> listAllTopicsByUserId(int idUser, int page) {
+	public Page<TopicDTO> listAllTopicsByUserId(int idUser, int page, Integer topics) {
 		PageRequest pageRequest = PageRequest.of(
                 page,
-                3,
+                ((topics==null)?4:topics),
                 Sort.Direction.ASC,
                 "title");
 		return topicRepository.findAllByUserId(idUser, pageRequest);
@@ -79,32 +80,32 @@ public class TopicService {
 		this.topicRepository.save(findById);
 	}
 	
-	public Page<TopicDTO> getTopics(List<SimpleGrantedAuthority> authorities, int userId, int page) throws BusinessRuleException {
+	public Page<TopicDTO> getTopics(List<SimpleGrantedAuthority> authorities, int userId, int page, Integer topics) throws BusinessRuleException {
 		List<String> collect = authorities.stream().map(smp -> smp.getAuthority()).collect(Collectors.toList());
 		if(collect.contains("ROLE_MANAGER")) {
-			return this.findAllByStatus(StatusEnum.OPEN, page);
+			return this.findAllByStatus(StatusEnum.OPEN, page, topics);
 		}else if(collect.contains("ROLE_FINANCIER")) {
-			return this.findAllByStatus(StatusEnum.MANAGER_APPROVED, page);
+			return this.findAllByStatus(StatusEnum.MANAGER_APPROVED, page, topics);
 		}else if(collect.contains("ROLE_BUYER")) {
-			return this.findAllByDifferenStatus(StatusEnum.CREATING, page);
+			return this.findAllByDifferenStatus(StatusEnum.CREATING, page, topics);
 		}else {
-			return this.listAllTopicsByUserId(userId,page);
+			return this.listAllTopicsByUserId(userId,page, topics);
 		}
 	}
 	
-	private Page<TopicDTO> findAllByDifferenStatus(StatusEnum enumTopic, int page) {
+	private Page<TopicDTO> findAllByDifferenStatus(StatusEnum enumTopic, int page, Integer topics) {
 		PageRequest pageRequest = PageRequest.of(
                 page,
-                3,
+                ((topics==null)?4:topics),
                 Sort.Direction.ASC,
                 "title");
 		return this.topicRepository.findAllByStatusDifferent(enumTopic, pageRequest);
 	}
 
-	private Page<TopicDTO> findAllByStatus(StatusEnum enumTopic, int page) throws BusinessRuleException{
+	private Page<TopicDTO> findAllByStatus(StatusEnum enumTopic, int page, Integer topics) throws BusinessRuleException{
 		PageRequest pageRequest = PageRequest.of(
                 page,
-                3,
+               ((topics==null)?4:topics),
                 Sort.Direction.ASC,
                 "title");
 		return this.topicRepository.findAllByStatus(enumTopic, pageRequest);
@@ -114,17 +115,17 @@ public class TopicService {
 		return this.topicRepository.findById(idTopic).orElseThrow(()->new BusinessRuleException("The topic was not found"));
 	}
 
-//	public Page<TopicDTO> getTopicsByTitle(List<SimpleGrantedAuthority> authorities, String title, int page) {
-//		PageRequest pageRequest = PageRequest.of(
-//                page,
-//                3,
-//                Sort.Direction.ASC,
-//                "title");
-//		return this.topicRepository.findAllByTitle(title, pageRequest);
-//	}
-	public List<TopicDTO> getTopicsByTitle(List<SimpleGrantedAuthority> authorities, String title) {
-		return this.topicRepository.findAllByTitle(title);
+	public Page<TopicDTO> getTopicsByTitle(List<SimpleGrantedAuthority> authorities, String title, int page) {
+		PageRequest pageRequest = PageRequest.of(
+                page,
+                3,
+                Sort.Direction.ASC,
+                "title");
+		return this.topicRepository.findAllByTitle(title, pageRequest);
 	}
+//	public List<TopicDTO> getTopicsByTitle(List<SimpleGrantedAuthority> authorities, String title) {
+//		return this.topicRepository.findAllByTitle(title);
+//	}
 
 	public void save(TopicEntity topic) {
 		this.topicRepository.save(topic);

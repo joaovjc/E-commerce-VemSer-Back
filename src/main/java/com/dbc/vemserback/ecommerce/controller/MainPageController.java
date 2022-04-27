@@ -42,24 +42,24 @@ public class MainPageController {
 	}
 	
 	@GetMapping("/topics")
-	public Page<TopicDTO> allTopics(@RequestParam int page) throws BusinessRuleException {
+	public Page<TopicDTO> allTopics(@RequestParam int page, @RequestParam(required = false) Integer topics) throws BusinessRuleException {
 		@SuppressWarnings("unchecked")
 		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return this.topicService.getTopics(authorities, Integer.parseInt((String) userb), page);
+		return this.topicService.getTopics(authorities, Integer.parseInt((String) userb), page, topics);
+	}
+	
+	@GetMapping("/topic-by-titulo/{title}")
+	public Page<TopicDTO> allTopicsByTitle(@RequestParam int page,@PathVariable("title") String title) throws BusinessRuleException {
+		@SuppressWarnings("unchecked")
+		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+		return this.topicService.getTopicsByTitle(authorities, title, page);
 	}
 	
 //	@GetMapping("/topic-by-titulo/{title}")
-//	public List<TopicDTO> allTopicsByTitle(@RequestParam int page,@PathVariable("title") String title) throws BusinessRuleException {
+//	public List<TopicDTO> allTopicsByTitle(@PathVariable("title") String title) throws BusinessRuleException {
 //		@SuppressWarnings("unchecked")
 //		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-//		return this.topicService.getTopicsByTitle(authorities, title, page);
+//		return this.topicService.getTopicsByTitle(authorities, title);
 //	}
-	
-	@GetMapping("/topic-by-titulo/{title}")
-	public List<TopicDTO> allTopicsByTitle(@PathVariable("title") String title) throws BusinessRuleException {
-		@SuppressWarnings("unchecked")
-		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-		return this.topicService.getTopicsByTitle(authorities, title);
-	}
 }

@@ -58,24 +58,29 @@ public class UserService {
 		return userRepository.findByEmail(email);
 	}
 
-    public Page<UserPageDTO> listUsersForAdmin(int page) {
+    public Page<UserPageDTO> listUsersForAdmin(int page, String fullname) {
         PageRequest pageRequest = PageRequest.of(
                 page,
-                20,
+                5,
                 Sort.Direction.ASC,
                 "fullName");
-        Page<UserPageDTO> findAllOrOrderByFullName = userRepository.findAllOrOrderByFullName(pageRequest);
-        return findAllOrOrderByFullName;
+        if (fullname == null) {
+            Page<UserPageDTO> findAllOrOrderByFullName = userRepository.findAllOrOrderByFullName(pageRequest);
+            return findAllOrOrderByFullName;
+        } else {
+            Page<UserPageDTO> getUserByFullName = userRepository.getUserByFullName(fullname, pageRequest);
+            return getUserByFullName;
+        }
     }
 
 
 //    protected Integer getLogedUserId() {
 //        return Integer.parseInt((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 //    }
-
-	public List<UserPageDTO> getByFullName(String nome) {
-		return this.userRepository.getUserByFullName(nome);
-	}
+//
+//	public List<UserPageDTO> getByFullName(String nome) {
+//		return this.userRepository.getUserByFullName(nome);
+//	}
 
 
     public UserEntity findById(Integer userId) throws BusinessRuleException {

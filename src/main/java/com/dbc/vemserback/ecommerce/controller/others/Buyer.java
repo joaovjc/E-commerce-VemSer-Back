@@ -1,5 +1,8 @@
 package com.dbc.vemserback.ecommerce.controller.others;
 
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +17,6 @@ public interface Buyer {
 			@ApiResponse(code = 403, message = "you dont have the permission to create a quote"),
 			@ApiResponse(code = 500, message = "One exception was throwed") 
 	})
-	public boolean create(Integer topicId,Double preco) throws BusinessRuleException;
+	public boolean create(@PathVariable("topic-id") Integer topicId, @RequestParam Double preco) throws BusinessRuleException;
 	
 }

@@ -9,14 +9,7 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.controller.others.Admin;
@@ -52,12 +45,12 @@ public class AdminController implements Admin{
     }
 
     @GetMapping("/adm-get-all-users")
-    public Page<UserPageDTO> admGetAllUsers(int page){
-        return userService.listUsersForAdmin(page);
+    public Page<UserPageDTO> admGetAllUsers(@RequestParam int page, @RequestParam(required = false) String fullname) {
+        return userService.listUsersForAdmin(page, fullname);
     }
     
-    @GetMapping("/adm-get-all-users-by-full-name")
-    public List<UserPageDTO> admGetAllUsersByFullName(@RequestParam String nome){
-        return userService.getByFullName(nome);
-    }
+//    @GetMapping("/adm-get-all-users-by-full-name")
+//    public List<UserPageDTO> admGetAllUsersByFullName(@RequestParam String nome){
+//        return userService.getByFullName(nome);
+//    }
 }
