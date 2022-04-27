@@ -23,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -122,21 +123,24 @@ public class TopicTest {
         assertTrue(exception.getMessage().equals("The topic must have at least one"));
     }
 
-//    @Test
-//    public void testOpenTopicSave(){
-//        TopicEntity topic = TopicEntity.builder()
-//                .userId(1)
-//                .status(StatusEnum.CREATING)
-//                .build();
-//        List<PurchaseEntity> purchaseEntities = new ArrayList<>();
-//        purchaseEntities.add(new PurchaseEntity());
-//        purchaseEntities.add(new PurchaseEntity());
-//        topic.setPurchases(purchaseEntities);
-//        System.out.println(purchaseEntities);
-//
-//        when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(topic));
-//        verify(this.topicRepository, times(1)).save(any(TopicEntity.class));
-//    }
+    @Test
+    public void testOpenTopicSave() throws BusinessRuleException {
+        TopicEntity topic = TopicEntity.builder()
+                .userId(1)
+                .status(StatusEnum.CREATING)
+                .build();
+        List<PurchaseEntity> purchaseEntities = new ArrayList<>();
+        PurchaseEntity purchaseEntity = PurchaseEntity.builder()
+                 .value(BigDecimal.valueOf(25))
+                .build();
+        purchaseEntities.add(purchaseEntity);
+        purchaseEntities.add(purchaseEntity);
+        topic.setPurchases(purchaseEntities);
+
+        when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(topic));
+        topicService.openTopic(1,1);
+        verify(this.topicRepository, times(1)).save(any(TopicEntity.class));
+    }
 
 
 
