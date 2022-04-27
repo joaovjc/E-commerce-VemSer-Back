@@ -28,4 +28,6 @@ public interface TopicRepository extends JpaRepository<TopicEntity, Integer> {
 	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.topic.TopicDTO(t.topicId, t.title, t.date, t.totalValue, t.status) FROM topic t WHERE t.status <> ?1")
 	Page<TopicDTO> findAllByStatusDifferent(StatusEnum enumTopic, PageRequest pageRequest);
 
+	TopicEntity findByTitle(String title);
+
 }
