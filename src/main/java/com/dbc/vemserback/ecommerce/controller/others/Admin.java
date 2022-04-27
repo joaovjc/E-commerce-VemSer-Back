@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.user.UserCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.user.UserPageDTO;
-import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 
@@ -47,5 +46,5 @@ public interface Admin {
 			@ApiResponse(code = 403, message = "you dont have the permission to create an user"),
 			@ApiResponse(code = 500, message = "One exception was throwed") 
 	})
-	public List<UserEntity> admGetAllUsersByFullName(String nome);
+	public List<UserPageDTO> admGetAllUsersByFullName(String nome);
 }

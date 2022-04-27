@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dbc.vemserback.ecommerce.controller.others.Admin;
 import com.dbc.vemserback.ecommerce.dto.user.UserCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.user.UserPageDTO;
-import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.service.UserService;
@@ -58,7 +57,7 @@ public class AdminController implements Admin{
     }
     
     @GetMapping("/adm-get-all-users-by-full-name")
-    public List<UserEntity> admGetAllUsersByFullName(@RequestParam String nome){
+    public List<UserPageDTO> admGetAllUsersByFullName(@RequestParam String nome){
         return userService.getByFullName(nome);
     }
 }

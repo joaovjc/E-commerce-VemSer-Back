@@ -73,8 +73,7 @@ public class UserService {
 //        return Integer.parseInt((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 //    }
 
-    //    todo
-	public List<UserEntity> getByFullName(String nome) {
+	public List<UserPageDTO> getByFullName(String nome) {
 		return this.userRepository.getUserByFullName(nome);
 	}
 

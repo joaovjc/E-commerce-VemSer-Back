@@ -18,6 +18,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
 	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.user.UserPageDTO(u.userId, u.fullName, u.email, u.groupEntity.name, u.profileImage) FROM USER_COMMERCE u")
 	Page<UserPageDTO> findAllOrOrderByFullName(Pageable pageable);
-
-	List<UserEntity> getUserByFullName(String fullName);
+	
+	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.user.UserPageDTO(u.userId, u.fullName, u.email, u.groupEntity.name, u.profileImage) where USER_COMMERCE u WHERE lower(u.fullName) like lower(concat('%', ?1 , '%'))")
+	List<UserPageDTO> getUserByFullName(String fullName);
 }
