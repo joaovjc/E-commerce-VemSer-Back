@@ -4,13 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.nio.file.Files;
-import java.util.Base64;
-
-import javax.imageio.ImageIO;
 
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
