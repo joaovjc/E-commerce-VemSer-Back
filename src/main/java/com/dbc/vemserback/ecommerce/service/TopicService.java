@@ -123,17 +123,17 @@ public class TopicService {
 		return this.topicRepository.findById(idTopic).orElseThrow(()->new BusinessRuleException("The topic was not found"));
 	}
 
-//	public Page<TopicDTO> getTopicsByTitle(List<SimpleGrantedAuthority> authorities, String title, int page) {
-//		PageRequest pageRequest = PageRequest.of(
-//                page,
-//                3,
-//                Sort.Direction.ASC,
-//                "title");
-//		return this.topicRepository.findAllByTitle(title, pageRequest);
-//	}
-	public List<TopicDTO> getTopicsByTitle(List<SimpleGrantedAuthority> authorities, String title) {
-		return this.topicRepository.findAllByTitle(title);
+	public Page<TopicDTO> getTopicsByTitle(List<SimpleGrantedAuthority> authorities, String title, int page) {
+		PageRequest pageRequest = PageRequest.of(
+                page,
+                3,
+                Sort.Direction.ASC,
+                "title");
+		return this.topicRepository.findAllByTitle(title, pageRequest);
 	}
+//	public List<TopicDTO> getTopicsByTitle(List<SimpleGrantedAuthority> authorities, String title) {
+//		return this.topicRepository.findAllByTitle(title);
+//	}
 
 	public void save(TopicEntity topic) {
 		this.topicRepository.save(topic);

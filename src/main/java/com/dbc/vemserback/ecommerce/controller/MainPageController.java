@@ -49,17 +49,17 @@ public class MainPageController {
 		return this.topicService.getTopics(authorities, Integer.parseInt((String) userb), page);
 	}
 	
-//	@GetMapping("/topic-by-titulo/{title}")
-//	public List<TopicDTO> allTopicsByTitle(@RequestParam int page,@PathVariable("title") String title) throws BusinessRuleException {
-//		@SuppressWarnings("unchecked")
-//		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-//		return this.topicService.getTopicsByTitle(authorities, title, page);
-//	}
-	
 	@GetMapping("/topic-by-titulo/{title}")
-	public List<TopicDTO> allTopicsByTitle(@PathVariable("title") String title) throws BusinessRuleException {
+	public Page<TopicDTO> allTopicsByTitle(@RequestParam int page,@PathVariable("title") String title) throws BusinessRuleException {
 		@SuppressWarnings("unchecked")
 		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-		return this.topicService.getTopicsByTitle(authorities, title);
+		return this.topicService.getTopicsByTitle(authorities, title, page);
 	}
+	
+//	@GetMapping("/topic-by-titulo/{title}")
+//	public List<TopicDTO> allTopicsByTitle(@PathVariable("title") String title) throws BusinessRuleException {
+//		@SuppressWarnings("unchecked")
+//		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+//		return this.topicService.getTopicsByTitle(authorities, title);
+//	}
 }

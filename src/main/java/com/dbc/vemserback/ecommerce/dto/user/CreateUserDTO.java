@@ -22,6 +22,6 @@ public class CreateUserDTO{
 	@Email
     private String username;
 	@NotNull
-	@ValidPassword
+//	@ValidPassword
     private String password;
 }
