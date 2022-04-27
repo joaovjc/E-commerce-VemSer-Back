@@ -42,7 +42,7 @@ public class FileService {
 	    try {
 			Thumbnails.of(originalImage)
 			    .size(100, 100)
-			    .outputFormat("JPEG")
+			    .outputFormat("PNG")
 			    .outputQuality(0.50)
 			    .toOutputStream(outputStream);
 		} catch (IOException e) {

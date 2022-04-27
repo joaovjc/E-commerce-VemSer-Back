@@ -1,19 +1,29 @@
 package com.dbc.vemserback.ecommerce;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Files;
 import java.util.Base64;
+
+import javax.imageio.ImageIO;
 
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.service.FileService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -21,29 +31,35 @@ public class FileTest {
 
 	@InjectMocks
     private FileService fileService;
+	
+	@Mock
+	public ExpectedException expectedException;
 
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
     }
-    
+    @Test
     public void testTrhowsTheRigthException() throws Exception {
-    	
-    	
+    	MockMultipartFile multipartFile = new MockMultipartFile("file", "test.txt",
+    		      "text/plain", "Spring Framework".getBytes());
+    	BusinessRuleException assertThrows2 = assertThrows(BusinessRuleException.class, () -> {
+        	fileService.convertToByte(multipartFile);
+        });
+    	assertEquals("not a suported file type: .txt", assertThrows2.getMessage());
     }
     
     @Test
     public void testingTheTypesImageConversionAccepts() throws Exception {
-    	Resource fileResource = new ClassPathResource(
-                "src/main/resources/test_image/");
-    	Resource filematch = new ClassPathResource(
-                "screen-shots/HomePage-attachment.png");
+    	File file = new File("src/main/resources/test_image/test_before.png");
+    	FileInputStream input = new FileInputStream(file);
     	
-    	MockMultipartFile file = new MockMultipartFile(fileResource.getFilename(), fileResource.getInputStream());
+    	MultipartFile multipartFile = new MockMultipartFile("file.png",
+    	            file.getName(), "text/plain", input.readAllBytes());
+    	byte[] convertToByte = fileService.convertToByte(multipartFile);
+    	input.close();
     	
-    	byte[] convertToByte = fileService.convertToByte(file);
-    	
-    	assertEquals(filematch.getInputStream().readAllBytes(), Base64.getDecoder().decode(convertToByte));
+    	assertNotNull(convertToByte);
     }
 	
     
