@@ -1,7 +1,5 @@
 package com.dbc.vemserback.ecommerce.dto.Item;
 
-import java.math.BigDecimal;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -21,5 +19,5 @@ public class ItemCreateDTO {
 	@NotNull
 	private String description;
 	@NotNull
-	private BigDecimal price;
+	private Double price;
 }

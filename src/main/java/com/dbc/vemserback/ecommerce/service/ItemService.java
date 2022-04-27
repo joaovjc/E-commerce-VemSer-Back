@@ -1,5 +1,6 @@
 package com.dbc.vemserback.ecommerce.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class ItemService {
 		TopicEntity topicEntity = topicService.topicById(idTopic);
 		if(topicEntity.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("the topic is not on creating status!!!");
 		PurchaseEntity build = PurchaseEntity.builder().itemName(purchaseDTO.getName()).description(purchaseDTO.getDescription())
-				.value(purchaseDTO.getPrice()).fileName(originalFilename).file(fileService.convertToByte(file)).topicId(idTopic).topicEntity(topicEntity).build();
+				.value(new BigDecimal(purchaseDTO.getPrice())).fileName(originalFilename).file(fileService.convertToByte(file)).topicId(idTopic).topicEntity(topicEntity).build();
 		PurchaseEntity save = purchaseRepository.save(build);
 		
 		return ItemFullDTO.builder()
