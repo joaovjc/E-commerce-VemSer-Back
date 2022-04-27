@@ -54,7 +54,7 @@ public class AuthController {
     }
     
     @PostMapping(path = "/sign-up", consumes = {MULTIPART_FORM_DATA_VALUE})
-    public UserLoginDto signUp(@Valid @ModelAttribute(name = "data") CreateUserDTO createDTO, @RequestPart(name = "file",required = false) MultipartFile file, BindingResult bindingResult) throws BusinessRuleException {
+    public UserLoginDto signUp(@Valid @ModelAttribute(name = "data") CreateUserDTO createDTO, BindingResult bindingResult, @RequestPart(name = "file",required = false) MultipartFile file) throws BusinessRuleException {
     	if(bindingResult.hasErrors()) {
     		StringBuilder builder = new StringBuilder();
         	bindingResult.getAllErrors().forEach(err -> builder.append(err.getDefaultMessage()));
