@@ -61,7 +61,9 @@ public class AuthController {
     		throw new BusinessRuleException(builder.toString());
     	}
     	UserCreateDTO userCreateDTO = objectMapper.convertValue(createDTO, UserCreateDTO.class);
+    	userCreateDTO.setEmail(createDTO.getUsername());
         userCreateDTO.setGroups(Groups.USER);
+        
     	UserLoginDto createUser = userService.createUser(userCreateDTO, file);
     	
     	UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
