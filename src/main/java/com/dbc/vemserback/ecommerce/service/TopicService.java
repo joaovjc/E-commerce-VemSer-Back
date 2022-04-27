@@ -38,15 +38,9 @@ public class TopicService {
 				.userId(user.getUserId()).build();
 		
 		entity = topicRepository.save(entity);
+
 		return entity.getTopicId();
 	}
-
-	public TopicCreateDTO updateStatusToTopic(Integer idTopic, StatusEnum status) throws BusinessRuleException {
-		TopicEntity topic = topicRepository.findById(idTopic).orElseThrow((() -> new BusinessRuleException("Topic not found")));
-		topic.setStatus(status);
-		return objectMapper.convertValue(topicRepository.save(topic), TopicCreateDTO.class);
-	}
-
 
 	public TopicEntity topicById(Integer topicId) throws BusinessRuleException{
 		return topicRepository.findById(topicId).orElseThrow((() -> new BusinessRuleException("Topic not found")));
@@ -77,8 +71,8 @@ public class TopicService {
 	public void openTopic(int idTopic, int userId) throws BusinessRuleException {
 		TopicEntity findById = this.findById(idTopic);
 		if(findById.getUserId()!=userId)throw new BusinessRuleException("The topic is not owned by you, thus you cannot change it!!!");
-		if(findById.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("the topic was already opened!!!");
-		if(findById.getPurchases().size()<1)throw new BusinessRuleException("the topic must have at least one");
+		if(findById.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("The topic was already opened!!!");
+		if(findById.getPurchases().size()<1)throw new BusinessRuleException("he topic must have at least one");
 		double sum = findById.getPurchases().stream().mapToDouble(item->item.getValue().doubleValue()).sum();
 		findById.setTotalValue(new BigDecimal(sum));
 		findById.setStatus(StatusEnum.OPEN);
