@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dbc.vemserback.ecommerce.controller.others.Admin;
 import com.dbc.vemserback.ecommerce.dto.user.UserCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.user.UserPageDTO;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
@@ -32,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 @Validated
-public class AdminController {
+public class AdminController implements Admin{
     private final UserService userService;
 
 
