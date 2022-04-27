@@ -52,7 +52,7 @@ public class AdminController implements Admin{
     }
 
     @GetMapping("/adm-get-all-users")
-    public Page<UserPageDTO> admGetAllUsers(int page){
+    public Page<UserPageDTO> admGetAllUsers(@RequestParam int page){
         return userService.listUsersForAdmin(page);
     }
     
