@@ -57,7 +57,7 @@ public class MainPageController {
 //	}
 	
 	@GetMapping("/topic-by-titulo/{title}")
-	public List<TopicDTO> allTopicsByTitle(@RequestParam int page,@PathVariable("title") String title) throws BusinessRuleException {
+	public List<TopicDTO> allTopicsByTitle(@PathVariable("title") String title) throws BusinessRuleException {
 		@SuppressWarnings("unchecked")
 		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		return this.topicService.getTopicsByTitle(authorities, title);
