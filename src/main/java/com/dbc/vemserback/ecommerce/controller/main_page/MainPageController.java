@@ -1,8 +1,10 @@
-package com.dbc.vemserback.ecommerce.controller;
+package com.dbc.vemserback.ecommerce.controller.main_page;
 
 import java.util.List;
 
+import io.swagger.annotations.Api;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +26,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/main-page")
 @RequiredArgsConstructor
-public class MainPageController {
+@Api(value = "2 - Main Page API", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"2 - Main Page API"})
+public class MainPageController implements MainPageAPI{
 	private final TopicService topicService;
 	private final ItemService purchaseService;
 	private final QuotationService quotationService;

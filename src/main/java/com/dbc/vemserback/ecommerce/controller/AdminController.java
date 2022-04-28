@@ -4,7 +4,9 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
 import org.springframework.data.domain.Page;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 @Validated
+@Api(value = "7 - Admin API", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"7 - Admin API"})
 public class AdminController implements Admin{
     private final UserService userService;
 

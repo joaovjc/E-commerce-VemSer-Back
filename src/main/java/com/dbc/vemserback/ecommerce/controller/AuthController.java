@@ -4,6 +4,8 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Validated
+@Api(value = "1 - Login/Sign-Up API", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"1 - Login/Sign-Up API"})
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;

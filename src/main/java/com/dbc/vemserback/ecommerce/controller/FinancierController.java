@@ -1,5 +1,7 @@
 package com.dbc.vemserback.ecommerce.controller;
 
+import io.swagger.annotations.Api;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/financier")
 @RequiredArgsConstructor
+@Api(value = "6 - Financier API", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"6 - Financier API"})
 public class FinancierController {
 
     private final TopicService topicService;

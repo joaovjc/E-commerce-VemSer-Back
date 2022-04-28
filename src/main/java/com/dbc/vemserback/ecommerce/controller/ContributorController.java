@@ -4,6 +4,8 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.Api;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/contributor")
 @RequiredArgsConstructor
+@Api(value = "3 - Contributor API", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"3 - Contributor API"})
 public class ContributorController {
 	private final TopicService topicService;
 	private final ItemService purchaseService;

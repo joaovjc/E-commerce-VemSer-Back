@@ -1,5 +1,7 @@
 package com.dbc.vemserback.ecommerce.controller;
 
+import io.swagger.annotations.Api;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/buyer")
 @RequiredArgsConstructor
+@Api(value = "4 - Buyer API", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"4 - Buyer API"})
 public class BuyerController {
 	
     private final QuotationService quotationService;

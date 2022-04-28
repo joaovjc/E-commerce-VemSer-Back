@@ -1,5 +1,7 @@
-package com.dbc.vemserback.ecommerce.controller;
+package com.dbc.vemserback.ecommerce.controller.manager;
 
+import io.swagger.annotations.Api;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -14,7 +16,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/manager")
 @RequiredArgsConstructor
-public class ManagerController {
+@Api(value = "5 - Manager API", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"5 - Manager API"})
+public class ManagerController implements ManagerAPI{
 	private final QuotationService quotationService;
 
     //Manager

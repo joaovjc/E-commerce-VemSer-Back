@@ -92,9 +92,9 @@ public class ItemTest {
         MultipartFile file = multipartFile;
         TopicEntity topic = TopicEntity.builder().topicId(1).build();
         topic.setStatus(StatusEnum.CREATING);
-        ItemFullDTO itemFullDTO = ItemFullDTO.builder().itemId(1).build();
 
         when(topicService.topicById(any())).thenReturn(topic);
+        when(fileService.convertToByte(any())).thenReturn(new byte[1]);
 
         itemService.createPurchase(item, file, 1, 1);
         verify(purchaseRepository, times(1)).save(any());
