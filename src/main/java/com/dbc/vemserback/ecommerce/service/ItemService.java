@@ -14,7 +14,6 @@ import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.post.PurchaseRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +23,6 @@ public class ItemService {
 	private final PurchaseRepository purchaseRepository;
 	private final FileService fileService;
 	private final TopicService topicService;
-	private final ObjectMapper objectMapper;
 
 	public ItemFullDTO createPurchase(ItemCreateDTO purchaseDTO, MultipartFile file, int idUser, Integer idTopic) throws BusinessRuleException {
 		if(file==null)throw new BusinessRuleException("the item file cannot be null");
@@ -41,7 +39,7 @@ public class ItemService {
 				.description(build.getDescription())
 				.file(new String(build.getFile()))
 				.itemName(build.getItemName())
-				.itemId(idTopic)
+				.itemId(build.getPurchaseId())
 				.value(build.getValue())
 				.build();
 	}
