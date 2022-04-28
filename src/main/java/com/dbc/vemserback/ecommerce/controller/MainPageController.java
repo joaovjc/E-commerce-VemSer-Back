@@ -30,7 +30,7 @@ public class MainPageController {
 	private final QuotationService quotationService;
 
 	@GetMapping("/items/{topic-id}")
-	public List<ItemDTO> allPurchasesByTopicId(@PathVariable("topic-id") Integer topicId) {
+	public List<ItemDTO> allPurchasesByTopicId(@PathVariable("topic-id") Integer topicId) throws BusinessRuleException {
 		return purchaseService.listPurchasesByTopicId(topicId);
 	}
 

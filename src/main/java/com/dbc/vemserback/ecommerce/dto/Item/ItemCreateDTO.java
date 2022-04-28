@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -19,5 +21,5 @@ public class ItemCreateDTO {
 	@NotNull
 	private String description;
 	@NotNull
-	private Double price;
+	private BigDecimal price;
 }

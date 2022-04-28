@@ -2,12 +2,12 @@ package com.dbc.vemserback.ecommerce;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class ECommerceApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
-}
+//
+//@SpringBootTest
+//class ECommerceApplicationTests {
+//
+//	@Test
+//	void contextLoads() {
+//	}
+//
+//}

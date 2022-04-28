@@ -31,10 +31,6 @@ public class QuotationService {
     private final UserService userService;
 
 
-    public List<QuotationDTO> quotationList() {
-        return quotationRepository.findAll().stream().map(quotation -> objectMapper.convertValue(quotation, QuotationDTO.class)).collect(java.util.stream.Collectors.toList());
-    }
-
     public boolean createQuotation(Integer topicId, Double preco, int userId) throws BusinessRuleException {
 
         TopicEntity topicEntity = topicService.topicById(topicId);

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,7 @@ public class ItemService {
 	private final PurchaseRepository purchaseRepository;
 	private final FileService fileService;
 	private final TopicService topicService;
+	private final ObjectMapper objectMapper;
 
 	public ItemFullDTO createPurchase(ItemCreateDTO purchaseDTO, MultipartFile file, int idUser, Integer idTopic) throws BusinessRuleException {
 		if(file==null)throw new BusinessRuleException("the item file cannot be null");
@@ -32,32 +34,23 @@ public class ItemService {
 		TopicEntity topicEntity = topicService.topicById(idTopic);
 		if(topicEntity.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("the topic is not on creating status!!!");
 		PurchaseEntity build = PurchaseEntity.builder().itemName(purchaseDTO.getName()).description(purchaseDTO.getDescription())
-				.value(new BigDecimal(purchaseDTO.getPrice())).fileName(originalFilename).file(fileService.convertToByte(file)).topicId(idTopic).topicEntity(topicEntity).build();
-		PurchaseEntity save = purchaseRepository.save(build);
-		
-		return ItemFullDTO.builder()
-				.description(save.getDescription())
-				.file(new String(save.getFile()))
-				.itemName(save.getItemName())
-				.itemId(save.getPurchaseId())
-				.value(save.getValue()).build();
+				.value(purchaseDTO.getPrice()).fileName(originalFilename).file(fileService.convertToByte(file)).topicId(idTopic).topicEntity(topicEntity).build();
+		purchaseRepository.save(build);
+
+		return objectMapper.convertValue(build, ItemFullDTO.class);
+
 	}
 
-	public List<ItemDTO> listPurchasesByTopicId(Integer topicId) {
-		return purchaseRepository.findAllByTopicId(topicId).stream().map(ent->{
-			return ItemDTO.builder()
-					.description(ent.getDescription())
-					.itemName(ent.getItemName())
-					.file(ent.getFile()!=null?new String(ent.getFile()):null)
-					.value(ent.getValue()).build();
-		}).collect(Collectors.toList());
+	public List<ItemDTO> listPurchasesByTopicId(Integer topicId) throws BusinessRuleException {
+		topicService.topicById(topicId);
+		return purchaseRepository.findAllByTopicId(topicId).stream().map(ent-> objectMapper.convertValue(ent, ItemDTO.class)).collect(Collectors.toList());
 	}
 
 	public void deleteById(int idItem, int userId) throws BusinessRuleException {
-		PurchaseEntity byId = this.getById(idItem);
-		if(byId.getTopicEntity().getUserId()!=userId)throw new BusinessRuleException("this item isnt from the autenticated user");
-		if(byId.getTopicEntity().getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("the topic was already closed for changes");
-		this.purchaseRepository.delete(byId);
+		PurchaseEntity purchase = this.getById(idItem);
+		if(purchase.getTopicEntity().getUserId()!=userId)throw new BusinessRuleException("this item isnt from the autenticated user");
+		if(purchase.getTopicEntity().getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("the topic was already closed for changes");
+		this.purchaseRepository.delete(purchase);
 	}
 	
 	private PurchaseEntity getById(int idItem) throws BusinessRuleException {
