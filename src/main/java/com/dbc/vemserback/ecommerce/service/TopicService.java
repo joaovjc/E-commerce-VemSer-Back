@@ -107,4 +107,11 @@ public class TopicService {
 	public void save(TopicEntity topic) {
 		this.topicRepository.save(topic);
 	}
+
+	public void deleteById(int topicId, int userId) throws BusinessRuleException {
+		TopicEntity topicById = this.topicById(topicId);
+		if(topicById.getUser().getUserId()!=userId)throw new BusinessRuleException("esse topico não pertence a esse user");
+		if(topicById.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("topico não pode ser deletado nesse status");
+		this.topicRepository.deleteById(topicId);
+	}
 }
