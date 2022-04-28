@@ -22,15 +22,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@Entity(name = "purchase")
+@Entity(name = "item")
 @NoArgsConstructor
 @AllArgsConstructor
-public class PurchaseEntity {
+public class ItemEntity {
 
     @Id
-    @Column(name = "purchase_id", columnDefinition = "serial")
+    @Column(name = "item_id", columnDefinition = "serial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer purchaseId;
+    private Integer itemId;
 
     @Column(name = "item_name")
     private String itemName;

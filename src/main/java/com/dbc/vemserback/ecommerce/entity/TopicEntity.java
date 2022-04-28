@@ -62,7 +62,7 @@ public class TopicEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "topicEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PurchaseEntity> purchases;
+    private List<ItemEntity> purchases;
 
     @JsonIgnore
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

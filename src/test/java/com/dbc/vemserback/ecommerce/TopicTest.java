@@ -1,8 +1,7 @@
 package com.dbc.vemserback.ecommerce;
 
 import com.dbc.vemserback.ecommerce.dto.topic.TopicCreateDTO;
-import com.dbc.vemserback.ecommerce.entity.PurchaseEntity;
-import com.dbc.vemserback.ecommerce.entity.QuotationEntity;
+import com.dbc.vemserback.ecommerce.entity.ItemEntity;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
@@ -12,14 +11,11 @@ import com.dbc.vemserback.ecommerce.service.TopicService;
 import com.dbc.vemserback.ecommerce.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -85,7 +81,7 @@ public class TopicTest {
 
         when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(topic));
         topicService.updateFinancierTopic(1,true);
-        assertEquals(StatusEnum.CLOSED, topic.getStatus());
+        assertEquals(StatusEnum.CONCLUDED, topic.getStatus());
         verify(topicRepository, times(1)).save(any(TopicEntity.class));
     }
 
@@ -116,7 +112,7 @@ public class TopicTest {
                 .userId(1)
                 .status(StatusEnum.CREATING)
                 .build();
-        List<PurchaseEntity> purchaseEntities = new ArrayList<>();
+        List<ItemEntity> purchaseEntities = new ArrayList<>();
         topic.setPurchases(purchaseEntities);
         when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(topic));
         Exception exception = assertThrows(BusinessRuleException.class, ()-> topicService.openTopic(1,1));
@@ -129,12 +125,12 @@ public class TopicTest {
                 .userId(1)
                 .status(StatusEnum.CREATING)
                 .build();
-        List<PurchaseEntity> purchaseEntities = new ArrayList<>();
-        PurchaseEntity purchaseEntity = PurchaseEntity.builder()
+        List<ItemEntity> purchaseEntities = new ArrayList<>();
+        ItemEntity itemEntity = ItemEntity.builder()
                  .value(BigDecimal.valueOf(25))
                 .build();
-        purchaseEntities.add(purchaseEntity);
-        purchaseEntities.add(purchaseEntity);
+        purchaseEntities.add(itemEntity);
+        purchaseEntities.add(itemEntity);
         topic.setPurchases(purchaseEntities);
 
         when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(topic));

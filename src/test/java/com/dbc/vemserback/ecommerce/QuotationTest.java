@@ -94,7 +94,7 @@ public class QuotationTest {
 
     @Test
     public void testCreateQuotationWithNotOpenTopic() throws BusinessRuleException {
-        TopicEntity topicEntity = TopicEntity.builder().topicId(1).status(StatusEnum.CLOSED).build();
+        TopicEntity topicEntity = TopicEntity.builder().topicId(1).status(StatusEnum.CONCLUDED).build();
         UserEntity userEntity = UserEntity.builder().userId(1).build();
 
         when(topicService.topicById(any())).thenReturn(topicEntity);
@@ -116,7 +116,7 @@ public class QuotationTest {
     public void testManagerUpdateTopicWithStatusNotOpen() throws BusinessRuleException {
         QuotationEntity quotationEntity = new QuotationEntity();
         TopicEntity topicEntity = new TopicEntity();
-        topicEntity.setStatus(StatusEnum.CLOSED);
+        topicEntity.setStatus(StatusEnum.CONCLUDED);
 
         when(topicService.topicById(any())).thenReturn(topicEntity);
 

@@ -20,13 +20,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.dto.Item.ItemCreateDTO;
-import com.dbc.vemserback.ecommerce.dto.Item.ItemFullDTO;
-import com.dbc.vemserback.ecommerce.entity.PurchaseEntity;
+import com.dbc.vemserback.ecommerce.entity.ItemEntity;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
-import com.dbc.vemserback.ecommerce.repository.post.PurchaseRepository;
+import com.dbc.vemserback.ecommerce.repository.post.ItemRepository;
 import com.dbc.vemserback.ecommerce.service.FileService;
 import com.dbc.vemserback.ecommerce.service.ItemService;
 import com.dbc.vemserback.ecommerce.service.TopicService;
@@ -36,7 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ItemTest {
 
     @Mock
-    private PurchaseRepository purchaseRepository;
+    private ItemRepository itemRepository;
     @Mock
     private FileService fileService;
     @Mock
@@ -46,7 +45,7 @@ public class ItemTest {
     @Mock
     private ObjectMapper objectMapper;
     @Mock
-    private PurchaseEntity purchaseEntity;
+    private ItemEntity itemEntity;
 
     @InjectMocks
     private ItemService itemService;
@@ -99,7 +98,7 @@ public class ItemTest {
         when(fileService.convertToByte(any())).thenReturn(new byte[1]);
 
         itemService.createPurchase(item, file, 1, 1);
-        verify(purchaseRepository, times(1)).save(any());
+        verify(itemRepository, times(1)).save(any());
     }
 
     @Test
@@ -116,47 +115,47 @@ public class ItemTest {
         when(topicService.topicById(any())).thenReturn(topic);
 
         itemService.listPurchasesByTopicId(1);
-        verify(purchaseRepository, times(1)).findAllByTopicId(any());
+        verify(itemRepository, times(1)).findAllByTopicId(any());
     }
 
     @Test
     public void testDeleteByIdWithUserIdNotAuthenticatedUser() throws BusinessRuleException {
 
-        PurchaseEntity purchase = PurchaseEntity.builder().purchaseId(1).build();
+        ItemEntity purchase = ItemEntity.builder().itemId(1).build();
         UserEntity user = UserEntity.builder().userId(1).build();
         TopicEntity topic = TopicEntity.builder().topicId(1).user(user).userId(user.getUserId()).purchases(new ArrayList<>()).build();
         topic.setStatus(StatusEnum.CREATING);
         purchase.setTopicEntity(topic);
 
-        when(purchaseRepository.findById(any())).thenReturn(Optional.of(purchase));
-        assertThrows(BusinessRuleException.class, () -> itemService.deleteById(purchase.getPurchaseId(), 12312));
+        when(itemRepository.findById(any())).thenReturn(Optional.of(purchase));
+        assertThrows(BusinessRuleException.class, () -> itemService.deleteById(purchase.getItemId(), 12312));
     }
 
     @Test
     public void testDeleteByIdWithTopicStatusNotCreating() throws BusinessRuleException {
-        PurchaseEntity purchase = PurchaseEntity.builder().purchaseId(1).build();
+        ItemEntity purchase = ItemEntity.builder().itemId(1).build();
         UserEntity user = UserEntity.builder().userId(1).build();
         TopicEntity topic = TopicEntity.builder().topicId(1).user(user).userId(user.getUserId()).purchases(new ArrayList<>()).build();
         topic.setStatus(StatusEnum.OPEN);
         purchase.setTopicEntity(topic);
 
-        when(purchaseRepository.findById(any())).thenReturn(Optional.of(purchase));
+        when(itemRepository.findById(any())).thenReturn(Optional.of(purchase));
 
-        assertThrows(BusinessRuleException.class, () -> itemService.deleteById(purchase.getPurchaseId(), purchase.getTopicEntity().getUserId()));
+        assertThrows(BusinessRuleException.class, () -> itemService.deleteById(purchase.getItemId(), purchase.getTopicEntity().getUserId()));
     }
 
     @Test
     public void testDeleteById() throws BusinessRuleException {
-       PurchaseEntity purchase = PurchaseEntity.builder().purchaseId(1).build();
+       ItemEntity purchase = ItemEntity.builder().itemId(1).build();
        UserEntity user = UserEntity.builder().userId(1).build();
        TopicEntity topic = TopicEntity.builder().topicId(1).user(user).userId(user.getUserId()).purchases(new ArrayList<>()).build();
        topic.setStatus(StatusEnum.CREATING);
        purchase.setTopicEntity(topic);
 
-       when(purchaseRepository.findById(any())).thenReturn(Optional.of(purchase));
-       itemService.deleteById(purchase.getPurchaseId(), purchase.getTopicEntity().getUserId());
+       when(itemRepository.findById(any())).thenReturn(Optional.of(purchase));
+       itemService.deleteById(purchase.getItemId(), purchase.getTopicEntity().getUserId());
 
-       verify(purchaseRepository, times(1)).delete(purchase);
+       verify(itemRepository, times(1)).delete(purchase);
     }
 
 }

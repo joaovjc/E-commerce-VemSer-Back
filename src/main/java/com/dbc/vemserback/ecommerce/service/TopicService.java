@@ -46,7 +46,7 @@ public class TopicService {
 		if (status) {
 			topic.setStatus(StatusEnum.CONCLUDED);
 			topicRepository.save(topic);
-			return "Topic closed";
+			return "Concluded topic";
 		} else {
 			topic.setStatus(StatusEnum.FINANCIALLY_REPROVED);
 			topicRepository.save(topic);
