@@ -18,13 +18,13 @@ public interface TopicRepository extends JpaRepository<TopicEntity, Integer> {
 	Page<TopicDTO> findAllByUserId(Integer userId, Pageable pageable);
 	
 	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.topic.TopicDTO(t.topicId, t.title, t.date, t.totalValue, t.status) FROM topic t WHERE t.userId = ?1 AND lower(t.title) like lower(concat('%', ?2 , '%'))")
-	Page<TopicDTO> findAllByUserId(int idUser, PageRequest pageRequest, String title);
+	Page<TopicDTO> findAllByUserId(int idUser, String title, PageRequest pageRequest);
 	
 	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.topic.TopicDTO(t.topicId, t.title, t.date, t.totalValue, t.status) FROM topic t WHERE t.status = ?1")
 	Page<TopicDTO> findAllByStatus(StatusEnum enumTopic, Pageable pageable);
 	
 	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.topic.TopicDTO(t.topicId, t.title, t.date, t.totalValue, t.status) FROM topic t WHERE t.status = ?1 AND lower(t.title) like lower(concat('%', ?2 , '%'))")
-	Page<TopicDTO> findAllByStatus(StatusEnum enumTopic, PageRequest pageRequest, String title);
+	Page<TopicDTO> findAllByStatus(StatusEnum enumTopic, String title, PageRequest pageRequest);
 	
 	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.topic.TopicDTO(t.topicId, t.title, t.date, t.totalValue, t.status) FROM topic t WHERE lower(t.title) like lower(concat('%', ?1 , '%'))")
 	Page<TopicDTO> findAllByTitle(String title, PageRequest pageRequest);
@@ -35,7 +35,7 @@ public interface TopicRepository extends JpaRepository<TopicEntity, Integer> {
 	Page<TopicDTO> findAllByStatusDifferent(StatusEnum enumTopic, PageRequest pageRequest);
 
 	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.topic.TopicDTO(t.topicId, t.title, t.date, t.totalValue, t.status) FROM topic t WHERE t.status <> ?1 AND lower(t.title) like lower(concat('%', ?2 , '%'))")
-	Page<TopicDTO> findAllByStatusDifferent(StatusEnum enumTopic, PageRequest pageRequest, String title);
+	Page<TopicDTO> findAllByStatusDifferent(StatusEnum enumTopic, String title, PageRequest pageRequest);
 
 	TopicEntity findByTitle(String title);
 

@@ -52,7 +52,7 @@ public class TopicService {
                 Sort.Direction.ASC,
                 "title");
 		if(title!=null) {
-			return topicRepository.findAllByUserId(idUser, pageRequest, title);
+			return topicRepository.findAllByUserId(idUser, title, pageRequest);
 		}else {
 			return topicRepository.findAllByUserId(idUser, pageRequest);
 		}
@@ -102,7 +102,7 @@ public class TopicService {
                 Sort.Direction.ASC,
                 "title");
 		if(title!=null) {
-			return this.topicRepository.findAllByStatusDifferent(enumTopic, pageRequest, title);
+			return this.topicRepository.findAllByStatusDifferent(enumTopic, title, pageRequest);
 		}else {
 			return this.topicRepository.findAllByStatusDifferent(enumTopic, pageRequest);
 		}
@@ -115,7 +115,7 @@ public class TopicService {
                 Sort.Direction.ASC,
                 "title");
 		if(title!=null) {
-			return this.topicRepository.findAllByStatus(enumTopic, pageRequest, title);
+			return this.topicRepository.findAllByStatus(enumTopic, title, pageRequest);
 		}else {
 			return this.topicRepository.findAllByStatus(enumTopic, pageRequest);
 		}

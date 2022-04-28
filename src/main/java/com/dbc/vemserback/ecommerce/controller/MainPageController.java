@@ -42,11 +42,11 @@ public class MainPageController {
 	}
 	
 	@GetMapping("/topics")
-	public Page<TopicDTO> allTopics(@RequestParam int page, @RequestParam(required = false) Integer topics, @RequestParam(required = false) String title) throws BusinessRuleException {
+	public Page<TopicDTO> allTopics(@RequestParam int page, @RequestParam(required = false) Integer pageSize, @RequestParam(required = false) String title) throws BusinessRuleException {
 		@SuppressWarnings("unchecked")
 		List<SimpleGrantedAuthority> authorities = (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return this.topicService.getTopics(authorities, Integer.parseInt((String) userb), page, topics, title);
+		return this.topicService.getTopics(authorities, Integer.parseInt((String) userb), page, pageSize, title);
 	}
 	
 //	@GetMapping("/topic-by-titulo/{title}")
