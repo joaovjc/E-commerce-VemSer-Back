@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ItemFullDTO{
 	
-	private Integer purchaseId;
+	private Integer itemId;
 	private String itemName;
 	private String description;
 	private BigDecimal value;

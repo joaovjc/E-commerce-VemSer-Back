@@ -41,7 +41,7 @@ public class ItemService {
 				.description(build.getDescription())
 				.file(new String(build.getFile()))
 				.itemName(build.getItemName())
-				.purchaseId(idTopic)
+				.itemId(idTopic)
 				.value(build.getValue())
 				.build();
 

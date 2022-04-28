@@ -41,7 +41,7 @@ public class ContributorController {
 
     @PostMapping(path = "/create-item/{topic-id}", consumes = {MULTIPART_FORM_DATA_VALUE})
 	public ItemFullDTO createItem(@PathVariable(name = "topic-id") Integer idTopic, @Valid @ModelAttribute(name = "data") ItemCreateDTO CreateDTO,
-                              @RequestPart MultipartFile file, BindingResult bindingResult) throws BusinessRuleException, InterruptedException {
+                              @RequestPart MultipartFile file, BindingResult bindingResult) throws BusinessRuleException {
     	if(bindingResult.hasErrors()) {
     		StringBuilder builder = new StringBuilder();
         	bindingResult.getAllErrors().forEach(err -> builder.append(err.getDefaultMessage()));

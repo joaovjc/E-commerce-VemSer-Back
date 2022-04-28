@@ -92,7 +92,7 @@ public class ItemTest {
         MultipartFile file = multipartFile;
         TopicEntity topic = TopicEntity.builder().topicId(1).build();
         topic.setStatus(StatusEnum.CREATING);
-        ItemFullDTO itemFullDTO = ItemFullDTO.builder().purchaseId(1).build();
+        ItemFullDTO itemFullDTO = ItemFullDTO.builder().itemId(1).build();
 
         when(topicService.topicById(any())).thenReturn(topic);
 

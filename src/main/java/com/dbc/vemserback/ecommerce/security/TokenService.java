@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import com.dbc.vemserback.ecommerce.dto.user.UserLoginDto;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
-import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -35,7 +34,7 @@ public class TokenService {
     @Value("${jwt.secret}")
     private String secret;
 
-    public UserLoginDto getToken(Authentication authentication) throws BusinessRuleException{
+    public UserLoginDto getToken(Authentication authentication){
         UserEntity user = (UserEntity) authentication.getPrincipal();
         
         Date now = new Date();
@@ -61,7 +60,7 @@ public class TokenService {
         		.build();
     }
     
-    public UserLoginDto getToken(Authentication authentication, UserLoginDto dto) throws BusinessRuleException{
+    public UserLoginDto getToken(Authentication authentication, UserLoginDto dto){
         UserEntity user = (UserEntity) authentication.getPrincipal();
         
         Date now = new Date();
