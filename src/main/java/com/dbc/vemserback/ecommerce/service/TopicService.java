@@ -18,7 +18,6 @@ import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.post.TopicRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class TopicService {
 
 	private final TopicRepository topicRepository;
-	private final ObjectMapper objectMapper;
 	private final UserService userService;
 
 	public Integer createTopic(TopicCreateDTO dto, Integer userId) throws BusinessRuleException {
@@ -47,13 +45,17 @@ public class TopicService {
 		return topicRepository.findById(topicId).orElseThrow((() -> new BusinessRuleException("Topic not found")));
 	}
 	
-	public Page<TopicDTO> listAllTopicsByUserId(int idUser, int page, Integer topics) {
+	public Page<TopicDTO> listAllTopicsByUserId(int idUser, int page, Integer topics, String title) {
 		PageRequest pageRequest = PageRequest.of(
                 page,
                 ((topics==null)?4:topics),
                 Sort.Direction.ASC,
                 "title");
-		return topicRepository.findAllByUserId(idUser, pageRequest);
+		if(title!=null) {
+			return topicRepository.findAllByUserId(idUser, title, pageRequest);
+		}else {
+			return topicRepository.findAllByUserId(idUser, pageRequest);
+		}
 	}
 
 	public String updateFinancierTopic(Integer topicId, Boolean status) throws BusinessRuleException {
@@ -80,35 +82,43 @@ public class TopicService {
 		this.topicRepository.save(findById);
 	}
 	
-	public Page<TopicDTO> getTopics(List<SimpleGrantedAuthority> authorities, int userId, int page, Integer topics) throws BusinessRuleException {
+	public Page<TopicDTO> getTopics(List<SimpleGrantedAuthority> authorities, int userId, int page, Integer topics, String title) throws BusinessRuleException {
 		List<String> collect = authorities.stream().map(smp -> smp.getAuthority()).collect(Collectors.toList());
 		if(collect.contains("ROLE_MANAGER")) {
-			return this.findAllByStatus(StatusEnum.OPEN, page, topics);
+			return this.findAllByStatus(StatusEnum.OPEN, page, topics, title);
 		}else if(collect.contains("ROLE_FINANCIER")) {
-			return this.findAllByStatus(StatusEnum.MANAGER_APPROVED, page, topics);
+			return this.findAllByStatus(StatusEnum.MANAGER_APPROVED, page, topics, title);
 		}else if(collect.contains("ROLE_BUYER")) {
-			return this.findAllByDifferenStatus(StatusEnum.CREATING, page, topics);
+			return this.findAllByDifferenStatus(StatusEnum.CREATING, page, topics, title);
 		}else {
-			return this.listAllTopicsByUserId(userId,page, topics);
+			return this.listAllTopicsByUserId(userId,page, topics, title);
 		}
 	}
 	
-	private Page<TopicDTO> findAllByDifferenStatus(StatusEnum enumTopic, int page, Integer topics) {
+	private Page<TopicDTO> findAllByDifferenStatus(StatusEnum enumTopic, int page, Integer topics, String title) {
 		PageRequest pageRequest = PageRequest.of(
                 page,
                 ((topics==null)?4:topics),
                 Sort.Direction.ASC,
                 "title");
-		return this.topicRepository.findAllByStatusDifferent(enumTopic, pageRequest);
+		if(title!=null) {
+			return this.topicRepository.findAllByStatusDifferent(enumTopic, title, pageRequest);
+		}else {
+			return this.topicRepository.findAllByStatusDifferent(enumTopic, pageRequest);
+		}
 	}
 
-	private Page<TopicDTO> findAllByStatus(StatusEnum enumTopic, int page, Integer topics) throws BusinessRuleException{
+	private Page<TopicDTO> findAllByStatus(StatusEnum enumTopic, int page, Integer topics, String title) throws BusinessRuleException{
 		PageRequest pageRequest = PageRequest.of(
                 page,
                ((topics==null)?4:topics),
                 Sort.Direction.ASC,
                 "title");
-		return this.topicRepository.findAllByStatus(enumTopic, pageRequest);
+		if(title!=null) {
+			return this.topicRepository.findAllByStatus(enumTopic, title, pageRequest);
+		}else {
+			return this.topicRepository.findAllByStatus(enumTopic, pageRequest);
+		}
 	}
 	
 	private TopicEntity findById(int idTopic) throws BusinessRuleException {
