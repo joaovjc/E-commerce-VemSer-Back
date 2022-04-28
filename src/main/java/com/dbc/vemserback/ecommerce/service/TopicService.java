@@ -44,7 +44,7 @@ public class TopicService {
 	public String updateFinancierTopic(Integer topicId, Boolean status) throws BusinessRuleException {
 		TopicEntity topic = topicRepository.findById(topicId).orElseThrow((() -> new BusinessRuleException("Topic not found")));
 		if (status) {
-			topic.setStatus(StatusEnum.CLOSED);
+			topic.setStatus(StatusEnum.CONCLUDED);
 			topicRepository.save(topic);
 			return "Topic closed";
 		} else {
