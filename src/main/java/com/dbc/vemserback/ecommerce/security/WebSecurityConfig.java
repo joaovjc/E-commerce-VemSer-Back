@@ -9,7 +9,10 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.dbc.vemserback.ecommerce.exception.CustomAccessDeniedHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,15 +30,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers("/auth/**").permitAll()
-//                .antMatchers("/main-page/topic-by-status").hasRole("USER")
-//                .antMatchers("/main-page/**").hasAnyRole("COLLABORATOR", "BUYER", "MANAGER", "FINANCIER", "ADMINISTRATOR")
-//                .antMatchers("/admin/**").hasRole("ADMINISTRATOR")
-//                .antMatchers("/buyer/**").hasRole("BUYER")
-//                .antMatchers("/contributor/**").hasRole("COLLABORATOR")
-//                .antMatchers("/financier/**").hasRole("FINANCIER")
-//                .antMatchers("/Manager/**").hasRole("MANAGER")
+                .antMatchers("/main-page/topics").hasRole("USER")
+                .antMatchers("/main-page/**").hasAnyRole("COLLABORATOR", "BUYER", "MANAGER", "FINANCIER", "ADMINISTRATOR")
+                .antMatchers("/admin/**").hasRole("ADMINISTRATOR")
+                .antMatchers("/buyer/**").hasRole("BUYER")
+                .antMatchers("/contributor/**").hasRole("COLLABORATOR")
+                .antMatchers("/financier/**").hasRole("FINANCIER")
+                .antMatchers("/manager/**").hasRole("MANAGER")
                 .anyRequest().authenticated()
-                .and().addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
     }
 
     @Override
@@ -56,4 +60,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected AuthenticationManager authenticationManager() throws Exception{
         return super.authenticationManager();
     }
+    
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(){
+        return new CustomAccessDeniedHandler();
+    }
+
 }

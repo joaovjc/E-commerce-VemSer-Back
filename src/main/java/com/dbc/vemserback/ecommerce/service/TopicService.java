@@ -40,24 +40,7 @@ public class TopicService {
 
 		return entity.getTopicId();
 	}
-
-	public TopicEntity topicById(Integer topicId) throws BusinessRuleException{
-		return topicRepository.findById(topicId).orElseThrow((() -> new BusinessRuleException("Topic not found")));
-	}
 	
-	public Page<TopicDTO> listAllTopicsByUserId(int idUser, int page, Integer topics, String title) {
-		PageRequest pageRequest = PageRequest.of(
-                page,
-                ((topics==null)?4:topics),
-                Sort.Direction.ASC,
-                "title");
-		if(title!=null) {
-			return topicRepository.findAllByUserId(idUser, title, pageRequest);
-		}else {
-			return topicRepository.findAllByUserId(idUser, pageRequest);
-		}
-	}
-
 	public String updateFinancierTopic(Integer topicId, Boolean status) throws BusinessRuleException {
 		TopicEntity topic = topicRepository.findById(topicId).orElseThrow((() -> new BusinessRuleException("Topic not found")));
 		if (status) {
@@ -72,10 +55,11 @@ public class TopicService {
 	}
 
 	public void openTopic(int idTopic, int userId) throws BusinessRuleException {
-		TopicEntity findById = this.findById(idTopic);
+		TopicEntity findById = this.topicById(idTopic);
 		if(findById.getUserId()!=userId)throw new BusinessRuleException("The topic is not owned by you, thus you cannot change it!!!");
 		if(findById.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("The topic was already opened!!!");
 		if(findById.getPurchases().size()<1)throw new BusinessRuleException("he topic must have at least one");
+		
 		double sum = findById.getPurchases().stream().mapToDouble(item->item.getValue().doubleValue()).sum();
 		findById.setTotalValue(new BigDecimal(sum));
 		findById.setStatus(StatusEnum.OPEN);
@@ -84,59 +68,42 @@ public class TopicService {
 	
 	public Page<TopicDTO> getTopics(List<SimpleGrantedAuthority> authorities, int userId, int page, Integer topics, String title) throws BusinessRuleException {
 		List<String> collect = authorities.stream().map(smp -> smp.getAuthority()).collect(Collectors.toList());
-		if(collect.contains("ROLE_MANAGER")) {
-			return this.findAllByStatus(StatusEnum.OPEN, page, topics, title);
-		}else if(collect.contains("ROLE_FINANCIER")) {
-			return this.findAllByStatus(StatusEnum.MANAGER_APPROVED, page, topics, title);
-		}else if(collect.contains("ROLE_BUYER")) {
-			return this.findAllByDifferenStatus(StatusEnum.CREATING, page, topics, title);
-		}else {
-			return this.listAllTopicsByUserId(userId,page, topics, title);
-		}
-	}
-	
-	private Page<TopicDTO> findAllByDifferenStatus(StatusEnum enumTopic, int page, Integer topics, String title) {
 		PageRequest pageRequest = PageRequest.of(
                 page,
                 ((topics==null)?4:topics),
                 Sort.Direction.ASC,
                 "title");
-		if(title!=null) {
-			return this.topicRepository.findAllByStatusDifferent(enumTopic, title, pageRequest);
+		if(collect.contains("ROLE_MANAGER")) {
+			if(title!=null) {
+				return this.topicRepository.findAllByStatus(StatusEnum.OPEN, title, pageRequest);
+			}else {
+				return this.topicRepository.findAllByStatus(StatusEnum.OPEN, pageRequest);
+			}
+		}else if(collect.contains("ROLE_FINANCIER")) {
+			if(title!=null) {
+				return this.topicRepository.findAllByStatus(StatusEnum.MANAGER_APPROVED, title, pageRequest);
+			}else {
+				return this.topicRepository.findAllByStatus(StatusEnum.MANAGER_APPROVED, pageRequest);
+			}
+		}else if(collect.contains("ROLE_BUYER")) {
+			if(title!=null) {
+				return this.topicRepository.findAllByStatusDifferent(StatusEnum.CREATING, title, pageRequest);
+			}else {
+				return this.topicRepository.findAllByStatusDifferent(StatusEnum.CREATING, pageRequest);
+			}
 		}else {
-			return this.topicRepository.findAllByStatusDifferent(enumTopic, pageRequest);
-		}
-	}
-
-	private Page<TopicDTO> findAllByStatus(StatusEnum enumTopic, int page, Integer topics, String title) throws BusinessRuleException{
-		PageRequest pageRequest = PageRequest.of(
-                page,
-               ((topics==null)?4:topics),
-                Sort.Direction.ASC,
-                "title");
-		if(title!=null) {
-			return this.topicRepository.findAllByStatus(enumTopic, title, pageRequest);
-		}else {
-			return this.topicRepository.findAllByStatus(enumTopic, pageRequest);
+			if(title!=null) {
+				return topicRepository.findAllByUserId(userId, title, pageRequest);
+			}else {
+				return topicRepository.findAllByUserId(userId, pageRequest);
+			}
 		}
 	}
 	
-	private TopicEntity findById(int idTopic) throws BusinessRuleException {
-		return this.topicRepository.findById(idTopic).orElseThrow(()->new BusinessRuleException("The topic was not found"));
+	public TopicEntity topicById(Integer topicId) throws BusinessRuleException{
+		return topicRepository.findById(topicId).orElseThrow((() -> new BusinessRuleException("Topic not found")));
 	}
-
-	public Page<TopicDTO> getTopicsByTitle(List<SimpleGrantedAuthority> authorities, String title, int page) {
-		PageRequest pageRequest = PageRequest.of(
-                page,
-                3,
-                Sort.Direction.ASC,
-                "title");
-		return this.topicRepository.findAllByTitle(title, pageRequest);
-	}
-//	public List<TopicDTO> getTopicsByTitle(List<SimpleGrantedAuthority> authorities, String title) {
-//		return this.topicRepository.findAllByTitle(title);
-//	}
-
+	
 	public void save(TopicEntity topic) {
 		this.topicRepository.save(topic);
 	}

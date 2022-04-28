@@ -1,10 +1,8 @@
 package com.dbc.vemserback.ecommerce.service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +14,7 @@ import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.enums.StatusEnum;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.post.PurchaseRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,11 +32,18 @@ public class ItemService {
 
 		TopicEntity topicEntity = topicService.topicById(idTopic);
 		if(topicEntity.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("the topic is not on creating status!!!");
+		
 		PurchaseEntity build = PurchaseEntity.builder().itemName(purchaseDTO.getName()).description(purchaseDTO.getDescription())
 				.value(purchaseDTO.getPrice()).fileName(originalFilename).file(fileService.convertToByte(file)).topicId(idTopic).topicEntity(topicEntity).build();
 		purchaseRepository.save(build);
 
-		return objectMapper.convertValue(build, ItemFullDTO.class);
+		return ItemFullDTO.builder()
+				.description(build.getDescription())
+				.file(new String(build.getFile()))
+				.itemName(build.getItemName())
+				.purchaseId(idTopic)
+				.value(build.getValue())
+				.build();
 
 	}
 

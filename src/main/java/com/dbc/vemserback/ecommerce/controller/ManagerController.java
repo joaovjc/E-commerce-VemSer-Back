@@ -19,7 +19,7 @@ public class ManagerController {
 
     //Manager
 	@PostMapping("/aproveQuotation/{quotation-id}")
-    public void aproveQuotation( @PathVariable("quotation-id") Integer quotationId) throws BusinessRuleException {
+    public void aproveQuotation(@PathVariable("quotation-id") Integer quotationId) throws BusinessRuleException {
         Integer topicId = quotationService.findQuotationById(quotationId).getTopicId();
         quotationService.managerAproveOrReproveTopic(topicId, quotationId, true);
     }
