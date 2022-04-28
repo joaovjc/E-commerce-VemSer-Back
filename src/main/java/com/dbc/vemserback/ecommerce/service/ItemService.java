@@ -44,12 +44,17 @@ public class ItemService {
 				.itemId(idTopic)
 				.value(build.getValue())
 				.build();
-
 	}
 
 	public List<ItemDTO> listPurchasesByTopicId(Integer topicId) throws BusinessRuleException {
 		topicService.topicById(topicId);
-		return purchaseRepository.findAllByTopicId(topicId).stream().map(ent-> objectMapper.convertValue(ent, ItemDTO.class)).collect(Collectors.toList());
+		return purchaseRepository.findAllByTopicId(topicId).stream().map(ent->{
+            return ItemDTO.builder()
+                    .description(ent.getDescription())
+                    .itemName(ent.getItemName())
+                    .file(ent.getFile()!=null?new String(ent.getFile()):null)
+                    .value(ent.getValue()).build();
+        }).collect(Collectors.toList());
 	}
 
 	public void deleteById(int idItem, int userId) throws BusinessRuleException {

@@ -26,8 +26,6 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
 		if (auth != null) {
 			log.warn("User: " + auth.getName() + " attempted to access the protected URL: " + request.getRequestURI());
 			response.sendError(401);
-		}else {
-			response.sendError(500);
 		}
 	}
 }
