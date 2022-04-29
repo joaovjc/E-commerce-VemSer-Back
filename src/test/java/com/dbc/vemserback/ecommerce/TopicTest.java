@@ -163,11 +163,14 @@ public class TopicTest {
     @Test
     public void  testDeleteByIdUserException() throws BusinessRuleException {
         TopicEntity topic= TopicEntity.builder()
-                .userId(2)
+                .topicId(1)
+                .user(new UserEntity().
+                        builder()
+                        .userId(2)
+                        .build())
                 .build();
 
-        when(topicService.topicById(any(Integer.class))).thenReturn(topic);
-        when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(topic));
+        when(topicRepository.findById(1)).thenReturn(Optional.of(topic));
         Exception exception = assertThrows(BusinessRuleException.class, ()-> topicService.deleteById(1,1));
         assertTrue(exception.getMessage().equals("esse topico não pertence a esse user"));
 
@@ -175,10 +178,14 @@ public class TopicTest {
     @Test
     public void  testDeleteByIdStatusException() throws BusinessRuleException {
         TopicEntity topic= TopicEntity.builder()
-                .userId(2)
+                .userId(1)
                 .status(StatusEnum.OPEN)
+                .user(new UserEntity().
+                        builder()
+                        .userId(1)
+                        .build())
                 .build();
-        when(topicService.topicById(any(Integer.class))).thenReturn(topic);
+        when(topicRepository.findById(1)).thenReturn(Optional.of(topic));
         Exception exception = assertThrows(BusinessRuleException.class, ()-> topicService.deleteById(1,1));
         assertTrue(exception.getMessage().equals("topico não pode ser deletado nesse status"));
 
@@ -186,12 +193,17 @@ public class TopicTest {
     @Test
     public void  testDeleteById() throws BusinessRuleException {
         TopicEntity topic= TopicEntity.builder()
-                .topicId(2)
-                .userId(2)
+                .topicId(1)
+                .userId(1)
                 .status(StatusEnum.CREATING)
+                .user(new UserEntity().
+                        builder()
+                        .userId(1)
+                        .build())
                 .build();
 
-        when(topicService.topicById(any(Integer.class))).thenReturn(topic);
+        when(topicRepository.findById(1)).thenReturn(Optional.of(topic));
+        topicService.deleteById(1,1);
         verify(topicRepository, times(1)).deleteById(1);
     }
 
