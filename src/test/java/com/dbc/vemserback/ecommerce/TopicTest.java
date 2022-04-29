@@ -1,6 +1,7 @@
 package com.dbc.vemserback.ecommerce;
 
 import com.dbc.vemserback.ecommerce.dto.topic.TopicCreateDTO;
+import com.dbc.vemserback.ecommerce.dto.topic.TopicDTO;
 import com.dbc.vemserback.ecommerce.entity.ItemEntity;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
@@ -17,6 +18,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
@@ -39,13 +43,6 @@ public class TopicTest {
 
     @InjectMocks
     private TopicService topicService;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Before
-    public void BeforeEach() {
-        ReflectionTestUtils.setField(topicService,"objectMapper",objectMapper);
-    }
 
     @Test
     public void testCreateTopic() throws BusinessRuleException {
@@ -138,6 +135,65 @@ public class TopicTest {
         verify(this.topicRepository, times(1)).save(any(TopicEntity.class));
     }
 
+//    @Test
+//    public void testGetTopics() throws BusinessRuleException {
+//        Page<TopicDTO> page = null;
+//        List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+//        simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
+//        topicService.getTopics(simpleGrantedAuthorities, 1, 1,1,"Titulo");
+//        when(topicRepository.findAllByStatus(StatusEnum.OPEN, 1, )).thenReturn(page);
+//        verify( topicRepository, times(1)).findAllByStatus(StatusEnum.OPEN, any(String.class), any(PageRequest.class));
+//    }
+
+    @Test
+    public void testTopicById() throws BusinessRuleException {
+        TopicEntity topic = new TopicEntity();
+        when(topicRepository.findById(any())).thenReturn(Optional.of(topic));
+        topicService.topicById(1);
+        verify(topicRepository, times(1)).findById(any(Integer.class));
+    }
+    @Test
+    public void testSave() {
+        TopicEntity topic = new TopicEntity();
+        when(topicRepository.save(any())).thenReturn(topic);
+        topicService.save(topic);
+        verify(topicRepository, times(1)).save(any(TopicEntity.class));
+    }
+
+    @Test
+    public void  testDeleteByIdUserException() throws BusinessRuleException {
+        TopicEntity topic= TopicEntity.builder()
+                .userId(2)
+                .build();
+
+        when(topicService.topicById(any(Integer.class))).thenReturn(topic);
+        when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(topic));
+        Exception exception = assertThrows(BusinessRuleException.class, ()-> topicService.deleteById(1,1));
+        assertTrue(exception.getMessage().equals("esse topico não pertence a esse user"));
+
+    }
+    @Test
+    public void  testDeleteByIdStatusException() throws BusinessRuleException {
+        TopicEntity topic= TopicEntity.builder()
+                .userId(2)
+                .status(StatusEnum.OPEN)
+                .build();
+        when(topicService.topicById(any(Integer.class))).thenReturn(topic);
+        Exception exception = assertThrows(BusinessRuleException.class, ()-> topicService.deleteById(1,1));
+        assertTrue(exception.getMessage().equals("topico não pode ser deletado nesse status"));
+
+    }
+    @Test
+    public void  testDeleteById() throws BusinessRuleException {
+        TopicEntity topic= TopicEntity.builder()
+                .topicId(2)
+                .userId(2)
+                .status(StatusEnum.CREATING)
+                .build();
+
+        when(topicService.topicById(any(Integer.class))).thenReturn(topic);
+        verify(topicRepository, times(1)).deleteById(1);
+    }
 
 
 }
