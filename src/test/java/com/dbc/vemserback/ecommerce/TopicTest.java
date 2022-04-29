@@ -149,6 +149,7 @@ public class TopicTest {
         topicService.topicById(1);
         verify(topicRepository, times(1)).findById(any(Integer.class));
     }
+
     @Test
     public void testSave() {
         TopicEntity topic = new TopicEntity();
