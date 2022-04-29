@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -71,8 +73,8 @@ public class TopicService {
 		PageRequest pageRequest = PageRequest.of(
                 page,
                 ((topics==null)?4:topics),
-                Sort.Direction.ASC,
-                "title");
+                Sort.by(new Order(Direction.DESC, "status"), 
+                	    new Order(Direction.ASC, "date")));
 		if(collect.contains("ROLE_MANAGER")) {
 			if(title!=null) {
 				return this.topicRepository.findAllByStatus(StatusEnum.OPEN, title, pageRequest);
