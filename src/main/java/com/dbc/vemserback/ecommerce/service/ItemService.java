@@ -25,7 +25,7 @@ public class ItemService {
 	private final TopicService topicService;
 
 	public ItemFullDTO createPurchase(ItemCreateDTO purchaseDTO, MultipartFile file, int idUser, Integer idTopic) throws BusinessRuleException {
-		if(file==null)throw new BusinessRuleException("the item file cannot be null");
+		if(file==null)throw new BusinessRuleException("a imagem do item não pode ser nula");
 		String originalFilename = file.getOriginalFilename();
 
 		TopicEntity topicEntity = topicService.topicById(idTopic);
@@ -57,13 +57,13 @@ public class ItemService {
 
 	public void deleteById(int idItem, int userId) throws BusinessRuleException {
 		ItemEntity purchase = this.getById(idItem);
-		if(purchase.getTopicEntity().getUserId()!=userId)throw new BusinessRuleException("this item isnt from the autenticated user");
-		if(purchase.getTopicEntity().getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("the topic was already closed for changes");
+		if(purchase.getTopicEntity().getUserId()!=userId)throw new BusinessRuleException("esse item não pertence a seu usuário");
+		if(purchase.getTopicEntity().getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("o topico já não pode ser mais alterado");
 		this.itemRepository.delete(purchase);
 	}
 	
 	private ItemEntity getById(int idItem) throws BusinessRuleException {
-		return this.itemRepository.findById(idItem).orElseThrow(()-> new BusinessRuleException("item not found, please reload the page"));
+		return this.itemRepository.findById(idItem).orElseThrow(()-> new BusinessRuleException("item não encontrado, por favor atualize a pagina"));
 	}
 
 }

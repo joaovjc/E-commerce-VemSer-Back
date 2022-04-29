@@ -1,12 +1,13 @@
 package com.dbc.vemserback.ecommerce.controller.manager;
 
-import com.dbc.vemserback.ecommerce.dto.Item.ItemDTO;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Api
 public interface ManagerAPI {

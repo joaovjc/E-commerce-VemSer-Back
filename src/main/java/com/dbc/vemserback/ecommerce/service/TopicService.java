@@ -31,8 +31,8 @@ public class TopicService {
 	private final UserService userService;
 
 	public Integer createTopic(TopicCreateDTO dto, Integer userId) throws BusinessRuleException {
-		if (dto.getTitle()==null) throw new BusinessRuleException("Topic name cannot be null");
-		if(topicRepository.findByTitle(dto.getTitle())!=null)throw new BusinessRuleException("Topic name already exists");
+		if (dto.getTitle()==null) throw new BusinessRuleException("o nome do Topico não pode ser nulo");
+		if(topicRepository.findByTitle(dto.getTitle())!=null)throw new BusinessRuleException("este nome de topico já existe "+ dto.getTitle());
 		UserEntity user = userService.findById(userId);
 		TopicEntity entity = TopicEntity.builder().date(LocalDate.now()).status(StatusEnum.valueOf(StatusEnum.CREATING.name()))
 				.title(dto.getTitle()).totalValue(BigDecimal.ZERO).user(user)
@@ -44,7 +44,7 @@ public class TopicService {
 	}
 	
 	public String updateFinancierTopic(Integer topicId, Boolean status) throws BusinessRuleException {
-		TopicEntity topic = topicRepository.findById(topicId).orElseThrow((() -> new BusinessRuleException("Topic not found")));
+		TopicEntity topic = this.topicById(topicId);
 		if (status) {
 			topic.setStatus(StatusEnum.CONCLUDED);
 			topicRepository.save(topic);
@@ -58,15 +58,16 @@ public class TopicService {
 
 	public void openTopic(int idTopic, int userId) throws BusinessRuleException {
 		TopicEntity findById = this.topicById(idTopic);
-		if(findById.getUserId()!=userId)throw new BusinessRuleException("The topic is not owned by you, thus you cannot change it!!!");
-		if(findById.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("The topic was already opened!!!");
-		if(findById.getPurchases().size()<1)throw new BusinessRuleException("he topic must have at least one");
+		if(findById.getUserId()!=userId)throw new BusinessRuleException("voce não pode alterar um tópico que não é seu");
+		if(findById.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("o topico não pode ser alterado pois já foi aberto");
+		if(findById.getPurchases().size()<1)throw new BusinessRuleException("o topico tem que ter pelo menos um item");
 		
 		double sum = findById.getPurchases().stream().mapToDouble(item->item.getValue().doubleValue()).sum();
 		findById.setTotalValue(new BigDecimal(sum));
 		findById.setStatus(StatusEnum.OPEN);
 		this.topicRepository.save(findById);
 	}
+	
 	
 	public Page<TopicDTO> getTopics(List<SimpleGrantedAuthority> authorities, int userId, int page, Integer topics, String title) throws BusinessRuleException {
 		List<String> collect = authorities.stream().map(smp -> smp.getAuthority()).collect(Collectors.toList());
@@ -75,35 +76,20 @@ public class TopicService {
                 ((topics==null)?4:topics),
                 Sort.by(new Order(Direction.DESC, "status"), 
                 	    new Order(Direction.ASC, "date")));
+		title = title==null?"":title;
 		if(collect.contains("ROLE_MANAGER")) {
-			if(title!=null) {
 				return this.topicRepository.findAllByStatus(StatusEnum.OPEN, title, pageRequest);
-			}else {
-				return this.topicRepository.findAllByStatus(StatusEnum.OPEN, pageRequest);
-			}
 		}else if(collect.contains("ROLE_FINANCIER")) {
-			if(title!=null) {
 				return this.topicRepository.findAllByStatus(StatusEnum.MANAGER_APPROVED, title, pageRequest);
-			}else {
-				return this.topicRepository.findAllByStatus(StatusEnum.MANAGER_APPROVED, pageRequest);
-			}
 		}else if(collect.contains("ROLE_BUYER")) {
-			if(title!=null) {
 				return this.topicRepository.findAllByStatusDifferent(StatusEnum.CREATING, title, pageRequest);
-			}else {
-				return this.topicRepository.findAllByStatusDifferent(StatusEnum.CREATING, pageRequest);
-			}
 		}else {
-			if(title!=null) {
 				return topicRepository.findAllByUserId(userId, title, pageRequest);
-			}else {
-				return topicRepository.findAllByUserId(userId, pageRequest);
-			}
 		}
 	}
 	
 	public TopicEntity topicById(Integer topicId) throws BusinessRuleException{
-		return topicRepository.findById(topicId).orElseThrow((() -> new BusinessRuleException("Topic not found")));
+		return topicRepository.findById(topicId).orElseThrow((() -> new BusinessRuleException("topico não encontrado")));
 	}
 	
 	public void save(TopicEntity topic) {

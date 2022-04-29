@@ -9,12 +9,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import com.dbc.vemserback.ecommerce.exception.rest.RestAccessDeniedHandler;
-import com.dbc.vemserback.ecommerce.exception.rest.RestAuthenticationEntryPoint;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,11 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/financier/**").hasRole("FINANCIER")
                 .antMatchers("/manager/**").hasRole("MANAGER")
                 .anyRequest().authenticated()
-                .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler()).authenticationEntryPoint(unauthorizedHandler())
                 .and().addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
     }
-
-    
     
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -63,15 +55,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected AuthenticationManager authenticationManager() throws Exception{
         return super.authenticationManager();
-    }
-    
-    @Bean
-    public AccessDeniedHandler accessDeniedHandler(){
-        return new RestAccessDeniedHandler();
-    }
-    
-    @Bean
-    public AuthenticationEntryPoint unauthorizedHandler(){
-        return new RestAuthenticationEntryPoint();
     }
 }

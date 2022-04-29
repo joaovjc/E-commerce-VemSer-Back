@@ -50,8 +50,8 @@ public class AuthController {
                 		loginDTO.getUsername(),
                 		loginDTO.getPassword()
                 );
-
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        
         UserLoginDto token = tokenService.getToken(authenticate);
         return token;
     }
@@ -63,6 +63,7 @@ public class AuthController {
         	bindingResult.getAllErrors().forEach(err -> builder.append(err.getDefaultMessage()));
     		throw new BusinessRuleException(builder.toString());
     	}
+    	
     	UserCreateDTO userCreateDTO = objectMapper.convertValue(createDTO, UserCreateDTO.class);
     	userCreateDTO.setEmail(createDTO.getUsername());
         userCreateDTO.setGroups(Groups.USER);

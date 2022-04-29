@@ -1,5 +1,7 @@
 package com.dbc.vemserback.ecommerce.service;
 
+import static com.dbc.vemserback.ecommerce.enums.StatusEnum.MANAGER_APPROVED;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,7 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.dbc.vemserback.ecommerce.dto.quotation.QuotationByTopicDTO;
-import com.dbc.vemserback.ecommerce.dto.quotation.QuotationDTO;
 import com.dbc.vemserback.ecommerce.entity.QuotationEntity;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
@@ -18,8 +19,6 @@ import com.dbc.vemserback.ecommerce.repository.post.QuotationRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
-
-import static com.dbc.vemserback.ecommerce.enums.StatusEnum.MANAGER_APPROVED;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +33,7 @@ public class QuotationService {
     public boolean createQuotation(Integer topicId, Double preco, int userId) throws BusinessRuleException {
 
         TopicEntity topicEntity = topicService.topicById(topicId);
-        if(topicEntity.getStatus()!=StatusEnum.OPEN)throw new BusinessRuleException("the topic isnt open to cotations");
+        if(topicEntity.getStatus()!=StatusEnum.OPEN)throw new BusinessRuleException("o topico ainda não está aberto para cotações");
 
         UserEntity userEntity = userService.findById(userId);
 
@@ -46,7 +45,6 @@ public class QuotationService {
                 .topic(topicEntity)
                 .userEntity(userEntity)
                 .build();
-
         quotationRepository.save(build);
 
         return true;
@@ -55,8 +53,8 @@ public class QuotationService {
     public List<QuotationEntity> managerAproveOrReproveTopic(Integer topicId, Integer quotationId, Boolean flag) throws BusinessRuleException {
         TopicEntity topic = topicService.topicById(topicId);
 
-        if(topic.getStatus()!=StatusEnum.OPEN){throw new BusinessRuleException("Topic not open");}
-        if(topic.getQuotations().size()<2){throw new BusinessRuleException("Topic does not have two quotations");}
+        if(topic.getStatus()!=StatusEnum.OPEN){throw new BusinessRuleException("o Topico não foi aberto");}
+        if(topic.getQuotations().size()<2){throw new BusinessRuleException("o topico não tem duas cotações");}
             List<QuotationEntity> quotationEntities = topic.getQuotations();
 
         quotationEntities.forEach(quotationEntity -> {
@@ -64,7 +62,7 @@ public class QuotationService {
         );
             if (flag){
                 quotationEntities.stream().filter(quotationEntity -> quotationEntity.getQuotationId().equals(quotationId)
-                ).findFirst().orElseThrow((() -> new BusinessRuleException("Quotation not found"))).setQuotationStatus(MANAGER_APPROVED);
+                ).findFirst().orElseThrow((() -> new BusinessRuleException("Cotação não encontrada"))).setQuotationStatus(MANAGER_APPROVED);
                 topic.setStatus(MANAGER_APPROVED);
             } else {topic.setStatus(StatusEnum.MANAGER_REPROVED);}
             topic.setQuotations(quotationEntities);
@@ -83,7 +81,7 @@ public class QuotationService {
     }
 
     public QuotationEntity findQuotationById(Integer quotationId) throws BusinessRuleException {
-        return quotationRepository.findById(quotationId).orElseThrow((() -> new BusinessRuleException("Quotation not found")));
+        return quotationRepository.findById(quotationId).orElseThrow((() -> new BusinessRuleException("Cotação não encontrada")));
     }
 
 }

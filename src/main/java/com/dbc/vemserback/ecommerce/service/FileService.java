@@ -20,7 +20,7 @@ public class FileService {
 	public byte[] convertToByte(MultipartFile multipartFile) throws BusinessRuleException {
 		String fileName = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
     	if(!Arrays.asList(".png",".jpg",".jpeg").contains(fileName.toLowerCase())) {
-    		throw new BusinessRuleException("not a suported file type: "+fileName);
+    		throw new BusinessRuleException("Esse tipo de arquivo não é suportado: "+fileName);
     	}
 		
 		File tempFile = new File(fileName);

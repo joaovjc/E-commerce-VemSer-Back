@@ -1,7 +1,25 @@
 package com.dbc.vemserback.ecommerce;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
 import com.dbc.vemserback.ecommerce.dto.topic.TopicCreateDTO;
-import com.dbc.vemserback.ecommerce.dto.topic.TopicDTO;
 import com.dbc.vemserback.ecommerce.entity.ItemEntity;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
@@ -10,27 +28,6 @@ import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.post.TopicRepository;
 import com.dbc.vemserback.ecommerce.service.TopicService;
 import com.dbc.vemserback.ecommerce.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.test.util.ReflectionTestUtils;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TopicTest {
@@ -89,7 +86,7 @@ public class TopicTest {
                 .build();
         when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(topic));
         Exception exception = assertThrows(BusinessRuleException.class, ()-> topicService.openTopic(1,1));
-        assertTrue(exception.getMessage().equals("The topic is not owned by you, thus you cannot change it!!!"));
+        assertTrue(exception.getMessage().equals("voce não pode alterar um tópico que não é seu"));
     }
 
     @Test
@@ -100,7 +97,7 @@ public class TopicTest {
                 .build();
         when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(topic));
         Exception exception = assertThrows(BusinessRuleException.class, ()-> topicService.openTopic(1,1));
-        assertTrue(exception.getMessage().equals("The topic was already opened!!!"));
+        assertTrue(exception.getMessage().equals("o topico não pode ser alterado pois já foi aberto"));
     }
 
     @Test
@@ -113,7 +110,7 @@ public class TopicTest {
         topic.setPurchases(purchaseEntities);
         when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(topic));
         Exception exception = assertThrows(BusinessRuleException.class, ()-> topicService.openTopic(1,1));
-        assertTrue(exception.getMessage().equals("The topic must have at least one"));
+        assertTrue(exception.getMessage().equals("o topico tem que ter pelo menos um item"));
     }
 
     @Test
@@ -164,7 +161,7 @@ public class TopicTest {
     public void  testDeleteByIdUserException() throws BusinessRuleException {
         TopicEntity topic= TopicEntity.builder()
                 .topicId(1)
-                .user(new UserEntity().
+                .user(UserEntity.
                         builder()
                         .userId(2)
                         .build())
@@ -180,7 +177,7 @@ public class TopicTest {
         TopicEntity topic= TopicEntity.builder()
                 .userId(1)
                 .status(StatusEnum.OPEN)
-                .user(new UserEntity().
+                .user(UserEntity.
                         builder()
                         .userId(1)
                         .build())
@@ -196,7 +193,7 @@ public class TopicTest {
                 .topicId(1)
                 .userId(1)
                 .status(StatusEnum.CREATING)
-                .user(new UserEntity().
+                .user(UserEntity.
                         builder()
                         .userId(1)
                         .build())

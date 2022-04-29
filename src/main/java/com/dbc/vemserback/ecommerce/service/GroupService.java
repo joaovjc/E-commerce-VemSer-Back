@@ -14,6 +14,6 @@ public class GroupService {
     private final GroupRepository groupRepository;
 
     public GroupEntity getById(Integer groupId) throws BusinessRuleException {
-        return groupRepository.findById(groupId).orElseThrow((() -> new BusinessRuleException("Group not found")));
+        return groupRepository.findById(groupId).orElseThrow((() -> new BusinessRuleException("Grupo não encontrado")));
     }
 }

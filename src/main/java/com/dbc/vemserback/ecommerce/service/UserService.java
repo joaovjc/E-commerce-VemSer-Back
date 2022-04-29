@@ -72,16 +72,6 @@ public class UserService {
         }
     }
 
-
-//    protected Integer getLogedUserId() {
-//        return Integer.parseInt((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-//    }
-//
-//	public List<UserPageDTO> getByFullName(String nome) {
-//		return this.userRepository.getUserByFullName(nome);
-//	}
-
-
     public UserEntity findById(Integer userId) throws BusinessRuleException {
         return userRepository.findById(userId).orElseThrow(() -> new BusinessRuleException("Usuário não encontrado"));
     }
