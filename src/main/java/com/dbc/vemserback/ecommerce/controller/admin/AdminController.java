@@ -1,4 +1,4 @@
-package com.dbc.vemserback.ecommerce.controller;
+package com.dbc.vemserback.ecommerce.controller.admin;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbc.vemserback.ecommerce.controller.others.Admin;
 import com.dbc.vemserback.ecommerce.dto.user.UserCreateDTO;
 import com.dbc.vemserback.ecommerce.dto.user.UserPageDTO;
 import com.dbc.vemserback.ecommerce.enums.Groups;
@@ -32,13 +31,13 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 @Validated
-@Api(value = "7 - Admin API", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"7 - Admin API"})
-public class AdminController implements Admin{
+@Api(value = "7 - AdminAPI API", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"7 - AdminAPI API"})
+public class AdminController implements AdminAPI{
     private final UserService userService;
 
 
     @PostMapping(path = "/adm-creat-user", consumes = {MULTIPART_FORM_DATA_VALUE})
-    public void admCreateUser(@Valid @ModelAttribute(name = "data") UserCreateDTO userCreateDTO, @RequestPart(name = "file",required = false) MultipartFile file, BindingResult bindingResult) throws BusinessRuleException {
+    public void admCreateUser(@Valid @ModelAttribute(name = "data") UserCreateDTO userCreateDTO, BindingResult bindingResult, @RequestPart(name = "file",required = false) MultipartFile file) throws BusinessRuleException {
         if(bindingResult.hasErrors()) {
             StringBuilder builder = new StringBuilder();
             bindingResult.getAllErrors().forEach(err -> builder.append(err.getDefaultMessage()));
@@ -57,8 +56,4 @@ public class AdminController implements Admin{
         return userService.listUsersForAdmin(page, fullname);
     }
     
-//    @GetMapping("/adm-get-all-users-by-full-name")
-//    public List<UserPageDTO> admGetAllUsersByFullName(@RequestParam String nome){
-//        return userService.getByFullName(nome);
-//    }
 }

@@ -1,4 +1,4 @@
-package com.dbc.vemserback.ecommerce.controller;
+package com.dbc.vemserback.ecommerce.controller.login;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 

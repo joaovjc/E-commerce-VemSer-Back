@@ -2,7 +2,7 @@ package com.dbc.vemserback.ecommerce.enums;
 
 public enum Groups {
     COLLABORATOR(1, "Collaborator"),
-    BUYER(2, "Buyer"),
+    BUYER(2, "BuyerAPI"),
     MANAGER(3, "Maneger"),
     FINANCIER(4, "Financier"),
     ADMINISTRATOR(5, "Administrator"),

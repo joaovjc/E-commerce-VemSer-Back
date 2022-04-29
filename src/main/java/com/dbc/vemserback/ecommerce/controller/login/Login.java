@@ -1,4 +1,4 @@
-package com.dbc.vemserback.ecommerce.controller.others;
+package com.dbc.vemserback.ecommerce.controller.login;
 
 import javax.validation.Valid;
 
@@ -33,7 +33,7 @@ public interface Login {
 			@ApiResponse(code = 403, message = "user or login are wrong"),
 			@ApiResponse(code = 500, message = "One exception was throwed") 
 	})
-	public UserLoginDto signUp(@Valid @ModelAttribute(name = "data") CreateUserDTO createDTO, @RequestPart(name = "file",required = false) MultipartFile file, BindingResult bindingResult)
+	public UserLoginDto signUp(@Valid @ModelAttribute(name = "data") CreateUserDTO createDTO, BindingResult bindingResult, @RequestPart(name = "file",required = false) MultipartFile file)
 			throws BusinessRuleException;
 
 }

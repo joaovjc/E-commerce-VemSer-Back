@@ -1,4 +1,4 @@
-package com.dbc.vemserback.ecommerce.controller.others;
+package com.dbc.vemserback.ecommerce.controller.buyer;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-public interface Buyer {
+public interface BuyerAPI {
 
 	@ApiOperation(value = "Recives the Topic id and the price of the quote")
 	@ApiResponses(value = { 
