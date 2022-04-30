@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.dbc.vemserback.ecommerce.dto.user.UserCreateDTO;
+import com.dbc.vemserback.ecommerce.dto.user.UserPageDTO;
 import com.dbc.vemserback.ecommerce.entity.GroupEntity;
 import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
@@ -26,6 +27,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
 
 import java.util.Optional;
 
@@ -87,6 +89,25 @@ public class UserTest {
 
     }
 
+    @Test
+    public void testListUsersForAdminNull(){
+        Page<UserPageDTO> userPageDTOS = null;
 
+        userService.listUsersForAdmin(1, null);
+
+        when(userRepository.findAllOrOrderByFullName(any())).thenReturn(userPageDTOS);
+        verify(userRepository, times(1)).findAllOrOrderByFullName(any());
+    }
+
+    @Test
+    public void testListUsersForAdmin(){
+        Page<UserPageDTO> userPageDTOS = null;
+
+        userService.listUsersForAdmin(1, "Teste teste");
+
+        when(userRepository.findAllOrOrderByFullName(any())).thenReturn(userPageDTOS);
+        when(userRepository.getUserByFullName(any(), any())).thenReturn(userPageDTOS);
+        verify(userRepository, times(1)).getUserByFullName(any(String.class), any());
+    }
 
 }
