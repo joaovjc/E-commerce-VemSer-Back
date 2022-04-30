@@ -46,7 +46,7 @@ public class QuotationService {
 		return true;
 	}
 
-	public List<QuotationEntity> managerAproveOrReproveTopic(Integer topicId, Integer quotationId, Boolean flag)
+	public void managerAproveOrReproveTopic(Integer topicId, Integer quotationId, Boolean flag)
 			throws BusinessRuleException {
 		// checa se o topico existe
 		TopicEntity topic = topicService.topicById(topicId);
@@ -79,7 +79,6 @@ public class QuotationService {
 		topic.setQuotations(quotationEntities);
 		//topico é salvo
 		this.topicService.save(topic);
-		return quotationEntities;
 	}
 
 	public List<QuotationByTopicDTO> quotationsByTopic(Integer topicId, List<SimpleGrantedAuthority> authorities)
