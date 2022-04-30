@@ -19,6 +19,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.dbc.vemserback.ecommerce.dto.topic.TopicCreateDTO;
@@ -211,33 +212,55 @@ public class TopicTest {
     public void testGetTopicsManager() throws BusinessRuleException {
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
         simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
+        PageRequest pageRequest = PageRequest.of(
+                1,
+                1,
+                Sort.by(new Sort.Order(Sort.Direction.DESC, "status"),
+                        new Sort.Order(Sort.Direction.ASC, "date")));
+
         topicService.getTopics(simpleGrantedAuthorities, 1, 1,1,"Titulo");
-        when(topicRepository.findAllByStatus(StatusEnum.OPEN, "Titulo", any())).thenReturn(null);
-        verify( topicRepository, times(1)).findAllByStatus(StatusEnum.OPEN, any(String.class), any(PageRequest.class));
+        verify( topicRepository, times(1)).findAllByStatus(StatusEnum.OPEN, "Titulo", pageRequest);
     }
 
     @Test
     public void testGetTopicsFinancier() throws BusinessRuleException {
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
         simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_FINANCIER"));
+        PageRequest pageRequest = PageRequest.of(
+                1,
+                1,
+                Sort.by(new Sort.Order(Sort.Direction.DESC, "status"),
+                        new Sort.Order(Sort.Direction.ASC, "date")));
         topicService.getTopics(simpleGrantedAuthorities, 1, 1,1,"Titulo");
-        verify(topicRepository, times(1)).findAllByStatus(StatusEnum.MANAGER_APPROVED, any(String.class), any(PageRequest.class));
+        verify(topicRepository, times(1)).findAllByStatus(StatusEnum.MANAGER_APPROVED, "Titulo", pageRequest);
     }
 
     @Test
     public void testGetTopicsBuyer() throws BusinessRuleException {
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
         simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_BUYER"));
+        PageRequest pageRequest = PageRequest.of(
+                1,
+                1,
+                Sort.by(new Sort.Order(Sort.Direction.DESC, "status"),
+                        new Sort.Order(Sort.Direction.ASC, "date")));
+
         topicService.getTopics(simpleGrantedAuthorities, 1, 1,1,"Titulo");
-        verify( topicRepository, times(1)).findAllByStatusDifferent(StatusEnum.CREATING, any(String.class), any(PageRequest.class));
+        verify( topicRepository, times(1)).findAllByStatusDifferent(StatusEnum.CREATING, "Titulo", pageRequest);
     }
 
     @Test
     public void testGetTopicsOthers() throws BusinessRuleException {
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
         simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        PageRequest pageRequest = PageRequest.of(
+                1,
+                1,
+                Sort.by(new Sort.Order(Sort.Direction.DESC, "status"),
+                        new Sort.Order(Sort.Direction.ASC, "date")));
+
         topicService.getTopics(simpleGrantedAuthorities, 1, 1,1,"Titulo");
-        verify( topicRepository, times(1)).findAllByUserId(1, any(String.class), any(PageRequest.class));
+        verify( topicRepository, times(1)).findAllByUserId(1, "Titulo", pageRequest);
     }
 
 }
