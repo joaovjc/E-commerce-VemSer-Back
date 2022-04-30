@@ -1,4 +1,4 @@
-package com.dbc.vemserback.ecommerce.controller;
+package com.dbc.vemserback.ecommerce.controller.contributor;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
@@ -33,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Api(value = "3 - Contributor API", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"3 - Contributor API"})
 public class ContributorController {
+
 	private final TopicService topicService;
 	private final ItemService purchaseService;
 	

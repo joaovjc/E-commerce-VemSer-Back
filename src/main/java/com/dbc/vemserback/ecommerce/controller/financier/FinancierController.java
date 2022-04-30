@@ -1,4 +1,4 @@
-package com.dbc.vemserback.ecommerce.controller;
+package com.dbc.vemserback.ecommerce.controller.financier;
 
 import io.swagger.annotations.Api;
 import org.springframework.http.MediaType;
@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 public class FinancierController {
 
     private final TopicService topicService;
-
 
     @PutMapping("/update-status/{topicId}/{status}")
     public String updateFinancierTopic(@PathVariable Integer topicId, @PathVariable Boolean status) throws BusinessRuleException {
