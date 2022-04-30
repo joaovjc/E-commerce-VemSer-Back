@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 public interface FinancierAPI {
 
-    @ApiOperation(value = "Updates a topic", response = ItemFullDTO.class)
+    @ApiOperation(value = "Updates a topic", response = String.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Topic updated successfully"),
             @ApiResponse(code = 403, message = "you dont have the permission to access this resource"),

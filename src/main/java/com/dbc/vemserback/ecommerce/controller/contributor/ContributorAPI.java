@@ -37,7 +37,7 @@ public interface ContributorAPI {
     ItemFullDTO createItem(@PathVariable(name = "topic-id") Integer idTopic, @Valid @ModelAttribute(name = "data") ItemCreateDTO CreateDTO,
                            @RequestPart MultipartFile file, BindingResult bindingResult) throws BusinessRuleException;
 
-    @ApiOperation(value = "Close a topic", response = ItemFullDTO.class)
+    @ApiOperation(value = "Close a topic")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Topic closed successfully"),
             @ApiResponse(code = 403, message = "you dont have the permission to access this resource"),
@@ -45,7 +45,7 @@ public interface ContributorAPI {
     })
     void closeTopicById(@PathVariable(name = "topic-id") int idTopic) throws BusinessRuleException;
 
-    @ApiOperation(value = "Delete a topic", response = ItemFullDTO.class)
+    @ApiOperation(value = "Delete a topic")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Topic deleted successfully"),
             @ApiResponse(code = 403, message = "you dont have the permission to access this resource"),
@@ -53,7 +53,7 @@ public interface ContributorAPI {
     })
     void deleteById(@PathVariable(name = "item-id") int itemId) throws BusinessRuleException;
 
-    @ApiOperation(value = "Delete a topic by Id Topic", response = ItemFullDTO.class)
+    @ApiOperation(value = "Delete a topic by Id Topic")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Topic deleted successfully"),
             @ApiResponse(code = 403, message = "you dont have the permission to access this resource"),
