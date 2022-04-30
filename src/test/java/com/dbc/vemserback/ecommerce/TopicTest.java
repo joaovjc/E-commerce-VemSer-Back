@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.dbc.vemserback.ecommerce.dto.topic.TopicDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -28,6 +29,9 @@ import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.post.TopicRepository;
 import com.dbc.vemserback.ecommerce.service.TopicService;
 import com.dbc.vemserback.ecommerce.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TopicTest {
@@ -149,6 +153,7 @@ public class TopicTest {
         topicService.topicById(1);
         verify(topicRepository, times(1)).findById(any(Integer.class));
     }
+
     @Test
     public void testSave() {
         TopicEntity topic = new TopicEntity();
@@ -204,5 +209,37 @@ public class TopicTest {
         verify(topicRepository, times(1)).deleteById(1);
     }
 
+    @Test
+    public void testGetTopicsManager() throws BusinessRuleException {
+        List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
+        topicService.getTopics(simpleGrantedAuthorities, 1, 1,1,"Titulo");
+        when(topicRepository.findAllByStatus(StatusEnum.OPEN, "Titulo", any())).thenReturn(null);
+        verify( topicRepository, times(1)).findAllByStatus(StatusEnum.OPEN, any(String.class), any(PageRequest.class));
+    }
+
+    @Test
+    public void testGetTopicsFinancier() throws BusinessRuleException {
+        List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_FINANCIER"));
+        topicService.getTopics(simpleGrantedAuthorities, 1, 1,1,"Titulo");
+        verify(topicRepository, times(1)).findAllByStatus(StatusEnum.MANAGER_APPROVED, any(String.class), any(PageRequest.class));
+    }
+
+    @Test
+    public void testGetTopicsBuyer() throws BusinessRuleException {
+        List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_BUYER"));
+        topicService.getTopics(simpleGrantedAuthorities, 1, 1,1,"Titulo");
+        verify( topicRepository, times(1)).findAllByStatusDifferent(StatusEnum.CREATING, any(String.class), any(PageRequest.class));
+    }
+
+    @Test
+    public void testGetTopicsOthers() throws BusinessRuleException {
+        List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        topicService.getTopics(simpleGrantedAuthorities, 1, 1,1,"Titulo");
+        verify( topicRepository, times(1)).findAllByUserId(1, any(String.class), any(PageRequest.class));
+    }
 
 }
