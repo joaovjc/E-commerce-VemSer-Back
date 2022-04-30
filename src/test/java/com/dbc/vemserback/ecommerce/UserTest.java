@@ -1,33 +1,24 @@
 package com.dbc.vemserback.ecommerce;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.dbc.vemserback.ecommerce.dto.user.UserCreateDTO;
-import com.dbc.vemserback.ecommerce.dto.user.UserPageDTO;
 import com.dbc.vemserback.ecommerce.entity.GroupEntity;
-import com.dbc.vemserback.ecommerce.entity.TopicEntity;
 import com.dbc.vemserback.ecommerce.entity.UserEntity;
 import com.dbc.vemserback.ecommerce.enums.Groups;
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.post.UserRepository;
 import com.dbc.vemserback.ecommerce.service.GroupService;
-import com.dbc.vemserback.ecommerce.service.TopicService;
 import com.dbc.vemserback.ecommerce.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.models.auth.In;
-import org.apache.catalina.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.data.domain.Page;
 
 import java.util.Optional;
 
@@ -73,7 +64,7 @@ public class UserTest {
         verify(userRepository, times(1)).save(any(UserEntity.class));
     }
     @Test
-    public void testFindByEmail() throws BusinessRuleException {
+    public void testFindByEmail(){
         UserEntity user = UserEntity.builder().userId(1).build();
         when(userRepository.findByEmail(any())).thenReturn(Optional.of(user));
         userService.findByEmail("test@test.com");
@@ -91,22 +82,13 @@ public class UserTest {
 
     @Test
     public void testListUsersForAdminNull(){
-        Page<UserPageDTO> userPageDTOS = null;
-
         userService.listUsersForAdmin(1, null);
-
-        when(userRepository.findAllOrOrderByFullName(any())).thenReturn(userPageDTOS);
         verify(userRepository, times(1)).findAllOrOrderByFullName(any());
     }
 
     @Test
     public void testListUsersForAdmin(){
-        Page<UserPageDTO> userPageDTOS = null;
-
         userService.listUsersForAdmin(1, "Teste teste");
-
-        when(userRepository.findAllOrOrderByFullName(any())).thenReturn(userPageDTOS);
-        when(userRepository.getUserByFullName(any(), any())).thenReturn(userPageDTOS);
         verify(userRepository, times(1)).getUserByFullName(any(String.class), any());
     }
 
