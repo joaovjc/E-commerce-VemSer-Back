@@ -52,7 +52,7 @@ public class ContributorController {
     		throw new BusinessRuleException(builder.toString());
     	}
 		Object userb = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return purchaseService.createPurchase(CreateDTO, file, Integer.parseInt((String) userb), idTopic);
+        return purchaseService.createItem(CreateDTO, file, Integer.parseInt((String) userb), idTopic);
 	}
     
     @PutMapping("/update-status/{topic-id}")

@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class QuotationService {
 
 	private final QuotationRepository quotationRepository;
@@ -30,6 +32,7 @@ public class QuotationService {
 	private final UserService userService;
 
 	public boolean createQuotation(Integer topicId, Double preco, int userId) throws BusinessRuleException {
+		log.info("Criando cotação");
 		// checa se o topico existe
 		TopicEntity topicEntity = topicService.topicById(topicId);
 		// checa se o status do topico permite adicionar cotações
@@ -48,6 +51,7 @@ public class QuotationService {
 
 	public void managerAproveOrReproveTopic(Integer topicId, Integer quotationId, Boolean flag)
 			throws BusinessRuleException {
+		log.info("Aprovando ou reprovando uma cotação");
 		// checa se o topico existe
 		TopicEntity topic = topicService.topicById(topicId);
 		// checa se o topico esta com o status certo para ser aprovado
@@ -83,6 +87,7 @@ public class QuotationService {
 
 	public List<QuotationByTopicDTO> quotationsByTopic(Integer topicId, List<SimpleGrantedAuthority> authorities)
 			throws BusinessRuleException {
+		log.info("Listando cotações por topico");
 		// checa se o topico existe
 		TopicEntity topic = topicService.topicById(topicId);
 		//checa se tem a role certa para procurar somente a com a cotação aprovado pelo manager
@@ -98,6 +103,7 @@ public class QuotationService {
 	}
 
 	public QuotationEntity findQuotationById(Integer quotationId) throws BusinessRuleException {
+		log.info("Procurando uma cotação por id");
 		return quotationRepository.findById(quotationId)
 				.orElseThrow((() -> new BusinessRuleException("Cotação não encontrada")));
 	}

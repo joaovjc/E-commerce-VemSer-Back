@@ -34,7 +34,7 @@ public class MainPageController implements MainPageAPI{
 
 	@GetMapping("/items/{topic-id}")
 	public List<ItemDTO> allPurchasesByTopicId(@PathVariable("topic-id") Integer topicId) throws BusinessRuleException {
-		return purchaseService.listPurchasesByTopicId(topicId);
+		return purchaseService.listItemsByTopicId(topicId);
 	}
 
 	@GetMapping("/quotation/{topic-id}")

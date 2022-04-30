@@ -1,5 +1,6 @@
 package com.dbc.vemserback.ecommerce;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -60,7 +61,7 @@ public class ItemTest {
         ItemCreateDTO item = new ItemCreateDTO();
         MultipartFile file = null;
 
-        assertThrows(BusinessRuleException.class, () -> itemService.createPurchase(item, file, 1, 1));
+        assertThrows(BusinessRuleException.class, () -> itemService.createItem(item, file, 1, 1));
 
     }
 
@@ -71,7 +72,7 @@ public class ItemTest {
 
         doThrow(BusinessRuleException.class).when(topicService).topicById(any());
 
-        assertThrows(BusinessRuleException.class, () -> itemService.createPurchase(item, file, 1, 1));
+        assertThrows(BusinessRuleException.class, () -> itemService.createItem(item, file, 1, 1));
     }
 
     @Test
@@ -83,7 +84,7 @@ public class ItemTest {
 
         when(topicService.topicById(any())).thenReturn(topic);
 
-        assertThrows(BusinessRuleException.class, () -> itemService.createPurchase(item, file, 1, 1));
+        assertThrows(BusinessRuleException.class, () -> itemService.createItem(item, file, 1, 1));
     }
 
 
@@ -97,7 +98,7 @@ public class ItemTest {
         when(topicService.topicById(any())).thenReturn(topic);
         when(fileService.convertToByte(any())).thenReturn(new byte[1]);
 
-        itemService.createPurchase(item, file, 1, 1);
+        itemService.createItem(item, file, 1, 1);
         verify(itemRepository, times(1)).save(any());
     }
 
@@ -105,18 +106,23 @@ public class ItemTest {
     public void testListPurchasesByTopicIdWithTopicNull() throws BusinessRuleException {
         doThrow(BusinessRuleException.class).when(topicService).topicById(any());
 
-        assertThrows(BusinessRuleException.class, () -> itemService.listPurchasesByTopicId(1));
+        assertThrows(BusinessRuleException.class, () -> itemService.listItemsByTopicId(1));
     }
 
-//    @Test
-//    public void testListPurchasesByTopicId() throws BusinessRuleException {
-//        TopicEntity topic = TopicEntity.builder().topicId(1).build();
-//
-//        when(topicService.topicById(any())).thenReturn(topic);
-//
-//        itemService.listPurchasesByTopicId(1);
-//        verify(itemRepository, times(1)).findAllByTopicId(any());
-//    }
+    @Test
+    public void testListPurchasesByTopicId() throws BusinessRuleException {
+        ItemEntity itemEntity = ItemEntity.builder().itemId(1).itemName("item teste").build();
+        TopicEntity topic = TopicEntity.builder().topicId(1).items(new ArrayList<>()).build();
+        topic.getItems().add(itemEntity);
+
+        when(topicService.topicById(any())).thenReturn(topic);
+
+
+        itemService.listItemsByTopicId(1);
+        assertEquals(itemEntity.getItemId(), topic.getItems().get(0).getItemId());
+        assertEquals(itemEntity.getItemName(), topic.getItems().get(0).getItemName());
+
+    }
 
     @Test
     public void testDeleteByIdWithUserIdNotAuthenticatedUser() throws BusinessRuleException {

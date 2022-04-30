@@ -3,6 +3,7 @@ package com.dbc.vemserback.ecommerce.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,13 +20,15 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ItemService {
 	private final ItemRepository itemRepository;
 	private final FileService fileService;
 	private final TopicService topicService;
 	
 	
-	public ItemFullDTO createPurchase(ItemCreateDTO purchaseDTO, MultipartFile file, int idUser, Integer idTopic) throws BusinessRuleException {
+	public ItemFullDTO createItem(ItemCreateDTO itemDTO, MultipartFile file, int idUser, Integer idTopic) throws BusinessRuleException {
+		log.info("criando item");
 		//checa para ver se a imagem está nula ou não
 		if(file==null)throw new BusinessRuleException("a imagem do item não pode ser nula");
 		String originalFilename = file.getOriginalFilename();
@@ -34,8 +37,8 @@ public class ItemService {
 		TopicEntity topicEntity = topicService.topicById(idTopic);
 		if(topicEntity.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("o topico não esta mais aberto a mudanças");
 		
-		ItemEntity build = ItemEntity.builder().itemName(purchaseDTO.getName()).description(purchaseDTO.getDescription())
-				.value(purchaseDTO.getPrice()).fileName(originalFilename).file(fileService.convertToByte(file)).topicId(idTopic).topicEntity(topicEntity).build();
+		ItemEntity build = ItemEntity.builder().itemName(itemDTO.getName()).description(itemDTO.getDescription())
+				.value(itemDTO.getPrice()).fileName(originalFilename).file(fileService.convertToByte(file)).topicId(idTopic).topicEntity(topicEntity).build();
 		//persiste um item
 		itemRepository.save(build);
 		
@@ -49,7 +52,8 @@ public class ItemService {
 				.build();
 	}
 
-	public List<ItemDTO> listPurchasesByTopicId(Integer topicId) throws BusinessRuleException {
+	public List<ItemDTO> listItemsByTopicId(Integer topicId) throws BusinessRuleException {
+		log.info("listando itens");
 		//checa para ver se o topico existe e traz todos os item convertido para item dto
 		TopicEntity topicById = topicService.topicById(topicId);
 		return topicById.getItems().stream().map(ent->{
@@ -62,17 +66,19 @@ public class ItemService {
 	}
 
 	public void deleteById(int idItem, int userId) throws BusinessRuleException {
+		log.info("deletando item");
 		//checa se o item existe
-		ItemEntity purchase = this.getById(idItem);
+		ItemEntity item = this.getById(idItem);
 		//checa se o item é do usuario
-		if(purchase.getTopicEntity().getUserId()!=userId)throw new BusinessRuleException("esse item não pertence a seu usuário");
+		if(item.getTopicEntity().getUserId()!=userId)throw new BusinessRuleException("esse item não pertence a seu usuário");
 		//checa se o status do topico permite alterações
-		if(purchase.getTopicEntity().getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("o topico já não pode ser mais alterado");
+		if(item.getTopicEntity().getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("o topico já não pode ser mais alterado");
 		//delata o item
-		this.itemRepository.delete(purchase);
+		this.itemRepository.delete(item);
 	}
 	
 	private ItemEntity getById(int idItem) throws BusinessRuleException {
+		log.info("buscando item");
 		return this.itemRepository.findById(idItem).orElseThrow(()-> new BusinessRuleException("item não encontrado, por favor atualize a pagina"));
 	}
 
