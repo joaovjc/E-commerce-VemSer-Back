@@ -18,11 +18,13 @@ import net.coobird.thumbnailator.Thumbnails;
 public class FileService {
 	
 	public byte[] convertToByte(MultipartFile multipartFile) throws BusinessRuleException {
+		//checa se o tipo do arquivo é um dos aceitos
 		String fileName = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
     	if(!Arrays.asList(".png",".jpg",".jpeg").contains(fileName.toLowerCase())) {
     		throw new BusinessRuleException("Esse tipo de arquivo não é suportado: "+fileName);
     	}
 		
+    	//converte para um file do java
 		File tempFile = new File(fileName);
 		try (FileOutputStream fos = new FileOutputStream(tempFile)) {
 			fos.write(multipartFile.getBytes());
@@ -31,15 +33,18 @@ public class FileService {
 			throw new BusinessRuleException(e.getMessage());
 		}
 		
+		//reduz o tamanho da imagem
 		byte[] readAllBytes = resizeImage(tempFile);
 		tempFile.delete();
 		
+		//devolve a imagem já em base 64
 		return Base64.getEncoder().encode(readAllBytes);
 	}
 	
 	private byte[] resizeImage(File originalImage) throws BusinessRuleException {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    try {
+	    	//recebe um file e converte para uma ibyte output stream
 			Thumbnails.of(originalImage)
 			    .size(100, 100)
 			    .outputFormat("JPEG")

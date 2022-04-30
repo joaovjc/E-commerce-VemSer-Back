@@ -14,9 +14,6 @@ import com.dbc.vemserback.ecommerce.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 	Optional<UserEntity> findByEmail(String email);
-
-	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.user.UserPageDTO(u.userId, u.fullName, u.email, u.groupEntity.name, u.profileImage) FROM USER_COMMERCE u")
-	Page<UserPageDTO> findAllOrOrderByFullName(Pageable pageable);
 	
 	@Query("SELECT new com.dbc.vemserback.ecommerce.dto.user.UserPageDTO(u.userId, u.fullName, u.email, u.groupEntity.name, u.profileImage) FROM USER_COMMERCE u WHERE lower(u.fullName) like lower(concat('%', ?1 , '%'))")
 	Page<UserPageDTO> getUserByFullName(String fullName, Pageable pageable);

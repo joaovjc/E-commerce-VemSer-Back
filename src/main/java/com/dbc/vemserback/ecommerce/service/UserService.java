@@ -30,48 +30,45 @@ public class UserService {
     private final FileService fileService;
     
     public UserLoginDto createUser(UserCreateDTO createDTO, MultipartFile file) throws BusinessRuleException {
+    	//checa se o email existe
     	if(this.findByEmail(createDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
-    	
+    	//cria um user
         UserEntity user = new UserEntity();
         user.setEmail(createDTO.getEmail());
         user.setFullName(createDTO.getFullName());
         user.setGroupEntity(groupService.getById(createDTO.getGroups().getGroupId()));
         user.setPassword(new BCryptPasswordEncoder().encode(createDTO.getPassword()));
         user.setProfileImage(file!=null?fileService.convertToByte(file):null);
-        
+        //salva o user
         UserEntity savedUser = userRepository.save(user);
         byte[] profileImage = savedUser.getProfileImage();
         
+        //devolve um dto
         return UserLoginDto.builder().fullName(savedUser.getFullName()).username(user.getUsername()).profileImage(profileImage!=null?new String(profileImage):null).build();
 
     }
-
+    //troca o status de um user para admin
     public UserDTO updateUserbyAdmin(Groups group, Integer idUser) throws BusinessRuleException{
         UserEntity userEntity = userRepository.getById(idUser);
         userEntity.setGroupEntity(groupService.getById(group.getGroupId()));
         return objectMapper.convertValue(userRepository.save(userEntity), UserDTO.class);
     }
-
-//    todo
+    
 	public Optional<UserEntity> findByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
-
+	
+	//lista todos os user
     public Page<UserPageDTO> listUsersForAdmin(int page, String fullname) {
         PageRequest pageRequest = PageRequest.of(
                 page,
                 5,
                 Sort.Direction.ASC,
                 "fullName");
-        if (fullname == null) {
-            Page<UserPageDTO> findAllOrOrderByFullName = userRepository.findAllOrOrderByFullName(pageRequest);
-            return findAllOrOrderByFullName;
-        } else {
-            Page<UserPageDTO> getUserByFullName = userRepository.getUserByFullName(fullname, pageRequest);
-            return getUserByFullName;
-        }
+        fullname = fullname==null?"":fullname;
+        return userRepository.getUserByFullName(fullname, pageRequest);
     }
-
+    
     public UserEntity findById(Integer userId) throws BusinessRuleException {
         return userRepository.findById(userId).orElseThrow(() -> new BusinessRuleException("Usuário não encontrado"));
     }

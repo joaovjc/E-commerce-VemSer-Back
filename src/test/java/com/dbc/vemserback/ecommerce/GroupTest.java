@@ -1,10 +1,13 @@
 package com.dbc.vemserback.ecommerce;
 
-import com.dbc.vemserback.ecommerce.entity.GroupEntity;
-import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
-import com.dbc.vemserback.ecommerce.repository.post.GroupRepository;
-import com.dbc.vemserback.ecommerce.service.GroupService;
-import com.dbc.vemserback.ecommerce.service.ItemService;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
@@ -13,11 +16,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.Optional;
-
-import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import com.dbc.vemserback.ecommerce.entity.GroupEntity;
+import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
+import com.dbc.vemserback.ecommerce.repository.post.GroupRepository;
+import com.dbc.vemserback.ecommerce.service.GroupService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GroupTest {

@@ -13,12 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.dbc.vemserback.ecommerce.dto.topic.TopicDTO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.dbc.vemserback.ecommerce.dto.topic.TopicCreateDTO;
 import com.dbc.vemserback.ecommerce.entity.ItemEntity;
@@ -29,9 +30,6 @@ import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.post.TopicRepository;
 import com.dbc.vemserback.ecommerce.service.TopicService;
 import com.dbc.vemserback.ecommerce.service.UserService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TopicTest {
@@ -110,8 +108,8 @@ public class TopicTest {
                 .userId(1)
                 .status(StatusEnum.CREATING)
                 .build();
-        List<ItemEntity> purchaseEntities = new ArrayList<>();
-        topic.setPurchases(purchaseEntities);
+        List<ItemEntity> itemsList = new ArrayList<>();
+        topic.setItems(itemsList);
         when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(topic));
         Exception exception = assertThrows(BusinessRuleException.class, ()-> topicService.openTopic(1,1));
         assertTrue(exception.getMessage().equals("o topico tem que ter pelo menos um item"));
@@ -123,13 +121,13 @@ public class TopicTest {
                 .userId(1)
                 .status(StatusEnum.CREATING)
                 .build();
-        List<ItemEntity> purchaseEntities = new ArrayList<>();
+        List<ItemEntity> itemsList = new ArrayList<>();
         ItemEntity itemEntity = ItemEntity.builder()
                  .value(BigDecimal.valueOf(25))
                 .build();
-        purchaseEntities.add(itemEntity);
-        purchaseEntities.add(itemEntity);
-        topic.setPurchases(purchaseEntities);
+        itemsList.add(itemEntity);
+        itemsList.add(itemEntity);
+        topic.setItems(itemsList);
 
         when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(topic));
         topicService.openTopic(1,1);

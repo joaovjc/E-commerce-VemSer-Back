@@ -80,11 +80,11 @@ public class UserTest {
 
     }
 
-    @Test
-    public void testListUsersForAdminNull(){
-        userService.listUsersForAdmin(1, null);
-        verify(userRepository, times(1)).findAllOrOrderByFullName(any());
-    }
+//    @Test
+//    public void testListUsersForAdminNull(){
+//        userService.listUsersForAdmin(1, null);
+//        verify(userRepository, times(1)).findAllOrOrderByFullName(any());
+//    }
 
     @Test
     public void testListUsersForAdmin(){
