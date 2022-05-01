@@ -41,7 +41,7 @@ public class FileTest {
     	BusinessRuleException assertThrows2 = assertThrows(BusinessRuleException.class, () -> {
         	fileService.convertToByte(multipartFile);
         });
-    	assertEquals("not a suported file type: .txt", assertThrows2.getMessage());
+    	assertEquals("Esse tipo de arquivo não é suportado: .txt", assertThrows2.getMessage());
     }
     
     @Test

@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-public interface Login {
+public interface LoginAPI {
 
 	@ApiOperation(value = "Recives any user email and password")
 	@ApiResponses(value = { 

@@ -30,12 +30,14 @@ import com.dbc.vemserback.ecommerce.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Validated
-@Api(value = "1 - Login/Sign-Up API", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"1 - Login/Sign-Up API"})
+@Slf4j
+@Api(value = "1 - LoginAPI/Sign-Up API", produces = MediaType.APPLICATION_JSON_VALUE, tags = {"1 - LoginAPI/Sign-Up API"})
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -51,7 +53,6 @@ public class AuthController {
                 		loginDTO.getPassword()
                 );
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        
         UserLoginDto token = tokenService.getToken(authenticate);
         return token;
     }
@@ -78,6 +79,7 @@ public class AuthController {
 
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
         UserLoginDto token = tokenService.getToken(authenticate,createUser);
+        log.info("#### USER CREATED #### FULL NAME -> '{}'", createUser.getFullName());
         return token;
     }
 

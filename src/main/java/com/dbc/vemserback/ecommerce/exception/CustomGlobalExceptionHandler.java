@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import io.jsonwebtoken.ExpiredJwtException;
+
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -70,9 +72,9 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                                                   HttpServletRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("status", HttpStatus.UNSUPPORTED_MEDIA_TYPE.value());
         body.put("message", exception.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(body, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
     
     @ExceptionHandler(ConstraintViolationException.class)
@@ -80,8 +82,18 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                                                   HttpServletRequest request) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());
-        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("status", HttpStatus.PRECONDITION_FAILED.value());
         body.put("message", exception.getMessage());
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(body, HttpStatus.PRECONDITION_FAILED);
+    }
+    
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<Object> handleException(ExpiredJwtException exception,
+                                                  HttpServletRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", new Date());
+        body.put("status", HttpStatus.GONE.value());
+        body.put("message", exception.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.GONE);
     }
 }
