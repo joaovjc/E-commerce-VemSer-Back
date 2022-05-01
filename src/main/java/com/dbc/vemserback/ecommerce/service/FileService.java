@@ -12,13 +12,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 
+import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 
 @Service
+@Slf4j
 public class FileService {
 	
 	public byte[] convertToByte(MultipartFile multipartFile) throws BusinessRuleException {
 		//checa se o tipo do arquivo é um dos aceitos
+		log.info("#### METHOD -> convertToByte ####");
 		String fileName = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."));
     	if(!Arrays.asList(".png",".jpg",".jpeg").contains(fileName.toLowerCase())) {
     		throw new BusinessRuleException("Esse tipo de arquivo não é suportado: "+fileName);

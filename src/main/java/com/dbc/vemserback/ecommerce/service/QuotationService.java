@@ -84,7 +84,7 @@ public class QuotationService {
 		//topico é salvo
 		this.topicService.save(topic);
 	}
-
+	
 	public List<QuotationByTopicDTO> quotationsByTopic(Integer topicId, List<SimpleGrantedAuthority> authorities)
 			throws BusinessRuleException {
 		log.info("Listando cotações por topico");

@@ -22,8 +22,10 @@ import com.dbc.vemserback.ecommerce.exception.BusinessRuleException;
 import com.dbc.vemserback.ecommerce.repository.post.TopicRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class TopicService {
 
@@ -43,6 +45,7 @@ public class TopicService {
 		//salva o topico
 		entity = topicRepository.save(entity);
 		//devolve o id
+		log.info("#### CREATED USER #### ID -> '{}'", entity.getUserId());
 		return entity.getTopicId();
 	}
 	
@@ -53,11 +56,13 @@ public class TopicService {
 			//aprova o topico
 			topic.setStatus(StatusEnum.CONCLUDED);
 			topicRepository.save(topic);
+			log.info("#### TOPIC #### ID -> '{}' : ALTERED STATUS TO -> '{}' ", topic.getTopicId(), topic.getStatus());
 			return "Concluded topic";
 		} else {
 			//reprova o topico
 			topic.setStatus(StatusEnum.FINANCIALLY_REPROVED);
 			topicRepository.save(topic);
+			log.info("#### TOPIC #### ID -> '{}' : ALTERED STATUS TO -> '{}' ", topic.getTopicId(), topic.getStatus());
 			return "Topic financially reproved";
 		}
 	}
@@ -77,11 +82,13 @@ public class TopicService {
 		//troca o status para aberto
 		findById.setStatus(StatusEnum.OPEN);
 		//salva o topico
-		this.topicRepository.save(findById);
+		TopicEntity save = this.topicRepository.save(findById);
+		log.info("#### TOPIC #### ID -> '{}' : ALTERED STATUS TO -> '{}' ", save.getTopicId(), save.getStatus());
 	}
 	
 	
 	public Page<TopicDTO> getTopics(List<SimpleGrantedAuthority> authorities, int userId, int page, Integer topics, String title) throws BusinessRuleException {
+		log.info("#### METHOD -> getTopics #### ID USER-> '{}'",userId);
 		//transforma o SimpleGrantedAuthority em uma string
 		List<String> collect = authorities.stream().map(SimpleGrantedAuthority::getAuthority).collect(Collectors.toList());
 		//seta a pagina
@@ -125,6 +132,7 @@ public class TopicService {
 		//checa se o topico tem o status certo
 		if(topicById.getStatus()!=StatusEnum.CREATING)throw new BusinessRuleException("topico não pode ser deletado nesse status");
 		//deleta o topico
+		log.info("#### TOPIC #### ID -> '{}' : DELETED ", topicId);
 		this.topicRepository.deleteById(topicId);
 	}
 }
