@@ -2,6 +2,7 @@ package com.dbc.vemserback.ecommerce.service;
 
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
@@ -30,6 +32,7 @@ public class UserService {
     private final FileService fileService;
     
     public UserLoginDto createUser(UserCreateDTO createDTO, MultipartFile file) throws BusinessRuleException {
+        log.info("Creating user");
     	//checa se o email existe
     	if(this.findByEmail(createDTO.getEmail()).isPresent())throw new BusinessRuleException("Esse Email já existe");
     	//cria um user
@@ -49,6 +52,7 @@ public class UserService {
     }
     //troca o status de um user para admin
     public UserDTO updateUserbyAdmin(Groups group, Integer idUser) throws BusinessRuleException{
+        log.info("Updating user");
         UserEntity userEntity = userRepository.getById(idUser);
         userEntity.setGroupEntity(groupService.getById(group.getGroupId()));
         return objectMapper.convertValue(userRepository.save(userEntity), UserDTO.class);
@@ -60,6 +64,7 @@ public class UserService {
 	
 	//lista todos os user
     public Page<UserPageDTO> listUsersForAdmin(int page, String fullname) {
+        log.info("Listing users");
         PageRequest pageRequest = PageRequest.of(
                 page,
                 5,
@@ -70,6 +75,7 @@ public class UserService {
     }
     
     public UserEntity findById(Integer userId) throws BusinessRuleException {
+        log.info("Finding user by id");
         return userRepository.findById(userId).orElseThrow(() -> new BusinessRuleException("Usuário não encontrado"));
     }
 }
