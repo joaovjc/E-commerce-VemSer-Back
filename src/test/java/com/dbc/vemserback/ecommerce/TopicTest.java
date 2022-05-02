@@ -136,16 +136,6 @@ public class TopicTest {
         verify(this.topicRepository, times(1)).save(any(TopicEntity.class));
     }
 
-//    @Test
-//    public void testGetTopics() throws BusinessRuleException {
-//        Page<TopicDTO> page = null;
-//        List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
-//        simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
-//        topicService.getTopics(simpleGrantedAuthorities, 1, 1,1,"Titulo");
-//        when(topicRepository.findAllByStatus(StatusEnum.OPEN, 1, )).thenReturn(page);
-//        verify( topicRepository, times(1)).findAllByStatus(StatusEnum.OPEN, any(String.class), any(PageRequest.class));
-//    }
-
     @Test
     public void testTopicById() throws BusinessRuleException {
         TopicEntity topic = new TopicEntity();
