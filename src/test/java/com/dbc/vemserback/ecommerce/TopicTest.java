@@ -130,7 +130,8 @@ public class TopicTest {
         itemsList.add(itemEntity);
         topic.setItems(itemsList);
 
-        when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(topic));
+        when(topicRepository.findById(any(Integer.class))).thenReturn(Optional.of(topic));
+        when(topicRepository.save(any(TopicEntity.class))).thenReturn(topic);
         topicService.openTopic(1,1);
         verify(this.topicRepository, times(1)).save(any(TopicEntity.class));
     }
